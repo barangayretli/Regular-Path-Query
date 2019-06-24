@@ -19,7 +19,7 @@ int main(){
 	ifstream myReadFile;
 	struct temp;
 	vector<relation> container;
-	myReadFile.open("relations.txt");
+	myReadFile.open("relations2.txt");
 	string start;
 	string edge;
 	string target;
