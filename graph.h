@@ -20,7 +20,7 @@ typedef unordered_map<string, edge>::iterator umit;
 class graph{
 
 private:
-		unordered_map<std::string, edge> adjList;
+		unordered_map<string, edge> adjList;
 		
 public:
 // Adds an edge to a directed graph 
