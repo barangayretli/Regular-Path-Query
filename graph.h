@@ -15,7 +15,7 @@ void addEdge(string start, string relation, string target);
 int getSize();
 void printTargetWithLabel(string start, string relation); 
 bool hasLabel(string start,string relation);
-unordered_set<string> graph::targetSet(string start, string relation);
+unordered_set<string>targetSet(string start, string relation);
 bool hasStartingVertex(string start);
 bool hasTarget(string start, string relation, string target);
 
