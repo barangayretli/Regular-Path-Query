@@ -8,7 +8,6 @@ void graph::addEdge(string start, string relation, string target)
 	tar.targets.insert(target);
 	temp.edgeLabel.insert(make_pair(relation, tar.targets));
 	
-	
 	if(adjList.count(start)) // if it is already in the hashmap for starting edges
 	{
 		if(adjList[start].edgeLabel.count(relation)) // if the edge is already in the hashmap for the starting edge 
