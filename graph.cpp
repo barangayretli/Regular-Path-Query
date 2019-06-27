@@ -5,7 +5,7 @@ void graph::addEdge(string start, string relation, string target)
 { 
 	edge temp;
 	targetVertex tar;
-	tar.targets.insert(target);x
+	tar.targets.insert(target);
 	temp.edgeLabel.insert(make_pair(relation, tar.targets));
 	
 	
