@@ -4,7 +4,6 @@
 #include <istream>
 #include <ostream>
 #include "graph.h"
-#include "automata.h"
 
 using namespace std;
 
