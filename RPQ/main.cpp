@@ -24,6 +24,7 @@ struct QueryGraph{
 int main(){
 
 	ifstream myReadFile;
+	struct temp;
 	vector<relation> graphContainer;
 	vector<QueryGraph> automataContainer;
 	myReadFile.open("relations.txt");
@@ -60,16 +61,13 @@ int main(){
 	}
 	for(unsigned int i=0; i<automataContainer.size();i++)
 	{
+		
 		au.addEdge(automataContainer[i].first,automataContainer[i].label,automataContainer[i].second);
 	}
+
 	productGraph p;
 	p.buildPG(g,au);
 	p.results(make_pair("ten",0));
-    /*
-    adjListVect v;
-    v.buildPG( g,au);
-    v.results("ten0");*/
-  
-    
+
 	return 0;
 }

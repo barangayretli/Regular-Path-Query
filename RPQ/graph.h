@@ -17,7 +17,6 @@ struct Vertices{
 };
 unordered_map<string, Vertices> adjList;
 friend class productGraph;
-friend class adjListVect;
 
 public: 
 int getLabelSize();
@@ -31,8 +30,7 @@ public:
 	
 void addEdge(int start, string label, int target);
 friend class productGraph;
-friend class adjListVect;
-    
+
 private:
 struct VertexPairSet{
 
@@ -55,15 +53,4 @@ public:
 	void printSet(unordered_set<pair<string,int>,boost::hash<pair<string, int>>>);
 	void buildPG(graph g, automata q);
 	unordered_set<pair<string,int>,boost::hash<pair<string, int>>> results(pair<string,int>);
-};
-
-
-class adjListVect{
-private:
-    vector<pair<string,vector<string>>>adjVect;
-public:
-    void addEdge(string edge1, string edge2);
-    void buildPG(graph g, automata q);
-    void results(string edge1);
-    void printArr(vector<string> arr);
 };

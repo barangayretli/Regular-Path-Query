@@ -6,28 +6,6 @@ typedef pair<string, string> edgePairs;
 typedef pair<int, int> pairs; 
 typedef pair<string,int> strInt;
 
-
-int index(const vector<pair<string,vector<string>>> & listOfElements, const string str)
-{
-    int i =0;
-    for(; i<listOfElements.size();i++)
-    {
-        if(listOfElements[i].first==str)
-            return i;
-    }
-    return i;
-}
-
-bool contains(const vector<pair<string,vector<string>>> & listOfElements, const string str)
-{
-    for(int i =0; i<listOfElements.size();i++)
-    {
-       if(listOfElements[i].first==str)
-           return true;
-    }
-    return false;
-}
-
 // Adds an edge to a directed graph 
 void graph::addEdge(string start, string relation, string target) 
 { 
@@ -47,6 +25,10 @@ void graph::addEdge(string start, string relation, string target)
 
 }
 
+int graph::getLabelSize()
+{
+	return adjList.size();
+}
 
 void automata::addEdge(int start, string label, int target) 
 { 
@@ -63,13 +45,16 @@ void automata::addEdge(int start, string label, int target)
 	}
 }
 
+
+
+
 void productGraph::buildPG(graph g, automata q)
 {
 	int f; 
 	int s;
 	string fstr;
 	string sstr;
-	for (const auto& it : q.map1)
+	for (  const auto& it : q.map1)
 	{
 
 		for (auto itr = q.map1[it.first].VertexSetautomata.begin(); itr != q.map1[it.first].VertexSetautomata.end(); ++itr) 
@@ -94,7 +79,10 @@ void productGraph::buildPG(graph g, automata q)
 				}
 			} 
 		}
+
+
 	}
+
 }
 
 
@@ -141,93 +129,5 @@ void productGraph::printSet(unordered_set<pair<string,int>,boost::hash<pair<stri
 {
 	for (auto it = mySet.cbegin(); it != mySet.cend(); it++) {
 		std::cout << it->first << '\n';
-    }
-}
-
-void adjListVect::addEdge(string edge1, string edge2)
-{
-    
-    
-    bool exist = contains(adjVect, edge1);
-    
-    if(exist){
-        int t = index(adjVect,edge1);
-        adjVect[t].second.push_back(edge2);
-    }
-    else{
-        vector<string>temp;
-        temp.push_back(edge2);
-        adjVect.push_back(make_pair(edge1,temp));
-    }
-}
-
-void adjListVect::buildPG(graph g, automata q)
-{
-    int f;
-    int s;
-    string fstr;
-    string sstr;
-    for (const auto& it : q.map1)
-    {
-        
-        for (auto itr = q.map1[it.first].VertexSetautomata.begin(); itr != q.map1[it.first].VertexSetautomata.end(); ++itr)
-        {
-            f = itr->first;
-            s = itr->second;
-            for (auto itx = g.adjList[it.first].VertexSetgraph.begin(); itx != g.adjList[it.first].VertexSetgraph.end(); ++itx)
-            {
-                fstr = itx->first;
-                sstr = itx->second;
-                string a1=to_string(f);
-                string a2=to_string(s);
-                string str1 = fstr+a1;
-                string str2 = fstr+a2;
-                addEdge(str1, str2);
-            }
-        }
-    }
-}
-
-void adjListVect::results(string edge1)
-{
-    unordered_map<string,bool> visited;
-    
-    list<string> queue;
-    
-    visited.insert(make_pair(edge1,true));
-    
-    queue.push_back(edge1);
-    
-    vector<string> resultArr;
-    
-    while(!queue.empty())
-    {
-        string currVertex = queue.front();
-        /*cout << "Visited " << currVertex.first << "(" << currVertex.second <<")";*/
-        if(currVertex.at(currVertex.length()-1)=='3')//need to calculate the final state num
-        {
-            resultArr.push_back(currVertex.substr(0,currVertex.length()-1));
-        }
-        queue.pop_front();
-        
-        for(auto i = 0; i < adjVect.size(); ++i)
-        {
-            string adjVertex = adjVect[i].first;
-            if(!visited[adjVertex])
-            {
-                visited[adjVertex] = true;
-                queue.push_back(adjVertex);
-            }
-        }
-    }
-    printArr(resultArr);
-    
-}
-
-void adjListVect::printArr(vector<string> arr)
-{
-    for(int i=0; i<arr.size();i++)
-    {
-        cout << arr[i] << endl;
     }
 }
