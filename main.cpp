@@ -74,8 +74,6 @@ int main(){
     c.buildMap(v);
     c.buildIndexArr(v);
     c.buildCSR(v);
-    
-  
-    
+    c.results("ten0");
 	return 0;
 }
