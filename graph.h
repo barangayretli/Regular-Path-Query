@@ -61,9 +61,26 @@ public:
 class adjListVect{
 private:
     vector<pair<string,vector<string>>>adjVect;
+    friend class CSR;
 public:
     void addEdge(string edge1, string edge2);
     void buildPG(graph g, automata q);
     void results(string edge1);
     void printArr(vector<string> arr);
+};
+
+class CSR{
+private:
+    int currIndex=0;
+    int count=0;
+    vector<int> CSRmatrix;
+    vector<pair<int,int>> indices;
+    unordered_map<string, int> mapValues;
+public:
+    void buildIndexArr(adjListVect v);
+    void buildCSR(adjListVect v);
+    void buildMap(adjListVect v);
+    void results(string edge1);
+    void printArr(vector<string>arr);
+    
 };

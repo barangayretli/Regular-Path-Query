@@ -181,7 +181,7 @@ void adjListVect::buildPG(graph g, automata q)
                 string a1=to_string(f);
                 string a2=to_string(s);
                 string str1 = fstr+a1;
-                string str2 = fstr+a2;
+                string str2 = sstr+a2;
                 addEdge(str1, str2);
             }
         }
@@ -190,6 +190,7 @@ void adjListVect::buildPG(graph g, automata q)
 
 void adjListVect::results(string edge1)
 {
+    
     unordered_map<string,bool> visited;
     
     list<string> queue;
@@ -210,9 +211,12 @@ void adjListVect::results(string edge1)
         }
         queue.pop_front();
         
-        for(auto i = 0; i < adjVect.size(); ++i)
+        
+        int t = index(adjVect,currVertex);
+    
+        for(auto i = adjVect[t].second.begin(); i != adjVect[t].second.end() && t != 17 ; ++i)
         {
-            string adjVertex = adjVect[i].first;
+            string adjVertex = *i;
             if(!visited[adjVertex])
             {
                 visited[adjVertex] = true;
@@ -231,3 +235,103 @@ void adjListVect::printArr(vector<string> arr)
         cout << arr[i] << endl;
     }
 }
+
+void CSR::buildMap(adjListVect v)
+{
+    for(int i=0; i< v.adjVect.size();i++)
+    {
+        if(mapValues.count(v.adjVect[i].first))
+        {
+            
+        }
+        else
+        {
+            mapValues.insert(make_pair(v.adjVect[i].first, count));
+            count++;
+        }
+        for(int j=0; j<v.adjVect[i].second.size();j++)
+        {
+            if(mapValues.count(v.adjVect[i].second[j]))
+            {
+                
+            }
+            else
+            {
+                mapValues.insert(make_pair(v.adjVect[i].second[j], count));
+                count++;
+            }
+        }
+    }
+}
+
+
+void CSR::buildIndexArr(adjListVect v)
+{
+    
+    for(int i=0; i< v.adjVect.size();i++)
+    {
+        indices.push_back(make_pair(mapValues[v.adjVect[i].first],v.adjVect[i].second.size()));
+        currIndex+=v.adjVect[i].second.size();
+    }
+    
+}
+
+void CSR::buildCSR(adjListVect v)
+{
+    for(int i=0; i<v.adjVect.size();i++)
+    {
+        CSRmatrix.push_back(mapValues[v.adjVect[i].first]);
+        for(int j=0; j<v.adjVect[i].second.size();j++)
+        {
+            CSRmatrix.push_back(mapValues[v.adjVect[i].second[j]]);
+        }
+    }
+}
+
+void CSR::results(string edge1)
+{
+   /* unordered_map<string,bool> visited;
+    
+    list<string> queue;
+    
+    visited.insert(make_pair(edge1,true));
+    
+    queue.push_back(edge1);
+    
+    vector<string> resultArr;
+    
+    while(!queue.empty())
+    {
+        string currVertex = queue.front();
+        cout << "Visited " << currVertex.first << "(" << currVertex.second <<")"; // comment this out
+        if(currVertex.at(currVertex.length()-1)=='3')//need to calculate the final state num
+        {
+            resultArr.push_back(currVertex.substr(0,currVertex.length()-1));
+        }
+        queue.pop_front();
+        
+        
+        int t = index(CSRmatrix,currVertex);
+        
+        for(auto i = adjVect[t].second.begin(); i != adjVect[t].second.end() && t != 17 ; ++i)
+        {
+            string adjVertex = *i;
+            if(!visited[adjVertex])
+            {
+                visited[adjVertex] = true;
+                queue.push_back(adjVertex);
+            }
+        }
+    }
+    printArr(resultArr);
+   */
+}
+
+void CSR::printArr(vector<string> arr)
+{
+    for(int i=0; i<arr.size();i++)
+    {
+        cout << arr[i] << endl;
+    }
+}
+

@@ -62,13 +62,19 @@ int main(){
 	{
 		au.addEdge(automataContainer[i].first,automataContainer[i].label,automataContainer[i].second);
 	}
+    
 	productGraph p;
 	p.buildPG(g,au);
 	p.results(make_pair("ten",0));
-    /*
+    
     adjListVect v;
     v.buildPG( g,au);
-    v.results("ten0");*/
+    v.results("ten0");
+    CSR c;
+    c.buildMap(v);
+    c.buildIndexArr(v);
+    c.buildCSR(v);
+    
   
     
 	return 0;
