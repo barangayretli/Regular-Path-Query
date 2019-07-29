@@ -18,6 +18,12 @@ int index(const vector<pair<string,vector<string>>> & listOfElements, const stri
     return i;
 }
 
+int CSR::getInterval(vector<pair<int,int>> vec, int currvertex, int & i)
+{
+    i = indices[currvertex].second;
+    return indices[currvertex+1].second;
+}
+
 bool contains(const vector<pair<string,vector<string>>> & listOfElements, const string str)
 {
     for(int i =0; i<listOfElements.size();i++)
@@ -214,7 +220,7 @@ void adjListVect::results(string edge1)
         
         int t = index(adjVect,currVertex);
     
-        for(auto i = adjVect[t].second.begin(); i != adjVect[t].second.end() && t != 17 ; ++i)
+        for(auto i = adjVect[t].second.begin(); i != adjVect[t].second.end() && t != adjVect.size() ; ++i)
         {
             string adjVertex = *i;
             if(!visited[adjVertex])
@@ -247,8 +253,13 @@ void CSR::buildMap(adjListVect v)
         else
         {
             mapValues.insert(make_pair(v.adjVect[i].first, count));
+            inverted.push_back(v.adjVect[i].first);
             count++;
         }
+        
+    }
+    for(int i=0; i< v.adjVect.size();i++)
+    {
         for(int j=0; j<v.adjVect[i].second.size();j++)
         {
             if(mapValues.count(v.adjVect[i].second[j]))
@@ -258,6 +269,7 @@ void CSR::buildMap(adjListVect v)
             else
             {
                 mapValues.insert(make_pair(v.adjVect[i].second[j], count));
+                inverted.push_back(v.adjVect[i].second[j]);
                 count++;
             }
         }
@@ -270,7 +282,7 @@ void CSR::buildIndexArr(adjListVect v)
     
     for(int i=0; i< v.adjVect.size();i++)
     {
-        indices.push_back(make_pair(mapValues[v.adjVect[i].first],v.adjVect[i].second.size()));
+        indices.push_back(make_pair(mapValues[v.adjVect[i].first],currIndex));
         currIndex+=v.adjVect[i].second.size();
     }
     
@@ -280,7 +292,6 @@ void CSR::buildCSR(adjListVect v)
 {
     for(int i=0; i<v.adjVect.size();i++)
     {
-        CSRmatrix.push_back(mapValues[v.adjVect[i].first]);
         for(int j=0; j<v.adjVect[i].second.size();j++)
         {
             CSRmatrix.push_back(mapValues[v.adjVect[i].second[j]]);
@@ -290,32 +301,34 @@ void CSR::buildCSR(adjListVect v)
 
 void CSR::results(string edge1)
 {
-   /* unordered_map<string,bool> visited;
+    int edge = mapValues[edge1];
     
-    list<string> queue;
+    unordered_map<int,bool> visited;
     
-    visited.insert(make_pair(edge1,true));
+    list<int> queue;
     
-    queue.push_back(edge1);
+    visited.insert(make_pair(edge,true));
+    
+    queue.push_back(edge);
     
     vector<string> resultArr;
     
+    int i =0;
+    
     while(!queue.empty())
     {
-        string currVertex = queue.front();
-        cout << "Visited " << currVertex.first << "(" << currVertex.second <<")"; // comment this out
-        if(currVertex.at(currVertex.length()-1)=='3')//need to calculate the final state num
+        int currVertex = queue.front();
+        if(inverted[currVertex].at(inverted[currVertex].length()-1)=='3')//need to calculate the final state num
         {
-            resultArr.push_back(currVertex.substr(0,currVertex.length()-1));
+            resultArr.push_back(inverted[currVertex].substr(0,inverted[currVertex].length()-1));
         }
         queue.pop_front();
         
+        int t = getInterval(indices,currVertex,i);
         
-        int t = index(CSRmatrix,currVertex);
-        
-        for(auto i = adjVect[t].second.begin(); i != adjVect[t].second.end() && t != 17 ; ++i)
+        for( ; i < t ; i++)
         {
-            string adjVertex = *i;
+            int adjVertex = CSRmatrix[i];
             if(!visited[adjVertex])
             {
                 visited[adjVertex] = true;
@@ -324,7 +337,7 @@ void CSR::results(string edge1)
         }
     }
     printArr(resultArr);
-   */
+   
 }
 
 void CSR::printArr(vector<string> arr)

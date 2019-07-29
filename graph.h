@@ -76,11 +76,13 @@ private:
     vector<int> CSRmatrix;
     vector<pair<int,int>> indices;
     unordered_map<string, int> mapValues;
+    vector<string> inverted;
 public:
     void buildIndexArr(adjListVect v);
     void buildCSR(adjListVect v);
     void buildMap(adjListVect v);
     void results(string edge1);
     void printArr(vector<string>arr);
+    int getInterval(vector<pair<int,int>> temp, int currvertex,int& i);
     
 };
