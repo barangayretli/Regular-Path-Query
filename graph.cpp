@@ -6,7 +6,6 @@ typedef pair<string, string> edgePairs;
 typedef pair<int, int> pairs; 
 typedef pair<string,int> strInt;
 
-
 int index(const vector<pair<string,vector<string>>> & listOfElements, const string str)
 {
     int i =0;
@@ -16,12 +15,6 @@ int index(const vector<pair<string,vector<string>>> & listOfElements, const stri
             return i;
     }
     return i;
-}
-
-int CSR::getInterval(vector<pair<int,int>> vec, int currvertex, int & i)
-{
-    i = indices[currvertex].second;
-    return indices[currvertex+1].second;
 }
 
 bool contains(const vector<pair<string,vector<string>>> & listOfElements, const string str)
@@ -50,23 +43,6 @@ void graph::addEdge(string start, string relation, string target)
 	{
 		adjList.insert(make_pair(relation,v));
 	}
-
-}
-
-
-void automata::addEdge(int start, string label, int target) 
-{ 
-	VertexPairSet s;
-	pairs p = make_pair(start,target);
-	s.VertexSetautomata.insert(p);
-	if(map1.count(label))
-	{
-		map1[label].VertexSetautomata.insert(p);
-	}
-	else
-	{
-		map1.insert(make_pair(label,s));
-	}
 }
 
 void productGraph::buildPG(graph g, automata q)
@@ -77,7 +53,6 @@ void productGraph::buildPG(graph g, automata q)
 	string sstr;
 	for (const auto& it : q.map1)
 	{
-
 		for (auto itr = q.map1[it.first].VertexSetautomata.begin(); itr != q.map1[it.first].VertexSetautomata.end(); ++itr) 
 		{ 
 			f = itr->first;
@@ -103,9 +78,7 @@ void productGraph::buildPG(graph g, automata q)
 	}
 }
 
-
-
-unordered_set<pair<string,int>,boost::hash<pair<string, int>>> productGraph::results(pair<string,int> startVertex)
+unordered_set<pair<string,int>,boost::hash<pair<string, int>>> productGraph::results(pair<string,int> startVertex, int maxState)
 {
 	unordered_map<pair<string,int>,bool,boost::hash<pair<string, int>>> visited;
 
@@ -122,8 +95,7 @@ unordered_set<pair<string,int>,boost::hash<pair<string, int>>> productGraph::res
     while(!queue.empty())
     {
 		strInt currVertex = queue.front();
-		/*cout << "Visited " << currVertex.first << "(" << currVertex.second <<")";*/
-		if(currVertex.second==3)//need to calculate the final state num
+		if(currVertex.second==maxState)
 		{
 			resultSet.insert(currVertex);
 		}
@@ -148,6 +120,7 @@ void productGraph::printSet(unordered_set<pair<string,int>,boost::hash<pair<stri
 	for (auto it = mySet.cbegin(); it != mySet.cend(); it++) {
 		std::cout << it->first << '\n';
     }
+    cout << "---" << endl;
 }
 
 void adjListVect::addEdge(string edge1, string edge2)
@@ -180,6 +153,7 @@ void adjListVect::buildPG(graph g, automata q)
         {
             f = itr->first;
             s = itr->second;
+            vertexNum++;
             for (auto itx = g.adjList[it.first].VertexSetgraph.begin(); itx != g.adjList[it.first].VertexSetgraph.end(); ++itx)
             {
                 fstr = itx->first;
@@ -189,34 +163,36 @@ void adjListVect::buildPG(graph g, automata q)
                 string str1 = fstr+a1;
                 string str2 = sstr+a2;
                 addEdge(str1, str2);
+                neighborNum++;
+                vertexNum++;
             }
         }
     }
 }
 
-void adjListVect::results(string edge1)
+void adjListVect::results(string vertex1, int maxState)
 {
     
     unordered_map<string,bool> visited;
     
     list<string> queue;
     
-    visited.insert(make_pair(edge1,true));
+    visited.insert(make_pair(vertex1,true));
     
-    queue.push_back(edge1);
+    queue.push_back(vertex1);
     
     vector<string> resultArr;
+    
+    char c = '0';
     
     while(!queue.empty())
     {
         string currVertex = queue.front();
-        /*cout << "Visited " << currVertex.first << "(" << currVertex.second <<")";*/
-        if(currVertex.at(currVertex.length()-1)=='3')//need to calculate the final state num
+        if(currVertex.at(currVertex.length()-1)==(c + maxState))
         {
             resultArr.push_back(currVertex.substr(0,currVertex.length()-1));
         }
         queue.pop_front();
-        
         
         int t = index(adjVect,currVertex);
     
@@ -240,6 +216,26 @@ void adjListVect::printArr(vector<string> arr)
     {
         cout << arr[i] << endl;
     }
+    cout << "---" << endl;
+}
+
+CSR::CSR(int n, int m) {
+    this -> n = n;
+    this -> m = m;
+    indices = new int[n];
+    CSRmatrix = new int[m];
+    inverted = new string[n];
+    visited = new bool[n];
+    for(int i=0; i<n; i++)
+    {
+        visited[i]=false;
+    }
+}
+
+void CSR::getInterval(int currvertex, int & start, int & end)
+{
+    start = indices[currvertex];
+    end = indices[currvertex+1];
 }
 
 void CSR::buildMap(adjListVect v)
@@ -252,8 +248,9 @@ void CSR::buildMap(adjListVect v)
         }
         else
         {
+            // this vertex has an outgoing edge
             mapValues.insert(make_pair(v.adjVect[i].first, count));
-            inverted.push_back(v.adjVect[i].first);
+            inverted[count] = (v.adjVect[i].first);
             count++;
         }
         
@@ -264,71 +261,79 @@ void CSR::buildMap(adjListVect v)
         {
             if(mapValues.count(v.adjVect[i].second[j]))
             {
-                
             }
             else
             {
+                // this vertex has no outgoing edge, has already been assigned an id previously
                 mapValues.insert(make_pair(v.adjVect[i].second[j], count));
-                inverted.push_back(v.adjVect[i].second[j]);
+                inverted[count]=(v.adjVect[i].second[j]);
                 count++;
             }
         }
     }
 }
 
-
 void CSR::buildIndexArr(adjListVect v)
 {
+    int currIndex = 0;
     
-    for(int i=0; i< v.adjVect.size();i++)
+    for(size_t i = 0; i < v.adjVect.size(); i++)
     {
-        indices.push_back(make_pair(mapValues[v.adjVect[i].first],currIndex));
-        currIndex+=v.adjVect[i].second.size();
+        indices[i] = currIndex;
+        currIndex += v.adjVect[i].second.size();
     }
     
+    // for vertex that do not have outgoing edges
+    for(size_t i = v.adjVect.size(); i < n ; i++) {
+        indices[i] = currIndex;
+    }
 }
 
 void CSR::buildCSR(adjListVect v)
 {
-    for(int i=0; i<v.adjVect.size();i++)
+    
+    int index = 0;
+    for(size_t i=0; i<v.adjVect.size();i++)
     {
-        for(int j=0; j<v.adjVect[i].second.size();j++)
+        for(size_t j=0; j<v.adjVect[i].second.size();j++)
         {
-            CSRmatrix.push_back(mapValues[v.adjVect[i].second[j]]);
+            CSRmatrix[index++] = (mapValues[v.adjVect[i].second[j]]);
         }
     }
 }
 
-void CSR::results(string edge1)
+void CSR::results(string vertex1, int maxState)
 {
-    int edge = mapValues[edge1];
-    
-    unordered_map<int,bool> visited;
+    int edge = mapValues[vertex1];
     
     list<int> queue;
     
-    visited.insert(make_pair(edge,true));
+    visited[edge] = true;
     
     queue.push_back(edge);
     
     vector<string> resultArr;
     
-    int i =0;
+    int start = 0;
+    
+    int end = 0;
+    
+    char c = '0';
     
     while(!queue.empty())
     {
         int currVertex = queue.front();
-        if(inverted[currVertex].at(inverted[currVertex].length()-1)=='3')//need to calculate the final state num
+        if(inverted[currVertex].at(inverted[currVertex].length()-1)==(c + maxState) )
         {
             resultArr.push_back(inverted[currVertex].substr(0,inverted[currVertex].length()-1));
         }
         queue.pop_front();
         
-        int t = getInterval(indices,currVertex,i);
+        getInterval(currVertex,start,end);
         
-        for( ; i < t ; i++)
+        for( ; start < end ; start++)
         {
-            int adjVertex = CSRmatrix[i];
+            int adjVertex = CSRmatrix[start];
             if(!visited[adjVertex])
             {
                 visited[adjVertex] = true;
@@ -346,5 +351,5 @@ void CSR::printArr(vector<string> arr)
     {
         cout << arr[i] << endl;
     }
+    cout << "---" << endl;
 }
-
