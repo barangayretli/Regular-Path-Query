@@ -4,9 +4,9 @@ using namespace  std;
 
 typedef pair<int, int> pairs;
 
-static int maxsta = 0;
+static int maxsta = 0; // max state
 
-void automata::addEdge(int start, string label, int target)
+void automata::addEdge(int start, string label, int target)// adds an edge to the automata graph
 {
     VertexPairSet s;
     pairs p = make_pair(start,target);
@@ -22,7 +22,7 @@ void automata::addEdge(int start, string label, int target)
 }
 
 
-void automata::setMaxState(int maxState)
+void automata::setMaxState(int maxState)// sets the max state
 {
     maxsta = maxState;
     maxS = maxState;

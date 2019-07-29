@@ -7,7 +7,7 @@ typedef pair<int, int> pairs;
 typedef pair<string,int> strInt;
 
 int index(const vector<pair<string,vector<string>>> & listOfElements, const string str)
-{
+{// returns to the index of the specific element
     int i =0;
     for(; i<listOfElements.size();i++)
     {
@@ -18,7 +18,7 @@ int index(const vector<pair<string,vector<string>>> & listOfElements, const stri
 }
 
 bool contains(const vector<pair<string,vector<string>>> & listOfElements, const string str)
-{
+{//checks if the element is already in the data structure
     for(int i =0; i<listOfElements.size();i++)
     {
        if(listOfElements[i].first==str)
@@ -46,30 +46,30 @@ void graph::addEdge(string start, string relation, string target)
 }
 
 void productGraph::buildPG(graph g, automata q)
-{
-	int f; 
-	int s;
-	string fstr;
-	string sstr;
-	for (const auto& it : q.map1)
+{// builds the cartesian product of automata and graph
+	int f; // first int
+	int s; // second int
+	string fstr; // first string
+	string sstr; // second string
+	for (const auto& it : q.map1) // automata graph traversal
 	{
 		for (auto itr = q.map1[it.first].VertexSetautomata.begin(); itr != q.map1[it.first].VertexSetautomata.end(); ++itr) 
-		{ 
+		{ // automata graph states traversal
 			f = itr->first;
 			s = itr->second;
 			for (auto itx = g.adjList[it.first].VertexSetgraph.begin(); itx != g.adjList[it.first].VertexSetgraph.end(); ++itx) 
-			{ 
+			{ // relation graph traversal
 				fstr = itx->first;
 				sstr = itx->second;
 				strInt p1 = make_pair(fstr,f);
 				strInt p2 = make_pair(sstr,s);
 				adjVert temp;
 				temp.adjacentVertices.insert(p2);
-				if(ProductMap.count(p1))
+				if(ProductMap.count(p1))// if it is already in the product graph
 				{
 					ProductMap[p1].adjacentVertices.insert(p2);
 				}
-				else
+				else// if it is not in the product graph
 				{
 					ProductMap.insert(make_pair(p1,temp));
 				}
@@ -90,8 +90,6 @@ unordered_set<pair<string,int>,boost::hash<pair<string, int>>> productGraph::res
     
 	queue.push_back(startVertex);
 	
-
-
     while(!queue.empty())
     {
 		strInt currVertex = queue.front();
@@ -125,8 +123,6 @@ void productGraph::printSet(unordered_set<pair<string,int>,boost::hash<pair<stri
 
 void adjListVect::addEdge(string edge1, string edge2)
 {
-    
-    
     bool exist = contains(adjVect, edge1);
     
     if(exist){
@@ -148,7 +144,6 @@ void adjListVect::buildPG(graph g, automata q)
     string sstr;
     for (const auto& it : q.map1)
     {
-        
         for (auto itr = q.map1[it.first].VertexSetautomata.begin(); itr != q.map1[it.first].VertexSetautomata.end(); ++itr)
         {
             f = itr->first;
@@ -172,7 +167,6 @@ void adjListVect::buildPG(graph g, automata q)
 
 void adjListVect::results(string vertex1, int maxState)
 {
-    
     unordered_map<string,bool> visited;
     
     list<string> queue;
@@ -291,7 +285,6 @@ void CSR::buildIndexArr(adjListVect v)
 
 void CSR::buildCSR(adjListVect v)
 {
-    
     int index = 0;
     for(size_t i=0; i<v.adjVect.size();i++)
     {
@@ -302,7 +295,7 @@ void CSR::buildCSR(adjListVect v)
     }
 }
 
-void CSR::results(string vertex1, int maxState)
+void CSR::results(string vertex1, int maxState)// BFS traversal on product graph
 {
     int edge = mapValues[vertex1];
     
@@ -345,7 +338,7 @@ void CSR::results(string vertex1, int maxState)
    
 }
 
-void CSR::printArr(vector<string> arr)
+void CSR::printArr(vector<string> arr)// prints the result array
 {
     for(int i=0; i<arr.size();i++)
     {
