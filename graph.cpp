@@ -62,12 +62,22 @@ void productGraph::addEdge(automata q, string start, string label, string end)
         
     }
 }
+vector<pair<string,int>> productGraph::getVertex0()
+{
+    vector<pair<string,int>> arr;
+    for (auto it = ProductMap.begin(); it != ProductMap.end(); ++it)
+    {
+        if(it->first.second == 0)
+            arr.push_back(it->first);
+    }
+    return arr;
+}
 
-void productGraph::BFS(pair<string,int> startVertex, int maxState)
+void productGraph::BFS(pair<string,int> startVertex, int maxState, int & vertexNumCheck)
 {
 	unordered_map<pair<string,int>,bool,boost::hash<pair<string, int>>> visited; // hash table to check if a vertex is visited
 
-	vector<pair<string,int>> resultSet; // resulting set
+	//vector<pair<string,int>> resultSet; // resulting set
 	
 	list<pair<string,int>> queue; // queue to store neighbors
 	
@@ -80,7 +90,8 @@ void productGraph::BFS(pair<string,int> startVertex, int maxState)
 		strInt currVertex = queue.front(); // current vertex is the front of the queue
 		if(currVertex.second==maxState) // if the state is maximum, add the vertex to the result array
 		{
-			resultSet.push_back(currVertex);
+			//resultSet.push_back(currVertex);
+            vertexNumCheck++;
 		}
         queue.pop_front();
 		
@@ -94,7 +105,7 @@ void productGraph::BFS(pair<string,int> startVertex, int maxState)
             }
         }
     }
-	printArr(resultSet);// print the result array
+	//printArr(resultSet);// print the result array
 }
 
 void productGraph::printArr(vector<pair<string,int>> resultArr)
@@ -144,7 +155,21 @@ void adjListVect::buildProductGraph(automata q, string start, string label, stri
     }
 }
 
-void adjListVect::BFS(string vertex1, int maxState)
+vector<string> adjListVect::getVertex0(int maxState)
+{
+    char maxS = '0';
+    vector<string> arr;
+    for(int i = 0; i < adjVect.size(); i++)
+    {
+        if(adjVect[i].first.at(adjVect[i].first.length()-1) == maxS)
+        {
+            arr.push_back(adjVect[i].first);
+        }
+    }
+    return arr;
+}
+
+void adjListVect::BFS(string vertex1, int maxState, int & vertexNumCheck)
 {
     unordered_map<string,bool> visited; // map to check if the vertex is visited before
     
@@ -154,7 +179,7 @@ void adjListVect::BFS(string vertex1, int maxState)
     
     queue.push_back(vertex1); // add first vertex to the queue
     
-    vector<string> resultArr;
+    //vector<string> resultArr;
     
     char c = '0';
     
@@ -163,7 +188,7 @@ void adjListVect::BFS(string vertex1, int maxState)
         string currVertex = queue.front();
         if(currVertex.at(currVertex.length()-1)==(c + maxState))
         {
-            resultArr.push_back(currVertex.substr(0,currVertex.length()-1));
+           // resultArr.push_back(currVertex.substr(0,currVertex.length()-1));
         }
         queue.pop_front();
         
@@ -179,7 +204,7 @@ void adjListVect::BFS(string vertex1, int maxState)
             }
         }
     }
-    printArr(resultArr);
+   // printArr(resultArr);
     
 }
 
@@ -189,11 +214,6 @@ CSR::CSR(int n, int m) {
     indices = new int[n]; // dynamically create indices array
     CSRmatrix = new int[m]; // dynamically create CSR matrix array
     inverted = new string[n]; // dtnamically create inverted array
-    visited = new bool[n]; // dynamically create visited array
-    for(int i=0; i<n; i++)
-    {
-        visited[i]=false; // set all the elements of the visited array false
-    }
 }
 
 void CSR::setFalse()
@@ -273,17 +293,21 @@ void CSR::buildCSR(adjListVect v)
     }
 }
 
-void CSR::BFS(string vertex1, int maxState)
+void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
 {
     int startVertex = mapValues[vertex1]; // int value of starting edge
     
     list<int> queue; // queue to store the neighbors
     
+    visited = new bool[n];
+    
+    setFalse();
+    
     visited[startVertex] = true; // make the first edge visited
     
     queue.push_back(startVertex);
     
-    vector<string> resultArr; // result array
+    //vector<string> resultArr; // result array
     
     int start = 0; // starting index
     
@@ -296,7 +320,8 @@ void CSR::BFS(string vertex1, int maxState)
         int currVertex = queue.front();
         if(inverted[currVertex].at(inverted[currVertex].length()-1)==(c + maxState) )
         {
-            resultArr.push_back(inverted[currVertex].substr(0,inverted[currVertex].length()-1));
+            //resultArr.push_back(inverted[currVertex].substr(0,inverted[currVertex].length()-1));
+            vertexNumCheck++;
         }
         queue.pop_front();
         
@@ -312,5 +337,6 @@ void CSR::BFS(string vertex1, int maxState)
             }
         }
     }
-    printArr(resultArr);
+    //printArr(resultArr);
+    delete visited;
 }
