@@ -11,48 +11,17 @@
 
 using namespace std;
 
-template <typename VT>
-class testGraph{
-    testGraph(VT obj1, VT obj2);
-    testGraph(string str, VT strPair);
-private:
-    struct Neighbor{
-        unordered_set<VT> NeighborSet;
-    };
-    unordered_map<VT,Neighbor> Vertices;
-public:
-    void addEdge(VT obj1, VT obj2);
-    void addEdge(string str, VT obj2);
-    void buildPg(automata au);
-    void BFS(unordered_set<pair<string,int>,boost::hash<pair<string, int>>>);
-};
-
-class graph{
-
-private:
-struct Vertices{
-	unordered_multiset<pair<string,string>,boost::hash<pair<string, string>>> VertexSetgraph;
-};
-unordered_map<string, Vertices> adjList;
-friend class productGraph;
-friend class adjListVect;
-
-public:
-void addEdge(string start, string relation, string target);
-
-};
-
 class productGraph{
 
 private:
 	struct adjVert{
-	unordered_set<pair<string,int>,boost::hash<pair<string, int>>> adjacentVertices;	 //ash table is not neccessary
+	unordered_set<pair<string,int>,boost::hash<pair<string, int>>> adjacentVertices;	 //hash table is not neccessary
 	};	
 	unordered_map<pair<string,int>,adjVert,boost::hash<pair<string,int>>>ProductMap;
     
 public:
 	void printSet(unordered_set<pair<string,int>,boost::hash<pair<string, int>>>);
-	void buildPG(graph g, automata q);
+    void addEdge(automata q, string start, string label, string end);
 	unordered_set<pair<string,int>,boost::hash<pair<string, int>>> results(pair<string,int>, int maxState);
 };
 
@@ -64,8 +33,8 @@ private:
     
 public:
     void addEdge(string edge1, string edge2);
-    void buildPG(graph g, automata q);
-    void results(string edge1, int maxState);
+    void buildProductGraph(automata q, string start, string label, string end);
+    void BFS(string edge1, int maxState);
     void printArr(vector<string> arr);
     int vertexNum=0;
     int neighborNum=0;
@@ -88,7 +57,7 @@ public:
     void buildIndexArr(adjListVect v);
     void buildCSR(adjListVect v);
     void buildMap(adjListVect v);
-    void results(string startVertex, int maxState);
+    void BFS(string startVertex, int maxState);
     void printArr(vector<string>arr);
     void getInterval(int currvertex,int & start, int & end);
 };

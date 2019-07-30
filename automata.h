@@ -15,8 +15,6 @@ public:
     int maxS; // max state
     friend class productGraph;
     friend class adjListVect;
-    
-private:
     struct VertexPairSet{
         unordered_multiset<pair<int,int>,boost::hash<pair<int, int>>> VertexSetautomata; // starting and ending edges
     };

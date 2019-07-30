@@ -27,55 +27,32 @@ bool contains(const vector<pair<string,vector<string>>> & listOfElements, const 
     return false;
 }
 
-// Adds an edge to a directed graph 
-void graph::addEdge(string start, string relation, string target) 
-{ 
-	Vertices v;
-	edgePairs e = make_pair(start,target);
-
-	v.VertexSetgraph.insert(e);
-
-	if(adjList.count(relation)) // if it is already in the hashmap for starting edges
-	{
-		adjList[relation].VertexSetgraph.insert(e);
-	}
-	else // if the starting vertex does not exist in the hashtable for starting edges
-	{
-		adjList.insert(make_pair(relation,v));
-	}
-}
-
-void productGraph::buildPG(graph g, automata q)
-{// builds the cartesian product of automata and graph
-	int f; // first int
-	int s; // second int
-	string fstr; // first string
-	string sstr; // second string
-	for (const auto& it : q.map1) // automata graph traversal
-	{
-		for (auto itr = q.map1[it.first].VertexSetautomata.begin(); itr != q.map1[it.first].VertexSetautomata.end(); ++itr) 
-		{ // automata graph states traversal
-			f = itr->first;
-			s = itr->second;
-			for (auto itx = g.adjList[it.first].VertexSetgraph.begin(); itx != g.adjList[it.first].VertexSetgraph.end(); ++itx) 
-			{ // relation graph traversal
-				fstr = itx->first;
-				sstr = itx->second;
-				strInt p1 = make_pair(fstr,f);
-				strInt p2 = make_pair(sstr,s);
-				adjVert temp;
-				temp.adjacentVertices.insert(p2);
-				if(ProductMap.count(p1))// if it is already in the product graph
-				{
-					ProductMap[p1].adjacentVertices.insert(p2);
-				}
-				else// if it is not in the product graph
-				{
-					ProductMap.insert(make_pair(p1,temp));
-				}
-			} 
-		}
-	}
+void productGraph::addEdge(automata q, string start, string label, string end)
+{
+    int f; // first int
+    int s; // second int
+    string fstr; // first string
+    string sstr; // second string
+    for (auto itr = q.map1[label].VertexSetautomata.begin(); itr != q.map1[label].VertexSetautomata.end(); ++itr)
+    { // automata graph states traversal
+        f = itr->first;
+        s = itr->second;
+        fstr = start;
+        sstr = end;
+        strInt p1 = make_pair(fstr,f);
+        strInt p2 = make_pair(sstr,s);
+        adjVert temp;
+        temp.adjacentVertices.insert(p2);
+        if(ProductMap.count(p1))// if it is already in the product graph
+        {
+            ProductMap[p1].adjacentVertices.insert(p2);
+        }
+        else// if it is not in the product graph
+        {
+            ProductMap.insert(make_pair(p1,temp));
+        }
+        
+    }
 }
 
 unordered_set<pair<string,int>,boost::hash<pair<string, int>>> productGraph::results(pair<string,int> startVertex, int maxState)
@@ -136,36 +113,29 @@ void adjListVect::addEdge(string edge1, string edge2)
     }
 }
 
-void adjListVect::buildPG(graph g, automata q)
+void adjListVect::buildProductGraph(automata q, string start, string label, string end)
 {
-    int f;
-    int s;
-    string fstr;
-    string sstr;
-    for (const auto& it : q.map1)
-    {
-        for (auto itr = q.map1[it.first].VertexSetautomata.begin(); itr != q.map1[it.first].VertexSetautomata.end(); ++itr)
-        {
-            f = itr->first;
-            s = itr->second;
-            vertexNum++;
-            for (auto itx = g.adjList[it.first].VertexSetgraph.begin(); itx != g.adjList[it.first].VertexSetgraph.end(); ++itx)
-            {
-                fstr = itx->first;
-                sstr = itx->second;
-                string a1=to_string(f);
-                string a2=to_string(s);
-                string str1 = fstr+a1;
-                string str2 = sstr+a2;
-                addEdge(str1, str2);
-                neighborNum++;
-                vertexNum++;
-            }
-        }
+    int f; // first int
+    int s; // second int
+    string fstr; // first string
+    string sstr; // second string
+    for (auto itr = q.map1[label].VertexSetautomata.begin(); itr != q.map1[label].VertexSetautomata.end(); ++itr)
+    { // automata graph states traversal
+        f = itr->first;
+        s = itr->second;
+        fstr = start;
+        sstr = end;
+        string a1=to_string(f);
+        string a2=to_string(s);
+        string str1 = fstr+a1;
+        string str2 = sstr+a2;
+        addEdge(str1, str2);
+        neighborNum++;
+        vertexNum++;
     }
 }
 
-void adjListVect::results(string vertex1, int maxState)
+void adjListVect::BFS(string vertex1, int maxState)
 {
     unordered_map<string,bool> visited;
     
@@ -295,7 +265,7 @@ void CSR::buildCSR(adjListVect v)
     }
 }
 
-void CSR::results(string vertex1, int maxState)// BFS traversal on product graph
+void CSR::BFS(string vertex1, int maxState)
 {
     int edge = mapValues[vertex1];
     
