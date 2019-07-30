@@ -1,3 +1,6 @@
+#ifndef GRAOH_H
+#define GRAPH_H
+
 #include <unordered_map>
 #include <string>
 #include <boost/functional/hash.hpp>
@@ -55,3 +58,5 @@ public:
     void getInterval(int currvertex,int & start, int & end); // interval of neighbors of a vertex in CSR matrix
     void setFalse();
 };
+
+#endif 
