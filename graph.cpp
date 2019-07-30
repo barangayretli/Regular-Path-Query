@@ -2,9 +2,7 @@
 
 using namespace std;
 
-typedef pair<string, string> edgePairs; 
-typedef pair<int, int> pairs; 
-typedef pair<string,int> strInt;
+typedef pair<string,int> strInt; // vertex name and state
 
 int index(const vector<pair<string,vector<string>>> & listOfElements, const string str)
 {// returns to the index of the specific element
@@ -27,13 +25,23 @@ bool contains(const vector<pair<string,vector<string>>> & listOfElements, const 
     return false;
 }
 
+void printArr(vector<string> arr)// prints the result array
+{
+    for(int i=0; i<arr.size();i++)
+    {
+        cout << arr[i] << endl;
+    }
+    cout << "---" << endl;
+}
+
+
 void productGraph::addEdge(automata q, string start, string label, string end)
 {
     int f; // first int
     int s; // second int
     string fstr; // first string
     string sstr; // second string
-    for (auto itr = q.map1[label].VertexSetautomata.begin(); itr != q.map1[label].VertexSetautomata.end(); ++itr)
+    for (auto itr = q.automataGraph[label].VertexNeighbors.begin(); itr != q.automataGraph[label].VertexNeighbors.end(); ++itr)
     { // automata graph states traversal
         f = itr->first;
         s = itr->second;
@@ -42,10 +50,10 @@ void productGraph::addEdge(automata q, string start, string label, string end)
         strInt p1 = make_pair(fstr,f);
         strInt p2 = make_pair(sstr,s);
         adjVert temp;
-        temp.adjacentVertices.insert(p2);
+        temp.adjacentVertices.push_back(p2);
         if(ProductMap.count(p1))// if it is already in the product graph
         {
-            ProductMap[p1].adjacentVertices.insert(p2);
+            ProductMap[p1].adjacentVertices.push_back(p2);
         }
         else// if it is not in the product graph
         {
@@ -55,44 +63,43 @@ void productGraph::addEdge(automata q, string start, string label, string end)
     }
 }
 
-unordered_set<pair<string,int>,boost::hash<pair<string, int>>> productGraph::results(pair<string,int> startVertex, int maxState)
+void productGraph::BFS(pair<string,int> startVertex, int maxState)
 {
-	unordered_map<pair<string,int>,bool,boost::hash<pair<string, int>>> visited;
+	unordered_map<pair<string,int>,bool,boost::hash<pair<string, int>>> visited; // hash table to check if a vertex is visited
 
-	unordered_set<pair<string,int>,boost::hash<pair<string, int>>> resultSet;
+	vector<pair<string,int>> resultSet; // resulting set
 	
-	list<pair<string,int>> queue;
+	list<pair<string,int>> queue; // queue to store neighbors
 	
-	visited.insert(make_pair(startVertex,true));
+	visited.insert(make_pair(startVertex,true)); // make the starting vertex visited
     
-	queue.push_back(startVertex);
+	queue.push_back(startVertex); // push the starting vertex
 	
-    while(!queue.empty())
+    while(!queue.empty()) // as long as queue is not empty, continue
     {
-		strInt currVertex = queue.front();
-		if(currVertex.second==maxState)
+		strInt currVertex = queue.front(); // current vertex is the front of the queue
+		if(currVertex.second==maxState) // if the state is maximum, add the vertex to the result array
 		{
-			resultSet.insert(currVertex);
+			resultSet.push_back(currVertex);
 		}
         queue.pop_front();
 		
 		for(auto i = ProductMap[currVertex].adjacentVertices.begin(); i != ProductMap[currVertex].adjacentVertices.end(); ++i)
-        {
+        {// take the neighbors and check if they are visited
 			strInt adjVertex = *i;
-            if(!visited[adjVertex])
+            if(!visited[adjVertex])// if the vertes is not visited
             {
                 visited[adjVertex] = true;
-                queue.push_back(adjVertex);
+                queue.push_back(adjVertex); // push the neighbor to the queue
             }
         }
     }
-	printSet(resultSet);
-	return resultSet;
+	printArr(resultSet);// print the result array
 }
 
-void productGraph::printSet(unordered_set<pair<string,int>,boost::hash<pair<string, int>>> mySet)
-{
-	for (auto it = mySet.cbegin(); it != mySet.cend(); it++) {
+void productGraph::printArr(vector<pair<string,int>> resultArr)
+{// prints the result array
+	for (auto it = resultArr.cbegin(); it != resultArr.cend(); it++) {
 		std::cout << it->first << '\n';
     }
     cout << "---" << endl;
@@ -102,14 +109,18 @@ void adjListVect::addEdge(string edge1, string edge2)
 {
     bool exist = contains(adjVect, edge1);
     
-    if(exist){
+    if(exist){ // if the starting edge exist before
         int t = index(adjVect,edge1);
-        adjVect[t].second.push_back(edge2);
+        adjVect[t].second.push_back(edge2);// add ending edge to the adjacent vertices
+        neighborNum++;
     }
-    else{
+    else{ // if the starting edge does not exist before
         vector<string>temp;
         temp.push_back(edge2);
-        adjVect.push_back(make_pair(edge1,temp));
+        adjVect.push_back(make_pair(edge1,temp)); // create an entry for starting edge and add ending edge to the adj vertices
+        neighborNum++;
+        vertexNum++;
+
     }
 }
 
@@ -119,8 +130,8 @@ void adjListVect::buildProductGraph(automata q, string start, string label, stri
     int s; // second int
     string fstr; // first string
     string sstr; // second string
-    for (auto itr = q.map1[label].VertexSetautomata.begin(); itr != q.map1[label].VertexSetautomata.end(); ++itr)
-    { // automata graph states traversal
+    for (auto itr = q.automataGraph[label].VertexNeighbors.begin(); itr != q.automataGraph[label].VertexNeighbors.end(); ++itr)
+    { // loop for automata graph states traversal
         f = itr->first;
         s = itr->second;
         fstr = start;
@@ -130,20 +141,18 @@ void adjListVect::buildProductGraph(automata q, string start, string label, stri
         string str1 = fstr+a1;
         string str2 = sstr+a2;
         addEdge(str1, str2);
-        neighborNum++;
-        vertexNum++;
     }
 }
 
 void adjListVect::BFS(string vertex1, int maxState)
 {
-    unordered_map<string,bool> visited;
+    unordered_map<string,bool> visited; // map to check if the vertex is visited before
     
-    list<string> queue;
+    list<string> queue; // queue to store the adjacent vertices
     
-    visited.insert(make_pair(vertex1,true));
+    visited.insert(make_pair(vertex1,true)); // make the starting vertex visited
     
-    queue.push_back(vertex1);
+    queue.push_back(vertex1); // add first vertex to the queue
     
     vector<string> resultArr;
     
@@ -174,30 +183,29 @@ void adjListVect::BFS(string vertex1, int maxState)
     
 }
 
-void adjListVect::printArr(vector<string> arr)
-{
-    for(int i=0; i<arr.size();i++)
-    {
-        cout << arr[i] << endl;
-    }
-    cout << "---" << endl;
-}
-
 CSR::CSR(int n, int m) {
-    this -> n = n;
-    this -> m = m;
-    indices = new int[n];
-    CSRmatrix = new int[m];
-    inverted = new string[n];
-    visited = new bool[n];
+    this -> n = n;// vertex number
+    this -> m = m;// neighbor number
+    indices = new int[n]; // dynamically create indices array
+    CSRmatrix = new int[m]; // dynamically create CSR matrix array
+    inverted = new string[n]; // dtnamically create inverted array
+    visited = new bool[n]; // dynamically create visited array
     for(int i=0; i<n; i++)
     {
-        visited[i]=false;
+        visited[i]=false; // set all the elements of the visited array false
+    }
+}
+
+void CSR::setFalse()
+{
+    for(int i=0; i<n; i++)
+    {
+        visited[i]=false; // set all the elements of the visited array false
     }
 }
 
 void CSR::getInterval(int currvertex, int & start, int & end)
-{
+{// change the start and end variables to store beginning and ending points
     start = indices[currvertex];
     end = indices[currvertex+1];
 }
@@ -260,26 +268,26 @@ void CSR::buildCSR(adjListVect v)
     {
         for(size_t j=0; j<v.adjVect[i].second.size();j++)
         {
-            CSRmatrix[index++] = (mapValues[v.adjVect[i].second[j]]);
+            CSRmatrix[index++] = (mapValues[v.adjVect[i].second[j]]); // add the neighbor to the CSR matrix
         }
     }
 }
 
 void CSR::BFS(string vertex1, int maxState)
 {
-    int edge = mapValues[vertex1];
+    int startVertex = mapValues[vertex1]; // int value of starting edge
     
-    list<int> queue;
+    list<int> queue; // queue to store the neighbors
     
-    visited[edge] = true;
+    visited[startVertex] = true; // make the first edge visited
     
-    queue.push_back(edge);
+    queue.push_back(startVertex);
     
-    vector<string> resultArr;
+    vector<string> resultArr; // result array
     
-    int start = 0;
+    int start = 0; // starting index
     
-    int end = 0;
+    int end = 0; // ending index
     
     char c = '0';
     
@@ -292,7 +300,7 @@ void CSR::BFS(string vertex1, int maxState)
         }
         queue.pop_front();
         
-        getInterval(currVertex,start,end);
+        getInterval(currVertex,start,end); // get the starting and ending points
         
         for( ; start < end ; start++)
         {
@@ -305,14 +313,4 @@ void CSR::BFS(string vertex1, int maxState)
         }
     }
     printArr(resultArr);
-   
-}
-
-void CSR::printArr(vector<string> arr)// prints the result array
-{
-    for(int i=0; i<arr.size();i++)
-    {
-        cout << arr[i] << endl;
-    }
-    cout << "---" << endl;
 }
