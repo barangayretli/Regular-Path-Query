@@ -1,41 +1,35 @@
 #pragma once
 
-#include <iostream>
 #include <unordered_map>
 #include <string>
-#include <unordered_set>
 #include <boost/functional/hash.hpp>
 #include <list>
 #include "automata.h"
-
-
-using namespace std;
 
 class productGraph{
 
 private:
 	struct adjVert{
-	unordered_set<pair<string,int>,boost::hash<pair<string, int>>> adjacentVertices;	 //hash table is not neccessary
+        std::vector<std::pair<std::string,int>> adjacentVertices; // vector of adjacent vertices of a vertex
 	};	
-	unordered_map<pair<string,int>,adjVert,boost::hash<pair<string,int>>>ProductMap;
+    std::unordered_map<std::pair<std::string,int>,adjVert,boost::hash<std::pair<std::string,int>>> ProductMap; // starting vertex map
     
 public:
-	void printSet(unordered_set<pair<string,int>,boost::hash<pair<string, int>>>);
-    void addEdge(automata q, string start, string label, string end);
-	unordered_set<pair<string,int>,boost::hash<pair<string, int>>> results(pair<string,int>, int maxState);
+    void printArr(std::vector<std::pair<std::string,int>>); // prints the result array
+    void addEdge(automata q, std::string start, std::string label, std::string end); // adds an edge to the graph
+	void BFS(std::pair<std::string,int>, int maxState);// BFS on product graph
 };
 
 class adjListVect{
     
 private:
-    vector<pair<string,vector<string>>>adjVect;
+    std::vector<std::pair<std::string,std::vector<std::string>>>adjVect; // adjacent vertices of a vertex
     friend class CSR;
     
 public:
-    void addEdge(string edge1, string edge2);
-    void buildProductGraph(automata q, string start, string label, string end);
-    void BFS(string edge1, int maxState);
-    void printArr(vector<string> arr);
+    void addEdge(std::string edge1, std::string edge2); // adds an edge to the graph
+    void buildProductGraph(automata q, std::string start, std::string label, std::string end); // builds product graph
+    void BFS(std::string edge1, int maxState); // BFS on product graph
     int vertexNum=0;
     int neighborNum=0;
     friend class CSR;
@@ -44,20 +38,20 @@ public:
 class CSR{
     
 private:
-    int n, m;
+    int n, m; // size of vertex and neighbors
     int count=0;
-    int* CSRmatrix;
-    int* indices;
-    bool* visited;
-    unordered_map<string, int> mapValues;
-    string* inverted;
+    int* CSRmatrix; // CSRMatrix that contains only the neighbors
+    int* indices; // index of the starting vertices
+    bool* visited; // boolean array to check if a vertex is visited during BFS
+    std::unordered_map<std::string, int> mapValues; // map of string vertices
+    std::string* inverted; // inverse of mapValues
     
 public:
-    CSR(int n, int m);
-    void buildIndexArr(adjListVect v);
-    void buildCSR(adjListVect v);
-    void buildMap(adjListVect v);
-    void BFS(string startVertex, int maxState);
-    void printArr(vector<string>arr);
-    void getInterval(int currvertex,int & start, int & end);
+    CSR(int n, int m); // CSRMatrix constructor
+    void buildIndexArr(adjListVect v); // Construct the index array
+    void buildCSR(adjListVect v); // Construct CSR matrix
+    void buildMap(adjListVect v); // Handles mapping of strings
+    void BFS(std::string startVertex, int maxState); // BFS on product graph
+    void getInterval(int currvertex,int & start, int & end); // interval of neighbors of a vertex in CSR matrix
+    void setFalse();
 };
