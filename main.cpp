@@ -9,7 +9,7 @@ using namespace std::chrono;
 typedef high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 
-void printExecutionTime(ClockTime start_time, ClockTime end_time)
+void printExecutionTime(ClockTime start_time, ClockTime end_time);
 
 int main(){
    
