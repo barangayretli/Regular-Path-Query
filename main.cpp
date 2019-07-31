@@ -25,6 +25,8 @@ int main(){
     int maxState = 0,first,second, vertexNumCheck=0;
     ///////////////////////
     automata au;
+    int counter=0;
+    cout << "Started reading automata" << endl;
     while(automataFile >> f >> label >> s)// reading automata from a txt file
     {
         first = stoi(f);
@@ -35,22 +37,30 @@ int main(){
         if(second > maxState)
             maxState = second;
     }
+    cout << "Finished reading automata" << endl;
     /////////////////
     productGraph p;
     adjListVect v;
     /////////////////
+    cout << "Started Reading Graph" << endl;
 	while(graphRead >> start >> edge >> target)// reading the vertices and edges line by line from the txt file
 	{
         p.addEdge(au, start, edge, target);
         v.buildProductGraph(au, start, edge, target);
+        counter++;
+        if(counter%1000000 == 0)
+            cout <<counter<<endl;
 	}
+    cout << "Finished reading Graph" << endl;
     ////////////////
     vertices_ProductGraph0 = p.getVertex0();
     vertices_CSR0 = v.getVertex0(maxState);
+    cout << "Started building CSR" << endl;
     CSR c(v.vertexNum+v.neighborNum,v.neighborNum);
     c.buildMap(v);
     c.buildIndexArr(v);
     c.buildCSR(v);
+    cout << "Finished building CSR" << endl;
     
     ////////////////// Adj List with HashMap Representation
     
