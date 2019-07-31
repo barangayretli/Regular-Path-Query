@@ -71,6 +71,7 @@ int main(){
     for(int i = 0; i < vertices_ProductGraph0.size(); i++)
     {
         p.BFS(vertices_ProductGraph0[i], maxState, vertexNumCheck);
+        cout << vertexNumCheck << " vertices found with max State"<< endl;
     }
     // cout << vertexNumCheck << endl;
 	
@@ -86,6 +87,7 @@ int main(){
     for(int j = 0; j < vertices_CSR0.size(); j++)
     {
         c.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
+        cout << vertexNumCheck << " vertices found with max State"<< endl;
     }
     // cout << vertexNumCheck << endl;
     end_time = Clock::now();

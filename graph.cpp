@@ -108,7 +108,6 @@ void productGraph::BFS(pair<string,int> startVertex, int maxState, int & vertexN
             }
         }
     }
-    cout << vertexNumCheck << " vertices found with max State"<< endl;
 	//printArr(resultSet);// print the result array
 }
 
@@ -119,99 +118,7 @@ void productGraph::printArr(vector<pair<string,int>> resultArr)
     }
     cout << "---" << endl;
 }
-/*
-void adjListVect::addEdge(string edge1, string edge2)
-{
-    bool exist = contains(adjVect, edge1);
-    
-    if(exist){ // if the starting edge exist before
-        int t = index(adjVect,edge1);
-        adjVect[t].second.push_back(edge2);// add ending edge to the adjacent vertices
-        neighborNum++;
-    }
-    else{ // if the starting edge does not exist before
-        vector<string>temp;
-        temp.push_back(edge2);
-        adjVect.push_back(make_pair(edge1,temp)); // create an entry for starting edge and add ending edge to the adj vertices
-        neighborNum++;
-        vertexNum++;
 
-    }
-}
-
-void adjListVect::buildProductGraph(automata q, string start, string label, string end)
-{
-    int f; // first int
-    int s; // second int
-    string fstr; // first string
-    string sstr; // second string
-    for (auto itr = q.automataGraph[label].VertexNeighbors.begin(); itr != q.automataGraph[label].VertexNeighbors.end(); ++itr)
-    { // loop for automata graph states traversal
-        f = itr->first;
-        s = itr->second;
-        fstr = start;
-        sstr = end;
-        string a1=to_string(f);
-        string a2=to_string(s);
-        string str1 = fstr+a1;
-        string str2 = sstr+a2;
-        addEdge(str1, str2);
-    }
-}
-
-vector<string> adjListVect::getVertex0(int maxState)
-{
-    char maxS = '0';
-    vector<string> arr;
-    for(int i = 0; i < adjVect.size(); i++)
-    {
-        if(adjVect[i].first.at(adjVect[i].first.length()-1) == maxS)
-        {
-            arr.push_back(adjVect[i].first);
-        }
-    }
-    return arr;
-}
-
-void adjListVect::BFS(string vertex1, int maxState, int & vertexNumCheck)
-{
-    unordered_map<string,bool> visited; // map to check if the vertex is visited before
-    
-    list<string> queue; // queue to store the adjacent vertices
-    
-    visited.insert(make_pair(vertex1,true)); // make the starting vertex visited
-    
-    queue.push_back(vertex1); // add first vertex to the queue
-    
-    //vector<string> resultArr;
-    
-    char c = '0';
-    
-    while(!queue.empty())
-    {
-        string currVertex = queue.front();
-        if(currVertex.at(currVertex.length()-1)==(c + maxState))
-        {
-           // resultArr.push_back(currVertex.substr(0,currVertex.length()-1));
-        }
-        queue.pop_front();
-        
-        int t = index(adjVect,currVertex);
-    
-        for(auto i = adjVect[t].second.begin(); i != adjVect[t].second.end() && t != adjVect.size() ; ++i)
-        {
-            string adjVertex = *i;
-            if(!visited[adjVertex])
-            {
-                visited[adjVertex] = true;
-                queue.push_back(adjVertex);
-            }
-        }
-    }
-   // printArr(resultArr);
-    
-}
-*/
 
 CSR::CSR(int n, int m) {
     this -> n = n;// vertex number
@@ -361,7 +268,7 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
             }
         }
     }
-    cout << vertexNumCheck << " vertices found with max State"<< endl;
+    
     //printArr(resultArr);
     delete visited;
 }
