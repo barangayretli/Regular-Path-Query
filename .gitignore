@@ -5,3 +5,6 @@ nbproject
 
 ## any swap file
 *.swp
+
+## executable
+rpq

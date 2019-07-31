@@ -1,11 +1,11 @@
 CXX = g++
-CXXFLAGS = -Wall -g -Isrc
+CXXFLAGS = -std=c++11 -Wall -g -Isrc
 
-rpq: automata.o graph.o
-	$(CXX) $(CXXFLAGS) -o rpq main.cpp	
+rpq: automata graph
+	$(CXX) $(CXXFLAGS) -o rpq src/main.cpp automata.o graph.o
 
-automata: automata.h
-	$(CXX) $(CXXFLAGS) -c automata/automata.cpp
+automata: 
+	$(CXX) $(CXXFLAGS) -c src/automata/automata.cpp
 
-graph: graph.h
-	$(CXX) $(CXXFLAGS) -c graph/graph.cpp
+graph:
+	$(CXX) $(CXXFLAGS) -c src/graph/graph.cpp
