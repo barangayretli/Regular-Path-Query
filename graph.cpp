@@ -54,10 +54,13 @@ void productGraph::addEdge(automata q, string start, string label, string end)
         if(ProductMap.count(p1))// if it is already in the product graph
         {
             ProductMap[p1].adjacentVertices.push_back(p2);
+            neighborNum++;
         }
         else// if it is not in the product graph
         {
             ProductMap.insert(make_pair(p1,temp));
+            vertexNum++;
+            neighborNum++;
         }
         
     }
@@ -115,7 +118,7 @@ void productGraph::printArr(vector<pair<string,int>> resultArr)
     }
     cout << "---" << endl;
 }
-
+/*
 void adjListVect::addEdge(string edge1, string edge2)
 {
     bool exist = contains(adjVect, edge1);
@@ -207,6 +210,7 @@ void adjListVect::BFS(string vertex1, int maxState, int & vertexNumCheck)
    // printArr(resultArr);
     
 }
+*/
 
 CSR::CSR(int n, int m) {
     this -> n = n;// vertex number
@@ -224,6 +228,11 @@ void CSR::setFalse()
     }
 }
 
+vector<string> CSR::getVertex0()
+{
+    return Vertex0;
+}
+
 void CSR::getInterval(int currvertex, int & start, int & end)
 {// change the start and end variables to store beginning and ending points
     start = indices[currvertex];
@@ -235,7 +244,12 @@ void CSR::buildMap(productGraph p)
     string str;
     for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
     {
+        
         str = it->first.first + to_string(it->first.second);
+        if(it->first.second==0)
+        {
+            Vertex0.push_back(str);
+        }
         if(mapValues.count(str))
         {
             

@@ -21,8 +21,10 @@ public:
     void addEdge(automata q, std::string start, std::string label, std::string end); // adds an edge to the graph
 	void BFS(std::pair<std::string,int>, int maxState, int & vertexNumCheck);// BFS on product graph
     std::vector<std::pair<std::string,int>> getVertex0 ();
+    int vertexNum=0;
+    int neighborNum=0;
 };
-
+/*
 class adjListVect{
     
 private:
@@ -34,11 +36,9 @@ public:
     void buildProductGraph(automata q, std::string start, std::string label, std::string end); // builds product graph
     void BFS(std::string edge1, int maxState, int & vertexNumCheck); // BFS on product graph
     std::vector<std::string> getVertex0(int maxState);
-    int vertexNum=0;
-    int neighborNum=0;
     friend class CSR;
 };
-
+*/
 class CSR{
     
 private:
@@ -49,6 +49,7 @@ private:
     bool* visited; // boolean array to check if a vertex is visited during BFS
     std::unordered_map<std::string, int> mapValues; // map of string vertices
     std::string* inverted; // inverse of mapValues
+    std::vector<std::string> Vertex0;
     
 public:
     CSR(int n, int m); // CSRMatrix constructor
@@ -58,6 +59,7 @@ public:
     void BFS(std::string startVertex, int maxState, int & vertexNumCheck); // BFS on product graph
     void getInterval(int currvertex,int & start, int & end); // interval of neighbors of a vertex in CSR matrix
     void setFalse();
+    std::vector<std::string> getVertex0();
 };
 
 #endif 

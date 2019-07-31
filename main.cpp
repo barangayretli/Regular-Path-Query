@@ -40,7 +40,7 @@ int main(){
     cout << "Finished reading automata" << endl;
     /////////////////
     productGraph p;
-    adjListVect v;
+   // adjListVect v;
     /////////////////
     cout << "Started Reading Graph" << endl;
 	while(graphRead >> start >> edge >> target)// reading the vertices and edges line by line from the txt file
@@ -54,10 +54,11 @@ int main(){
     cout << "Finished reading Graph" << endl;
     ////////////////
     vertices_ProductGraph0 = p.getVertex0();
-    vertices_CSR0 = v.getVertex0(maxState);
+    
     cout << "Started building CSR" << endl;
-    CSR c(v.vertexNum+v.neighborNum,v.neighborNum);
+    CSR c(p.vertexNum+p.neighborNum,p.neighborNum);
     c.buildMap(p);
+    vertices_CSR0 = c.getVertex0();
     c.buildIndexArr(p);
     c.buildCSR(p);
     cout << "Finished building CSR" << endl;
