@@ -15,7 +15,7 @@ int main(){
    
     ifstream graphRead, automataFile;
     ///////////////////////
-    graphRead.open("yago2s_10m_shuffle_virtuoso_tem53.tsv");
+    graphRead.open("/home/bgayretl/datasets/yago2s/yago2s_full.tsv");
     automataFile.open("pvldb5.txt");
     ///////////////////////
     vector<pair<string,int>> vertices_ProductGraph0;
