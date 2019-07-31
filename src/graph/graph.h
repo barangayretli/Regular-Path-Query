@@ -5,7 +5,7 @@
 #include <string>
 #include <boost/functional/hash.hpp>
 #include <list>
-#include "automata.h"
+#include "automata/automata.h"
 
 class productGraph{
 

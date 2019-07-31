@@ -1,0 +1,7 @@
+nbproject
+
+## any object file
+*.o
+
+## any swap file
+*.swp
