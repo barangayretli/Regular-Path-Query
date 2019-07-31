@@ -9,14 +9,14 @@ using namespace std::chrono;
 typedef high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 
-void printExecutionTime(ClockTime start_time, ClockTime end_time);
+void printExecutionTime(ClockTime start_time, ClockTime end_time)
 
 int main(){
    
     ifstream graphRead, automataFile;
     ///////////////////////
     graphRead.open("yago2s_10m_shuffle_virtuoso_tem53.tsv");
-    automataFile.open("pvldb4.txt");
+    automataFile.open("pvldb5.txt");
     ///////////////////////
     vector<pair<string,int>> vertices_ProductGraph0;
     vector<string> vertices_CSR0;
