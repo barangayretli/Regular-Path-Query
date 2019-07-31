@@ -108,6 +108,7 @@ void productGraph::BFS(pair<string,int> startVertex, int maxState, int & vertexN
             }
         }
     }
+    cout << vertexNumCheck << " vertices found with max State"<< endl;
 	//printArr(resultSet);// print the result array
 }
 
@@ -360,6 +361,7 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
             }
         }
     }
+    cout << vertexNumCheck << " vertices found with max State"<< endl;
     //printArr(resultArr);
     delete visited;
 }
