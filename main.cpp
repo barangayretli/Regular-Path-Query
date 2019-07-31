@@ -15,8 +15,8 @@ int main(){
    
     ifstream graphRead, automataFile;
     ///////////////////////
-    graphRead.open("yago2s_10m_shuffle_virtuoso_tem53.tsv");
-    automataFile.open("pvldb1.txt");
+    graphRead.open("relations.txt");
+    automataFile.open("QueryGraph.txt");
     ///////////////////////
     vector<pair<string,int>> vertices_ProductGraph0;
     vector<string> vertices_CSR0;
@@ -71,8 +71,9 @@ int main(){
     for(int i = 0; i < vertices_ProductGraph0.size(); i++)
     {
         p.BFS(vertices_ProductGraph0[i], maxState, vertexNumCheck);
-        cout << vertexNumCheck << " vertices found with max State"<< endl;
+        
     }
+    cout << vertexNumCheck << " vertices found with max State"<< endl;
     // cout << vertexNumCheck << endl;
 	
     ClockTime end_time = Clock::now();
@@ -87,8 +88,8 @@ int main(){
     for(int j = 0; j < vertices_CSR0.size(); j++)
     {
         c.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
-        cout << vertexNumCheck << " vertices found with max State"<< endl;
     }
+    cout << vertexNumCheck << " vertices found with max State"<< endl;
     // cout << vertexNumCheck << endl;
     end_time = Clock::now();
     cout << "CSRmatrix representation ";

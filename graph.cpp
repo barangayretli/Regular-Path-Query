@@ -173,7 +173,7 @@ void CSR::buildMap(productGraph p)
     }
     for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
     {
-        for(auto itr = it->second.adjacentVertices.begin(); itr !=it->second.adjacentVertices.begin();itr++)
+        for(auto itr = it->second.adjacentVertices.begin(); itr !=it->second.adjacentVertices.end();itr++)
         {
             str = itr->first + to_string(itr->second);
             if(mapValues.count(str))
@@ -204,9 +204,8 @@ void CSR::buildIndexArr(productGraph p)
     }
     
     // for vertex that do not have outgoing edges
-    for(size_t x = i; x < n ; x++) {
-        indices[x] = currIndex;
-        x++;
+    for(; i < n ; i++) {
+        indices[i] = currIndex;
     }
 }
 
@@ -216,7 +215,7 @@ void CSR::buildCSR(productGraph p)
     string str;
     for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
     {
-        for(auto itr = it->second.adjacentVertices.begin(); itr !=it->second.adjacentVertices.begin();itr++)
+        for(auto itr = it->second.adjacentVertices.begin(); itr !=it->second.adjacentVertices.end();itr++)
         {
             str = itr->first + to_string(itr->second);
             CSRmatrix[index++] = (mapValues[str]); // add the neighbor to the CSR matrix
