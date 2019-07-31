@@ -11,12 +11,16 @@ typedef Clock::time_point ClockTime;
 
 void printExecutionTime(ClockTime start_time, ClockTime end_time);
 
-int main(){
-   
+int main(int argc, char *argv[]){
+
+	if(argc < 3) {
+		cout << "Supply graph file and automata file as arguments" << endl;
+	}
+    
     ifstream graphRead, automataFile;
     ///////////////////////
-    graphRead.open("yago2s_10m_shuffle_virtuoso_tem53.tsv");
-    automataFile.open("pvldb1.txt");
+    graphRead.open(argv[1]);
+    automataFile.open(argv[2]);
     ///////////////////////
     vector<pair<string,int>> vertices_ProductGraph0;
     vector<string> vertices_CSR0;
