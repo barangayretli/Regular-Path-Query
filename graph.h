@@ -1,4 +1,4 @@
-#ifndef GRAOH_H
+#ifndef GRAPH_H
 #define GRAPH_H
 
 #include <unordered_map>
@@ -14,6 +14,7 @@ private:
         std::vector<std::pair<std::string,int>> adjacentVertices; // vector of adjacent vertices of a vertex
 	};	
     std::unordered_map<std::pair<std::string,int>,adjVert,boost::hash<std::pair<std::string,int>>> ProductMap; // starting vertex map
+    friend class CSR;
     
 public:
     void printArr(std::vector<std::pair<std::string,int>>); // prints the result array
@@ -51,9 +52,9 @@ private:
     
 public:
     CSR(int n, int m); // CSRMatrix constructor
-    void buildIndexArr(adjListVect v); // Construct the index array
-    void buildCSR(adjListVect v); // Construct CSR matrix
-    void buildMap(adjListVect v); // Handles mapping of strings
+    void buildIndexArr(productGraph p); // Construct the index array
+    void buildCSR(productGraph p); // Construct CSR matrix
+    void buildMap(productGraph p); // Handles mapping of strings
     void BFS(std::string startVertex, int maxState, int & vertexNumCheck); // BFS on product graph
     void getInterval(int currvertex,int & start, int & end); // interval of neighbors of a vertex in CSR matrix
     void setFalse();

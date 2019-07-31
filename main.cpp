@@ -46,7 +46,7 @@ int main(){
 	while(graphRead >> start >> edge >> target)// reading the vertices and edges line by line from the txt file
 	{
         p.addEdge(au, start, edge, target);
-        v.buildProductGraph(au, start, edge, target);
+       // v.buildProductGraph(au, start, edge, target);
         counter++;
         if(counter%1000000 == 0)
             cout <<counter<<endl;
@@ -57,9 +57,9 @@ int main(){
     vertices_CSR0 = v.getVertex0(maxState);
     cout << "Started building CSR" << endl;
     CSR c(v.vertexNum+v.neighborNum,v.neighborNum);
-    c.buildMap(v);
-    c.buildIndexArr(v);
-    c.buildCSR(v);
+    c.buildMap(p);
+    c.buildIndexArr(p);
+    c.buildCSR(p);
     cout << "Finished building CSR" << endl;
     
     ////////////////// Adj List with HashMap Representation
@@ -92,7 +92,7 @@ int main(){
     printExecutionTime(start_time, end_time);
     
     //////////////// Adj List Representation
-    
+    /*
     start_time = Clock::now();
     
     vertexNumCheck = 0;
@@ -104,7 +104,7 @@ int main(){
     end_time = Clock::now();
     cout << "Adj. list with vector ";
     printExecutionTime(start_time, end_time);
-    
+    */
 	return 0;
 }
 

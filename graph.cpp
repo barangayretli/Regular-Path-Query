@@ -230,65 +230,74 @@ void CSR::getInterval(int currvertex, int & start, int & end)
     end = indices[currvertex+1];
 }
 
-void CSR::buildMap(adjListVect v)
+void CSR::buildMap(productGraph p)
 {
-    for(int i=0; i< v.adjVect.size();i++)
+    string str;
+    for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
     {
-        if(mapValues.count(v.adjVect[i].first))
+        str = it->first.first + to_string(it->first.second);
+        if(mapValues.count(str))
         {
             
         }
         else
         {
             // this vertex has an outgoing edge
-            mapValues.insert(make_pair(v.adjVect[i].first, count));
-            inverted[count] = (v.adjVect[i].first);
+            mapValues.insert(make_pair(str, count));
+            inverted[count] = (str);
             count++;
         }
         
     }
-    for(int i=0; i< v.adjVect.size();i++)
+    for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
     {
-        for(int j=0; j<v.adjVect[i].second.size();j++)
+        for(auto itr = it->second.adjacentVertices.begin(); itr !=it->second.adjacentVertices.begin();itr++)
         {
-            if(mapValues.count(v.adjVect[i].second[j]))
+            str = itr->first + to_string(itr->second);
+            if(mapValues.count(str))
             {
             }
             else
             {
                 // this vertex has no outgoing edge, has already been assigned an id previously
-                mapValues.insert(make_pair(v.adjVect[i].second[j], count));
-                inverted[count]=(v.adjVect[i].second[j]);
+                mapValues.insert(make_pair(str, count));
+                inverted[count]=(str);
                 count++;
             }
         }
     }
 }
 
-void CSR::buildIndexArr(adjListVect v)
+void CSR::buildIndexArr(productGraph p)
 {
     int currIndex = 0;
     
-    for(size_t i = 0; i < v.adjVect.size(); i++)
+    int i=0;
+    
+    for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
     {
         indices[i] = currIndex;
-        currIndex += v.adjVect[i].second.size();
+        currIndex += it->second.adjacentVertices.size();
+        i++;
     }
     
     // for vertex that do not have outgoing edges
-    for(size_t i = v.adjVect.size(); i < n ; i++) {
-        indices[i] = currIndex;
+    for(size_t x = i; x < n ; x++) {
+        indices[x] = currIndex;
+        x++;
     }
 }
 
-void CSR::buildCSR(adjListVect v)
+void CSR::buildCSR(productGraph p)
 {
     int index = 0;
-    for(size_t i=0; i<v.adjVect.size();i++)
+    string str;
+    for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
     {
-        for(size_t j=0; j<v.adjVect[i].second.size();j++)
+        for(auto itr = it->second.adjacentVertices.begin(); itr !=it->second.adjacentVertices.begin();itr++)
         {
-            CSRmatrix[index++] = (mapValues[v.adjVect[i].second[j]]); // add the neighbor to the CSR matrix
+            str = itr->first + to_string(itr->second);
+            CSRmatrix[index++] = (mapValues[str]); // add the neighbor to the CSR matrix
         }
     }
 }
