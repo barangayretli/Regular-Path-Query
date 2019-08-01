@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <string>
 #include <chrono>
 #include "graph.h"
 
@@ -15,8 +17,8 @@ int main(){
    
     ifstream graphRead, automataFile;
     ///////////////////////
-    graphRead.open("yago2s_10m_shuffle_virtuoso_tem53.tsv");
-    automataFile.open("pvldb2.txt");
+    graphRead.open("/home/bgayretl/datasets/yago2s/yago2s_full_shuffle_virtuoso_tem53.tsv");
+    automataFile.open("pvldb1.txt");
     ///////////////////////
     vector<pair<string,int>> vertices_ProductGraph0;
     vector<string> vertices_CSR0;
@@ -43,14 +45,17 @@ int main(){
    // adjListVect v;
     /////////////////
     cout << "Started Reading Graph" << endl;
-	while(graphRead >> start >> edge >> target)// reading the vertices and edges line by line from the txt file
-	{
+    string line;
+    while(getline(graphRead, line)) // reading the vertices and edges line by line from the txt file
+    {
+        istringstream iss(line);
+        if (!(iss >> start >> edge >> target)) { break; }
         p.addEdge(au, start, edge, target);
-       // v.buildProductGraph(au, start, edge, target);
+        // v.buildProductGraph(au, start, edge, target);
         counter++;
         if(counter%1000000 == 0)
             cout <<counter<<endl;
-	}
+    }
     cout << "Finished reading Graph" << endl;
     ////////////////
     vertices_ProductGraph0 = p.getVertex0();
