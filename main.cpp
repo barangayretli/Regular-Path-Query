@@ -11,6 +11,16 @@ using namespace std::chrono;
 typedef high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 
+int countStr(vector<string> strs)
+{
+    int count=0;
+    for(vector<string>::iterator it = strs.begin();it!=strs.end();++it)
+    {
+        count++;
+    }
+    return count;
+}
+
 void printExecutionTime(ClockTime start_time, ClockTime end_time);
 
 int main(){
@@ -51,13 +61,14 @@ int main(){
     while(getline(graphRead, line)) // reading the vertices and edges line by line from the txt file
     {
         istringstream iss(line);
-        if (!(iss >> start >> edge >> target)) { break; }
+        if ((iss >> start >> edge >> target))
+        {
         p.addEdge(au, start, edge, target);
-        cout << start << edge << target << endl;
         // v.buildProductGraph(au, start, edge, target);
         counter++;
         if(counter%1000000 == 0)
             cout <<counter<<endl;
+        }
     }
     cout << "Finished reading Graph" << endl;
     ////////////////
