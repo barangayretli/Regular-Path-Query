@@ -14,7 +14,8 @@ typedef Clock::time_point ClockTime;
 void printExecutionTime(ClockTime start_time, ClockTime end_time);
 
 int main(){
-   
+    // /home/bgayretl/datasets/yago2s/yago2s_full_shuffle_virtuoso_tem53.tsv
+    // pvldb1.txt
     ifstream graphRead, automataFile;
     ///////////////////////
     graphRead.open("/home/bgayretl/datasets/yago2s/yago2s_full_shuffle_virtuoso_tem53.tsv");
@@ -52,6 +53,7 @@ int main(){
         istringstream iss(line);
         if (!(iss >> start >> edge >> target)) { break; }
         p.addEdge(au, start, edge, target);
+        cout << "rrrrrr";
         // v.buildProductGraph(au, start, edge, target);
         counter++;
         if(counter%1000000 == 0)
