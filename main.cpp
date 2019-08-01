@@ -53,7 +53,7 @@ int main(){
         istringstream iss(line);
         if (!(iss >> start >> edge >> target)) { break; }
         p.addEdge(au, start, edge, target);
-        cout << "rrrrrr";
+        cout << start << edge << target << endl;
         // v.buildProductGraph(au, start, edge, target);
         counter++;
         if(counter%1000000 == 0)
