@@ -217,7 +217,7 @@ void CSR::buildCSR(productGraph p)
     string str;
     for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
     {
-        for(auto itr = it->second.adjacentVertices.begin(); itr !=it->second.adjacentVertices.end();itr++)
+        for(auto itr = it->second.adjacentVertices.begin(); itr != it->second.adjacentVertices.end();itr++)
         {
             str = itr->first + to_string(itr->second);
             CSRmatrix[index++] = (mapValues[str]); // add the neighbor to the CSR matrix
@@ -231,9 +231,11 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
     
     list<int> queue; // queue to store the neighbors
     
-    visited = new bool[n];
+    //visited = (bool *)malloc(n * sizeof(bool));
     
-    setFalse();
+    // memset(visited, false, n);
+    
+    visited = (bool *)calloc(this->n, sizeof(bool));
     
     visited[startVertex] = true; // make the first edge visited
     
@@ -271,5 +273,5 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
     }
     
     //printArr(resultArr);
-    delete visited;
+    free(visited);
 }
