@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <chrono>
+#include <typeinfo>
 #include "graph.h"
 
 using namespace std;
@@ -11,18 +12,10 @@ using namespace std::chrono;
 typedef high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 
-int countStr(vector<string> strs)
-{
-    int count=0;
-    for(vector<string>::iterator it = strs.begin();it!=strs.end();++it)
-    {
-        count++;
-    }
-    return count;
-}
-
 void printExecutionTime(ClockTime start_time, ClockTime end_time);
 
+//
+//
 int main(){
     // /home/bgayretl/datasets/yago2s/yago2s_full_shuffle_virtuoso_tem53.tsv
     // pvldb1.txt
@@ -30,7 +23,6 @@ int main(){
     ///////////////////////
     graphRead.open("/home/bgayretl/datasets/yago2s/yago2s_full_shuffle_virtuoso_tem53.tsv");
     automataFile.open("pvldb1.txt");
-
     ///////////////////////
     vector<pair<string,int>> vertices_ProductGraph0;
     vector<string> vertices_CSR0;
@@ -58,9 +50,38 @@ int main(){
     /////////////////
     cout << "Started Reading Graph" << endl;
     string line;
+    string temp;
+    int con = 0;
     while(getline(graphRead, line)) // reading the vertices and edges line by line from the txt file
     {
         istringstream iss(line);
+        vector<string> strs;
+        while ((iss >> temp))
+        {
+           if(con == 0)
+           {
+               start = temp;
+           }
+           else if (con == 1)
+           {
+               edge = temp;
+           }
+           else if (con == 2)
+           {
+               target = temp;
+           }
+            con++;
+        }
+        if(con<=3)
+        {
+            p.addEdge(au, start, edge, target);
+            // v.buildProductGraph(au, start, edge, target);
+            counter++;
+            if(counter%1000000 == 0)
+                cout <<counter<<endl;
+        }
+        con = 0;
+        /*
         if ((iss >> start >> edge >> target))
         {
         p.addEdge(au, start, edge, target);
@@ -69,6 +90,7 @@ int main(){
         if(counter%1000000 == 0)
             cout <<counter<<endl;
         }
+         */
     }
     cout << "Finished reading Graph" << endl;
     ////////////////
