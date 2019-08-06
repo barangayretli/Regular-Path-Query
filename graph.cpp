@@ -2,7 +2,6 @@
 
 using namespace std;
 
-
 typedef chrono::high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 typedef pair<string,int> strInt; // vertex name and state
