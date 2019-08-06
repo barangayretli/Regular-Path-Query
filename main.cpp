@@ -12,6 +12,7 @@ using namespace std::chrono;
 typedef high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 
+void addExecutionTime(duration<long long, ratio<1, 1000000000>> x);
 void printExecutionTime(ClockTime start_time, ClockTime end_time);
 
 //
@@ -27,7 +28,7 @@ int main(){
     vector<pair<string,int>> vertices_ProductGraph0;
     vector<string> vertices_CSR0;
     ///////////////////////
-	string start,edge,target,f,s,label;
+    string start,edge,target,f,s,label;
     int maxState = 0,first,second, vertexNumCheck=0;
     ///////////////////////
     automata au;
@@ -46,7 +47,7 @@ int main(){
     cout << "Finished reading automata" << endl;
     /////////////////
     productGraph p;
-   // adjListVect v;
+
     /////////////////
     cout << "Started Reading Graph" << endl;
     string line;
@@ -58,18 +59,20 @@ int main(){
         vector<string> strs;
         while ((iss >> temp))
         {
-           if(con == 0)
-           {
-               start = temp;
-           }
-           else if (con == 1)
-           {
-               edge = temp;
-           }
-           else if (con == 2)
-           {
-               target = temp;
-           }
+
+            if(con == 0)
+            {
+                start = temp;
+            }
+            else if (con == 1)
+            {
+                edge = temp;
+            }
+            else if (con == 2)
+            {
+                target = temp;
+            }
+
             con++;
         }
         if(con<=3)
@@ -81,16 +84,7 @@ int main(){
                 cout <<counter<<endl;
         }
         con = 0;
-        /*
-        if ((iss >> start >> edge >> target))
-        {
-        p.addEdge(au, start, edge, target);
-        // v.buildProductGraph(au, start, edge, target);
-        counter++;
-        if(counter%1000000 == 0)
-            cout <<counter<<endl;
-        }
-         */
+        
     }
     cout << "Finished reading Graph" << endl;
     ////////////////
@@ -109,48 +103,75 @@ int main(){
     ClockTime start_time = Clock::now();
     
     vertexNumCheck = 0;
+    duration<long long, ratio<1, 1000000000>> visitedTime=Clock::now()-Clock::now();
+    duration<long long, ratio<1, 1000000000>> ifCheckTime=Clock::now()-Clock::now();
+    
     for(int i = 0; i < vertices_ProductGraph0.size(); i++)
     {
-        p.BFS(vertices_ProductGraph0[i], maxState, vertexNumCheck);
-        
+
+        p.BFS(vertices_ProductGraph0[i], maxState, vertexNumCheck, visitedTime, ifCheckTime);
+
     }
     cout << vertexNumCheck << " vertices found with max State"<< endl;
     // cout << vertexNumCheck << endl;
-	
+    cout << "ADJ List Visited Map total build time is ";
+    addExecutionTime(visitedTime);
+    
+    cout << "ADJ if check total time is ";
+    addExecutionTime(ifCheckTime);
+    
     ClockTime end_time = Clock::now();
     cout << "Adj. List with hashMap ";
     printExecutionTime(start_time, end_time);
     
     //////////////// CSR Matrix Representation
-   
-    start_time = Clock::now();
+    
+    
     
     vertexNumCheck = 0;
+    visitedTime=Clock::now()-Clock::now();
+    ifCheckTime=Clock::now()-Clock::now();
+    start_time = Clock::now();
     for(int j = 0; j < vertices_CSR0.size(); j++)
     {
-        c.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
+        c.BFS(vertices_CSR0[j],maxState,vertexNumCheck, visitedTime,ifCheckTime);
+        
     }
-    cout << vertexNumCheck << " vertices found with max State"<< endl;
-    // cout << vertexNumCheck << endl;
+
     end_time = Clock::now();
+    cout << vertexNumCheck << " vertices found with max State"<< endl;
+    cout << "BFS Visited array total build time is ";
+    addExecutionTime(visitedTime);
+    
+
+    cout << "BFS if check total time is ";
+    addExecutionTime(ifCheckTime);
+    
+
+    // cout << vertexNumCheck << endl;
+    
     cout << "CSRmatrix representation ";
     printExecutionTime(start_time, end_time);
+
     
     //////////////// Adj List Representation
     /*
-    start_time = Clock::now();
+     start_time = Clock::now();
+     
+     vertexNumCheck = 0;
+     for(int j = 0; j < vertices_CSR0.size(); j++)
+     {
+     v.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
+     }
+     // cout << vertexNumCheck << endl;
+     end_time = Clock::now();
+     cout << "Adj. list with vector ";
+     printExecutionTime(start_time, end_time);
+     */
     
-    vertexNumCheck = 0;
-    for(int j = 0; j < vertices_CSR0.size(); j++)
-    {
-        v.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
-    }
-    // cout << vertexNumCheck << endl;
-    end_time = Clock::now();
-    cout << "Adj. list with vector ";
-    printExecutionTime(start_time, end_time);
-    */
+
 	return 0;
+
 }
 
 void printExecutionTime(ClockTime start_time, ClockTime end_time)
@@ -162,6 +183,26 @@ void printExecutionTime(ClockTime start_time, ClockTime end_time)
     auto execution_time_hour = duration_cast<hours>(end_time - start_time).count();
     
     cout << "Execution Time: ";
+    if(execution_time_hour > 0)
+        cout << "" << execution_time_hour << " Hours, ";
+    if(execution_time_min > 0)
+        cout << "" << execution_time_min % 60 << " Minutes, ";
+    if(execution_time_sec > 0)
+        cout << "" << execution_time_sec % 60 << " Seconds, ";
+    if(execution_time_ms > 0)
+        cout << "" << execution_time_ms % long(1E+3) << " MicroSeconds, ";
+    if(execution_time_ns > 0)
+        cout << "" << execution_time_ns % long(1E+6) << " NanoSeconds, \n";
+}
+
+void addExecutionTime(duration<long long, ratio<1, 1000000000>> x)
+{
+    auto execution_time_ns = duration_cast<nanoseconds>(x).count();
+    auto execution_time_ms = duration_cast<microseconds>(x).count();
+    auto execution_time_sec = duration_cast<seconds>(x).count();
+    auto execution_time_min = duration_cast<minutes>(x).count();
+    auto execution_time_hour = duration_cast<hours>(x).count();
+    
     if(execution_time_hour > 0)
         cout << "" << execution_time_hour << " Hours, ";
     if(execution_time_min > 0)
