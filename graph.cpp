@@ -1,29 +1,34 @@
 #include "graph.h"
 
 using namespace std;
+using namespace std::chrono;
 
+typedef std::chrono::high_resolution_clock Clock;
+typedef Clock::time_point ClockTime;
 typedef pair<string,int> strInt; // vertex name and state
 
-int index(const vector<pair<string,vector<string>>> & listOfElements, const string str)
-{// returns to the index of the specific element
-    int i =0;
-    for(; i<listOfElements.size();i++)
-    {
-        if(listOfElements[i].first==str)
-            return i;
-    }
-    return i;
-}
-
-bool contains(const vector<pair<string,vector<string>>> & listOfElements, const string str)
-{//checks if the element is already in the data structure
-    for(int i =0; i<listOfElements.size();i++)
-    {
-       if(listOfElements[i].first==str)
-           return true;
-    }
-    return false;
-}
+/*
+ int index(const vector<pair<string,vector<string>>> & listOfElements, const string str)
+ {// returns to the index of the specific element
+ int i =0;
+ for(; i<listOfElements.size();i++)
+ {
+ if(listOfElements[i].first==str)
+ return i;
+ }
+ return i;
+ }
+ 
+ bool contains(const vector<pair<string,vector<string>>> & listOfElements, const string str)
+ {//checks if the element is already in the data structure
+ for(int i =0; i<listOfElements.size();i++)
+ {
+ if(listOfElements[i].first==str)
+ return true;
+ }
+ return false;
+ }
+ */
 
 void printArr(vector<string> arr)// prints the result array
 {
@@ -54,10 +59,13 @@ void productGraph::addEdge(automata q, string start, string label, string end)
         if(ProductMap.count(p1))// if it is already in the product graph
         {
             ProductMap[p1].adjacentVertices.push_back(p2);
+            neighborNum++;
         }
         else// if it is not in the product graph
         {
             ProductMap.insert(make_pair(p1,temp));
+            vertexNum++;
+            neighborNum++;
         }
         
     }
@@ -73,31 +81,52 @@ vector<pair<string,int>> productGraph::getVertex0()
     return arr;
 }
 
-void productGraph::BFS(pair<string,int> startVertex, int maxState, int & vertexNumCheck)
+void productGraph::BFS(pair<string,int> startVertex, int maxState, int & vertexNumCheck, duration<long long, ratio<1, 1000000000> > & visitedTime, duration<long long, ratio<1, 1000000000> > & ifCheckTime)
 {
-	unordered_map<pair<string,int>,bool,boost::hash<pair<string, int>>> visited; // hash table to check if a vertex is visited
-
-	//vector<pair<string,int>> resultSet; // resulting set
-	
-	list<pair<string,int>> queue; // queue to store neighbors
-	
-	visited.insert(make_pair(startVertex,true)); // make the starting vertex visited
+    ClockTime startVisited = Clock::now();
     
-	queue.push_back(startVertex); // push the starting vertex
-	
+    unordered_map<pair<string,int>,bool,boost::hash<pair<string, int>>> visited; // hash table to check if a vertex is visited
+    
+    ClockTime endVisited = Clock::now();
+    
+    visitedTime+=(endVisited-startVisited);
+    //vector<pair<string,int>> resultSet; // resulting set
+    
+    list<pair<string,int>> queue; // queue to store neighbors
+    
+    visited.insert(make_pair(startVertex,true)); // make the starting vertex visited
+    
+    queue.push_back(startVertex); // push the starting vertex
+    
     while(!queue.empty()) // as long as queue is not empty, continue
     {
-		strInt currVertex = queue.front(); // current vertex is the front of the queue
-		if(currVertex.second==maxState) // if the state is maximum, add the vertex to the result array
-		{
-			//resultSet.push_back(currVertex);
+        bool check = false;
+        strInt currVertex = queue.front();// current vertex is the front of the queue
+        ClockTime endIfcheck = Clock::now();
+        ClockTime startIfcheck = Clock::now();
+        if(currVertex.second==maxState) // if the state is maximum, add the vertex to the result array
+        {
+            endIfcheck = Clock::now();
+            //resultSet.push_back(currVertex);
             vertexNumCheck++;
-		}
+            check = true;
+        }
+        if(check==false)
+        {
+            endIfcheck = Clock::now();
+            ifCheckTime+=(endIfcheck-startIfcheck);
+        }
+        else
+        {
+            ifCheckTime+=(endIfcheck-startIfcheck);
+        }
+        
+        
         queue.pop_front();
-		
-		for(auto i = ProductMap[currVertex].adjacentVertices.begin(); i != ProductMap[currVertex].adjacentVertices.end(); ++i)
+        
+        for(auto i = ProductMap[currVertex].adjacentVertices.begin(); i != ProductMap[currVertex].adjacentVertices.end(); ++i)
         {// take the neighbors and check if they are visited
-			strInt adjVertex = *i;
+            strInt adjVertex = *i;
             if(!visited[adjVertex])// if the vertes is not visited
             {
                 visited[adjVertex] = true;
@@ -105,113 +134,22 @@ void productGraph::BFS(pair<string,int> startVertex, int maxState, int & vertexN
             }
         }
     }
-	//printArr(resultSet);// print the result array
+    //printArr(resultSet);// print the result array
 }
 
 void productGraph::printArr(vector<pair<string,int>> resultArr)
 {// prints the result array
-	for (auto it = resultArr.cbegin(); it != resultArr.cend(); it++) {
-		std::cout << it->first << '\n';
+    for (auto it = resultArr.cbegin(); it != resultArr.cend(); it++) {
+        std::cout << it->first << '\n';
     }
     cout << "---" << endl;
 }
 
-void adjListVect::addEdge(string edge1, string edge2)
-{
-    bool exist = contains(adjVect, edge1);
-    
-    if(exist){ // if the starting edge exist before
-        int t = index(adjVect,edge1);
-        adjVect[t].second.push_back(edge2);// add ending edge to the adjacent vertices
-        neighborNum++;
-    }
-    else{ // if the starting edge does not exist before
-        vector<string>temp;
-        temp.push_back(edge2);
-        adjVect.push_back(make_pair(edge1,temp)); // create an entry for starting edge and add ending edge to the adj vertices
-        neighborNum++;
-        vertexNum++;
-
-    }
-}
-
-void adjListVect::buildProductGraph(automata q, string start, string label, string end)
-{
-    int f; // first int
-    int s; // second int
-    string fstr; // first string
-    string sstr; // second string
-    for (auto itr = q.automataGraph[label].VertexNeighbors.begin(); itr != q.automataGraph[label].VertexNeighbors.end(); ++itr)
-    { // loop for automata graph states traversal
-        f = itr->first;
-        s = itr->second;
-        fstr = start;
-        sstr = end;
-        string a1=to_string(f);
-        string a2=to_string(s);
-        string str1 = fstr+a1;
-        string str2 = sstr+a2;
-        addEdge(str1, str2);
-    }
-}
-
-vector<string> adjListVect::getVertex0(int maxState)
-{
-    char maxS = '0';
-    vector<string> arr;
-    for(int i = 0; i < adjVect.size(); i++)
-    {
-        if(adjVect[i].first.at(adjVect[i].first.length()-1) == maxS)
-        {
-            arr.push_back(adjVect[i].first);
-        }
-    }
-    return arr;
-}
-
-void adjListVect::BFS(string vertex1, int maxState, int & vertexNumCheck)
-{
-    unordered_map<string,bool> visited; // map to check if the vertex is visited before
-    
-    list<string> queue; // queue to store the adjacent vertices
-    
-    visited.insert(make_pair(vertex1,true)); // make the starting vertex visited
-    
-    queue.push_back(vertex1); // add first vertex to the queue
-    
-    //vector<string> resultArr;
-    
-    char c = '0';
-    
-    while(!queue.empty())
-    {
-        string currVertex = queue.front();
-        if(currVertex.at(currVertex.length()-1)==(c + maxState))
-        {
-           // resultArr.push_back(currVertex.substr(0,currVertex.length()-1));
-        }
-        queue.pop_front();
-        
-        int t = index(adjVect,currVertex);
-    
-        for(auto i = adjVect[t].second.begin(); i != adjVect[t].second.end() && t != adjVect.size() ; ++i)
-        {
-            string adjVertex = *i;
-            if(!visited[adjVertex])
-            {
-                visited[adjVertex] = true;
-                queue.push_back(adjVertex);
-            }
-        }
-    }
-   // printArr(resultArr);
-    
-}
 
 CSR::CSR(int n, int m) {
     this -> n = n;// vertex number
     this -> m = m;// neighbor number
-    indices = new int[n]; // dynamically create indices array
+    indices = new int[n+1]; // dynamically create indices array
     CSRmatrix = new int[m]; // dynamically create CSR matrix array
     inverted = new string[n]; // dtnamically create inverted array
 }
@@ -224,84 +162,110 @@ void CSR::setFalse()
     }
 }
 
+vector<string> CSR::getVertex0()
+{
+    return Vertex0;
+}
+
+
 void CSR::getInterval(int currvertex, int & start, int & end)
 {// change the start and end variables to store beginning and ending points
     start = indices[currvertex];
     end = indices[currvertex+1];
 }
 
-void CSR::buildMap(adjListVect v)
+void CSR::buildMap(productGraph p)
 {
-    for(int i=0; i< v.adjVect.size();i++)
+    string str;
+    for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
     {
-        if(mapValues.count(v.adjVect[i].first))
+        
+        str = it->first.first + to_string(it->first.second);
+        if(it->first.second==0)
+        {
+            Vertex0.push_back(str);
+        }
+        if(mapValues.count(str))
         {
             
         }
         else
         {
             // this vertex has an outgoing edge
-            mapValues.insert(make_pair(v.adjVect[i].first, count));
-            inverted[count] = (v.adjVect[i].first);
+            mapValues.insert(make_pair(str, count));
+            inverted[count] = (str);
             count++;
         }
         
     }
-    for(int i=0; i< v.adjVect.size();i++)
+    for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
     {
-        for(int j=0; j<v.adjVect[i].second.size();j++)
+        for(auto itr = it->second.adjacentVertices.begin(); itr !=it->second.adjacentVertices.end();itr++)
         {
-            if(mapValues.count(v.adjVect[i].second[j]))
+            str = itr->first + to_string(itr->second);
+            if(mapValues.count(str))
             {
             }
             else
             {
                 // this vertex has no outgoing edge, has already been assigned an id previously
-                mapValues.insert(make_pair(v.adjVect[i].second[j], count));
-                inverted[count]=(v.adjVect[i].second[j]);
+                mapValues.insert(make_pair(str, count));
+                inverted[count]=(str);
                 count++;
             }
         }
     }
 }
 
-void CSR::buildIndexArr(adjListVect v)
+void CSR::buildIndexArr(productGraph p)
 {
     int currIndex = 0;
     
-    for(size_t i = 0; i < v.adjVect.size(); i++)
+    int i=0;
+    
+    for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
     {
         indices[i] = currIndex;
-        currIndex += v.adjVect[i].second.size();
+        currIndex += it->second.adjacentVertices.size();
+        i++;
     }
+    indices[i] = currIndex;
+    i++;
     
     // for vertex that do not have outgoing edges
-    for(size_t i = v.adjVect.size(); i < n ; i++) {
+    for(; i < n + 1 ; i++) {
         indices[i] = currIndex;
     }
 }
 
-void CSR::buildCSR(adjListVect v)
+void CSR::buildCSR(productGraph p)
 {
     int index = 0;
-    for(size_t i=0; i<v.adjVect.size();i++)
+    string str;
+    for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
     {
-        for(size_t j=0; j<v.adjVect[i].second.size();j++)
+        for(auto itr = it->second.adjacentVertices.begin(); itr != it->second.adjacentVertices.end();itr++)
         {
-            CSRmatrix[index++] = (mapValues[v.adjVect[i].second[j]]); // add the neighbor to the CSR matrix
+            str = itr->first + to_string(itr->second);
+            CSRmatrix[index++] = (mapValues[str]); // add the neighbor to the CSR matrix
         }
     }
 }
 
-void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
+void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, duration<long long, ratio<1, 1000000000> > & visitedTime, duration<long long, ratio<1, 1000000000> > & ifCheckTime)
 {
     int startVertex = mapValues[vertex1]; // int value of starting edge
     
     list<int> queue; // queue to store the neighbors
     
-    visited = new bool[n];
+    //visited = (bool *)malloc(n * sizeof(bool));
     
-    setFalse();
+    // memset(visited, false, n);
+    ClockTime startVisited = Clock::now();
+    visited = (bool *)calloc(this->n, sizeof(bool));
+    ClockTime endVisited = Clock::now();
+    
+    visitedTime+=(endVisited-startVisited);
     
     visited[startVertex] = true; // make the first edge visited
     
@@ -315,13 +279,29 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
     
     char c = '0';
     
+    
+    
     while(!queue.empty())
     {
+        bool check = false;
         int currVertex = queue.front();
+        ClockTime startIfcheck = Clock::now();
+        ClockTime endIfcheck;
         if(inverted[currVertex].at(inverted[currVertex].length()-1)==(c + maxState) )
         {
+            endIfcheck = Clock::now();
             //resultArr.push_back(inverted[currVertex].substr(0,inverted[currVertex].length()-1));
             vertexNumCheck++;
+            check=true;
+        }
+        if(check==false)
+        {
+            endIfcheck = Clock::now();
+            ifCheckTime+=(endIfcheck-startIfcheck);
+        }
+        else
+        {
+            ifCheckTime+=(endIfcheck-startIfcheck);
         }
         queue.pop_front();
         
@@ -337,6 +317,7 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
             }
         }
     }
+    
     //printArr(resultArr);
-    delete visited;
+    free(visited);
 }
