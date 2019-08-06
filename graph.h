@@ -8,7 +8,7 @@
 #include "automata.h"
 
 using namespace std;
-using namespace std::chrono;
+using namespace chrono;
 
 typedef chrono::high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
