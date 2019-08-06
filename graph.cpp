@@ -1,8 +1,9 @@
 #include "graph.h"
 
 using namespace std;
+using namespace std::chrono;
 
-typedef std::chrono::high_resolution_clock Clock;
+typedef high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 typedef pair<string,int> strInt; // vertex name and state
 
