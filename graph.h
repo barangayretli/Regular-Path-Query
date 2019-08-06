@@ -5,6 +5,7 @@
 #include <string>
 #include <boost/functional/hash.hpp>
 #include <list>
+#include <chrono>
 #include "automata.h"
 
 
