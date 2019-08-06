@@ -240,7 +240,7 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, duration<long 
     // memset(visited, false, n);
 
     ClockTime startVisited = Clock::now();
-    visited = (bool *)calloc(this->n, sizeof(bool));
+    unordered_map<int,bool> visited; // hash table to check if a vertex is visited
     ClockTime endVisited = Clock::now();
     
     visitedTime+=(endVisited-startVisited);
