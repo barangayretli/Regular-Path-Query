@@ -7,7 +7,6 @@ typedef chrono::high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 typedef pair<string,int> strInt; // vertex name and state
 
-
 void printArr(vector<string> arr)// prints the result array
 {
     for(int i=0; i<arr.size();i++)
@@ -130,13 +129,14 @@ CSR::CSR(int n, int m) {
     indices = new int[n+1]; // dynamically create indices array
     CSRmatrix = new int[m]; // dynamically create CSR matrix array
     inverted = new string[n]; // dtnamically create inverted array
+    //visited = new bool[n];
 }
 
 void CSR::setFalse()
 {
     for(int i=0; i<n; i++)
     {
-        visited[i]=false; // set all the elements of the visited array false
+       // visited[i]=false; // set all the elements of the visited array false
     }
 }
 
@@ -240,7 +240,7 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, std::chrono::d
     // memset(visited, false, n);
 
     ClockTime startVisited = Clock::now();
-    visited = (bool *)calloc(this->n, sizeof(bool));
+    unordered_map<int,bool> visited; // hash table to check if a vertex is visited
     ClockTime endVisited = Clock::now();
     
     visitedTime+=(endVisited-startVisited);
@@ -265,8 +265,9 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, std::chrono::d
     {
         bool check = false;
         int currVertex = queue.front();
-        ClockTime startIfcheck = Clock::now();
         ClockTime endIfcheck;
+        ClockTime startIfcheck = Clock::now();
+        
         if(inverted[currVertex].at(inverted[currVertex].length()-1)==(c + maxState) )
         {
             endIfcheck = Clock::now();
@@ -299,5 +300,5 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, std::chrono::d
     }
     
     //printArr(resultArr);
-    free(visited);
+    //free(visited);
 }

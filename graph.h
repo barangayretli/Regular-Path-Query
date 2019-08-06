@@ -34,7 +34,7 @@ private:
     int count=0;
     int* CSRmatrix; // CSRMatrix that contains only the neighbors
     int* indices; // index of the starting vertices
-    bool* visited; // boolean array to check if a vertex is visited during BFS
+    //bool* visited; // boolean array to check if a vertex is visited during BFS
     std::unordered_map<std::string, int> mapValues; // map of string vertices
     std::string* inverted; // inverse of mapValues
     std::vector<std::string> Vertex0;
