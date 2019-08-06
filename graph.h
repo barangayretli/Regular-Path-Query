@@ -8,9 +8,9 @@
 #include "automata.h"
 
 using namespace std;
+using namespace std::chrono;
 
-
-typedef std::chrono::high_resolution_clock Clock;
+typedef high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 
 class productGraph{
