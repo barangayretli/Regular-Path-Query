@@ -7,28 +7,6 @@ typedef std::chrono::high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 typedef pair<string,int> strInt; // vertex name and state
 
-/*
- int index(const vector<pair<string,vector<string>>> & listOfElements, const string str)
- {// returns to the index of the specific element
- int i =0;
- for(; i<listOfElements.size();i++)
- {
- if(listOfElements[i].first==str)
- return i;
- }
- return i;
- }
- 
- bool contains(const vector<pair<string,vector<string>>> & listOfElements, const string str)
- {//checks if the element is already in the data structure
- for(int i =0; i<listOfElements.size();i++)
- {
- if(listOfElements[i].first==str)
- return true;
- }
- return false;
- }
- */
 
 void printArr(vector<string> arr)// prints the result array
 {
