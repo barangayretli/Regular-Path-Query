@@ -1,9 +1,9 @@
 #include "graph.h"
 
 using namespace std;
-using namespace std::chrono;
 
-typedef std::chrono::high_resolution_clock Clock;
+
+typedef chrono::high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 typedef pair<string,int> strInt; // vertex name and state
 
@@ -59,7 +59,7 @@ vector<pair<string,int>> productGraph::getVertex0()
     return arr;
 }
 
-void productGraph::BFS(pair<string,int> startVertex, int maxState, int & vertexNumCheck, duration<long long, ratio<1, 1000000000> > & visitedTime, duration<long long, ratio<1, 1000000000> > & ifCheckTime)
+void productGraph::BFS(pair<string,int> startVertex, int maxState, int & vertexNumCheck, std::chrono::duration<long long, ratio<1, 1000000000> > & visitedTime, std::chrono::duration<long long, ratio<1, 1000000000> > & ifCheckTime)
 {
     ClockTime startVisited = Clock::now();
     
@@ -229,7 +229,7 @@ void CSR::buildCSR(productGraph p)
     }
 }
 
-void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, duration<long long, ratio<1, 1000000000> > & visitedTime, duration<long long, ratio<1, 1000000000> > & ifCheckTime)
+void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, std::chrono::duration<long long, ratio<1, 1000000000> > & visitedTime, std::chrono::duration<long long, ratio<1, 1000000000> > & ifCheckTime)
 {
     int startVertex = mapValues[vertex1]; // int value of starting edge
     

@@ -7,8 +7,6 @@
 #include <list>
 #include "automata.h"
 
-typedef std::chrono::high_resolution_clock Clock;
-typedef Clock::time_point ClockTime;
 
 
 class productGraph{
