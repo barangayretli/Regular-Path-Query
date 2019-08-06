@@ -167,7 +167,6 @@ vector<string> CSR::getVertex0()
     return Vertex0;
 }
 
-
 void CSR::getInterval(int currvertex, int & start, int & end)
 {// change the start and end variables to store beginning and ending points
     start = indices[currvertex];
@@ -261,11 +260,14 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, duration<long 
     //visited = (bool *)malloc(n * sizeof(bool));
     
     // memset(visited, false, n);
+
     ClockTime startVisited = Clock::now();
     visited = (bool *)calloc(this->n, sizeof(bool));
     ClockTime endVisited = Clock::now();
     
     visitedTime+=(endVisited-startVisited);
+
+
     
     visited[startVertex] = true; // make the first edge visited
     

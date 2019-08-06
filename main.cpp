@@ -47,7 +47,7 @@ int main(){
     cout << "Finished reading automata" << endl;
     /////////////////
     productGraph p;
-    // adjListVect v;
+
     /////////////////
     cout << "Started Reading Graph" << endl;
     string line;
@@ -59,6 +59,7 @@ int main(){
         vector<string> strs;
         while ((iss >> temp))
         {
+
             if(con == 0)
             {
                 start = temp;
@@ -71,6 +72,7 @@ int main(){
             {
                 target = temp;
             }
+
             con++;
         }
         if(con<=3)
@@ -82,16 +84,7 @@ int main(){
                 cout <<counter<<endl;
         }
         con = 0;
-        /*
-         if ((iss >> start >> edge >> target))
-         {
-         p.addEdge(au, start, edge, target);
-         // v.buildProductGraph(au, start, edge, target);
-         counter++;
-         if(counter%1000000 == 0)
-         cout <<counter<<endl;
-         }
-         */
+        
     }
     cout << "Finished reading Graph" << endl;
     ////////////////
@@ -115,7 +108,9 @@ int main(){
     
     for(int i = 0; i < vertices_ProductGraph0.size(); i++)
     {
+
         p.BFS(vertices_ProductGraph0[i], maxState, vertexNumCheck, visitedTime, ifCheckTime);
+
     }
     cout << vertexNumCheck << " vertices found with max State"<< endl;
     // cout << vertexNumCheck << endl;
@@ -142,18 +137,22 @@ int main(){
         c.BFS(vertices_CSR0[j],maxState,vertexNumCheck, visitedTime,ifCheckTime);
         
     }
+
     end_time = Clock::now();
     cout << vertexNumCheck << " vertices found with max State"<< endl;
     cout << "BFS Visited array total build time is ";
     addExecutionTime(visitedTime);
     
+
     cout << "BFS if check total time is ";
     addExecutionTime(ifCheckTime);
     
+
     // cout << vertexNumCheck << endl;
     
     cout << "CSRmatrix representation ";
     printExecutionTime(start_time, end_time);
+
     
     //////////////// Adj List Representation
     /*
@@ -169,7 +168,10 @@ int main(){
      cout << "Adj. list with vector ";
      printExecutionTime(start_time, end_time);
      */
-    return 0;
+    
+
+	return 0;
+
 }
 
 void printExecutionTime(ClockTime start_time, ClockTime end_time)

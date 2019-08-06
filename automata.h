@@ -1,8 +1,10 @@
-#pragma once
+#ifndef AUTOMATA_H
+#define AUTOMATA_H
 
 #include <iostream>
 #include <unordered_map>
 #include <vector>
+
 
 class automata{
 public:
@@ -16,3 +18,5 @@ private:
     };
     std::unordered_map<std::string, VertexPairSet> automataGraph; // maps from relation to edges
 };
+
+#endif
