@@ -7,6 +7,10 @@
 #include <list>
 #include "automata.h"
 
+typedef std::chrono::high_resolution_clock Clock;
+typedef Clock::time_point ClockTime;
+
+
 class productGraph{
 
 private:
@@ -19,7 +23,7 @@ private:
 public:
     void printArr(std::vector<std::pair<std::string,int>>); // prints the result array
     void addEdge(automata q, std::string start, std::string label, std::string end); // adds an edge to the graph
-	void BFS(std::pair<std::string,int>, int maxState, int & vertexNumCheck);// BFS on product graph
+	void BFS(std::pair<std::string,int>, int maxState, int & vertexNumCheck, std::chrono::duration<long long, std::ratio<1, 1000000000> > & visitedTime, std::chrono::duration<long long, std::ratio<1, 1000000000> > & ifCheckTime);// BFS on product graph
     std::vector<std::pair<std::string,int>> getVertex0 ();
     int vertexNum=0;
     int neighborNum=0;
@@ -56,7 +60,7 @@ public:
     void buildIndexArr(productGraph p); // Construct the index array
     void buildCSR(productGraph p); // Construct CSR matrix
     void buildMap(productGraph p); // Handles mapping of strings
-    void BFS(std::string startVertex, int maxState, int & vertexNumCheck); // BFS on product graph
+    void BFS(std::string startVertex, int maxState, int & vertexNumCheck, std::chrono::duration<long long, std::ratio<1, 1000000000> > & visitedTime, std::chrono::duration<long long, std::ratio<1, 1000000000> > & ifCheckTime); // BFS on product graph
     void getInterval(int currvertex,int & start, int & end); // interval of neighbors of a vertex in CSR matrix
     void setFalse();
     std::vector<std::string> getVertex0();
