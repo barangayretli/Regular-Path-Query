@@ -299,5 +299,5 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, duration<long 
     }
     
     //printArr(resultArr);
-    free(visited);
+    //free(visited);
 }
