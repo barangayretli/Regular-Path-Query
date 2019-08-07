@@ -108,7 +108,7 @@ int main(int argc, char *argv[]){
     start_time = Clock::now();
     for(int j = 0; j < vertices_CSR0.size(); j++)
     {
-        c.BFS(vertices_CSR0[j],maxState,vertexNumCheck, visitedTime,ifCheckTime);
+        c.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
         
     }
     end_time = Clock::now();
