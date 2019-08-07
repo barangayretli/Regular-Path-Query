@@ -8,7 +8,6 @@
 #include "automata.h"
 
 
-
 class productGraph{
     
 private:
