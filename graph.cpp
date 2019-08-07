@@ -270,7 +270,7 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, duration<long 
         if(inverted[currVertex].at(inverted[currVertex].length()-1)==(c + maxState) )
         {
             endIfcheck = Clock::now();
-            resultArr.push_back(inverted[currVertex].substr(0,inverted[currVertex].length()-1));
+            //resultArr.push_back(inverted[currVertex].substr(0,inverted[currVertex].length()-1));
             vertexNumCheck++;
             check=true;
         }
