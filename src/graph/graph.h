@@ -5,8 +5,8 @@
 #include <string>
 #include <boost/functional/hash.hpp>
 #include <list>
+#include "automata/automata.h"
 #include <chrono>
-#include "automata.h"
 
 typedef std::chrono::high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;

@@ -1,4 +1,4 @@
-#include "automata.h"
+#include "automata/automata.h"
 
 typedef std::pair<int, int> pairs;
 

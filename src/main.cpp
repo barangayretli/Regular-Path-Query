@@ -3,8 +3,8 @@
 #include <sstream>
 #include <string>
 #include <chrono>
-#include <typeinfo>
-#include "graph.h"
+#include "graph/graph.h"
+
 
 using namespace std;
 using namespace std::chrono;
@@ -15,16 +15,17 @@ typedef Clock::time_point ClockTime;
 void addExecutionTime(duration<long long, ratio<1, 1000000000>> x);
 void printExecutionTime(ClockTime start_time, ClockTime end_time);
 
-//
-//
-int main(){
-    // /home/bgayretl/datasets/yago2s/yago2s_full_shuffle_virtuoso_tem53.tsv
-    // pvldb1.txt
+int main(int argc, char *argv[]){
+
+	if(argc < 3) {
+		cout << "Supply graph file and automata file as arguments" << endl;
+	}
+    
     ifstream graphRead, automataFile;
     ///////////////////////
-    graphRead.open("/home/bgayretl/datasets/yago2s/yago2s_full_shuffle_virtuoso_tem53.tsv");
+    graphRead.open(argv[1]);
+    automataFile.open(argv[2]);
 
-    automataFile.open("pvldb5.txt");
     ///////////////////////
     vector<pair<string,int>> vertices_ProductGraph0;
     vector<string> vertices_CSR0;
