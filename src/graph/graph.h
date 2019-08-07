@@ -49,7 +49,7 @@ public:
     void buildCSR(productGraph p); // Construct CSR matrix
     void buildMap(productGraph p); // Handles mapping of strings
 
-    void BFS(std::string startVertex, int maxState, int & vertexNumCheck, std::chrono::duration<long long, std::ratio<1, 1000000000> > & visitedTime, std::chrono::duration<long long, std::ratio<1, 1000000000> > & ifCheckTime); // BFS on product graph
+    void BFS(std::string startVertex, int maxState, int & vertexNumCheck); // BFS on product graph
     void getInterval(int currvertex,int & start, int & end); // interval of neighbors of a vertex in CSR matrix
     void setFalse();
     std::vector<std::string> getVertex0();
