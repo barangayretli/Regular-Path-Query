@@ -239,11 +239,11 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, duration<long 
     
     // memset(visited, false, n);
 
-    //ClockTime startVisited = Clock::now();
+    ClockTime startVisited = Clock::now();
     unordered_map<int,bool> visited; // hash table to check if a vertex is visited
-    //ClockTime endVisited = Clock::now();
+    ClockTime endVisited = Clock::now();
     
-    //visitedTime+=(endVisited-startVisited);
+    visitedTime+=(endVisited-startVisited);
 
 
     
@@ -263,26 +263,26 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, duration<long 
     
     while(!queue.empty())
     {
-        //bool check = false;
+        bool check = false;
         int currVertex = queue.front();
-        //ClockTime startIfcheck = Clock::now();
-        //ClockTime endIfcheck;
+        ClockTime startIfcheck = Clock::now();
+        ClockTime endIfcheck;
         if(inverted[currVertex].at(inverted[currVertex].length()-1)==(c + maxState) )
         {
-           // endIfcheck = Clock::now();
-            //resultArr.push_back(inverted[currVertex].substr(0,inverted[currVertex].length()-1));
+            endIfcheck = Clock::now();
+            resultArr.push_back(inverted[currVertex].substr(0,inverted[currVertex].length()-1));
             vertexNumCheck++;
-            //check=true;
+            check=true;
         }
-        //if(check==false)
-        //{
-            //endIfcheck = Clock::now();
-            //ifCheckTime+=(endIfcheck-startIfcheck);
-        //}
-        //else
-        //{
-          //  ifCheckTime+=(endIfcheck-startIfcheck);
-        //}
+        if(check==false)
+        {
+            endIfcheck = Clock::now();
+            ifCheckTime+=(endIfcheck-startIfcheck);
+        }
+        else
+        {
+            ifCheckTime+=(endIfcheck-startIfcheck);
+        }
         queue.pop_front();
         
         getInterval(currVertex,start,end); // get the starting and ending points
