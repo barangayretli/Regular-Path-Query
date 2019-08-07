@@ -101,39 +101,10 @@ int main(int argc, char *argv[]){
     c.buildCSR(p);
     cout << "Finished building CSR" << endl;
     
-    ////////////////// Adj List with HashMap Representation
-    
-    ClockTime start_time = Clock::now();
-    
-    vertexNumCheck = 0;
-    duration<long long, ratio<1, 1000000000>> visitedTime=Clock::now()-Clock::now();
-    duration<long long, ratio<1, 1000000000>> ifCheckTime=Clock::now()-Clock::now();
-
-    
-    for(int i = 0; i < vertices_ProductGraph0.size(); i++)
-    {
-
-        p.BFS(vertices_ProductGraph0[i], maxState, vertexNumCheck, visitedTime, ifCheckTime);
-
-    }
-    cout << vertexNumCheck << " vertices found with max State"<< endl;
-    // cout << vertexNumCheck << endl;
-    cout << "ADJ List Visited Map total build time is ";
-    addExecutionTime(visitedTime);
-    
-    cout << "ADJ if check total time is ";
-    addExecutionTime(ifCheckTime);
-    
-    ClockTime end_time = Clock::now();
-    cout << "Adj. List with hashMap ";
-    printExecutionTime(start_time, end_time);
-    
     //////////////// CSR Matrix Representation
-    
-    
+    ClockTime start_time;
+    ClockTime end_time;
     vertexNumCheck = 0;
-    visitedTime=Clock::now()-Clock::now();
-    ifCheckTime=Clock::now()-Clock::now();
     start_time = Clock::now();
     for(int j = 0; j < vertices_CSR0.size(); j++)
     {
@@ -142,35 +113,9 @@ int main(int argc, char *argv[]){
     }
     end_time = Clock::now();
     cout << vertexNumCheck << " vertices found with max State"<< endl;
-    cout << "BFS Visited array total build time is ";
-    addExecutionTime(visitedTime);
-
-
-    cout << "BFS if check total time is ";
-    addExecutionTime(ifCheckTime);
-    
-
-    // cout << vertexNumCheck << endl;
-    
+  
     cout << "CSRmatrix representation ";
     printExecutionTime(start_time, end_time);
-
-    
-    //////////////// Adj List Representation
-    /*
-     start_time = Clock::now();
-     
-     vertexNumCheck = 0;
-     for(int j = 0; j < vertices_CSR0.size(); j++)
-     {
-     v.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
-     }
-     // cout << vertexNumCheck << endl;
-     end_time = Clock::now();
-     cout << "Adj. list with vector ";
-     printExecutionTime(start_time, end_time);
-     */
-    
 
 	return 0;
 
