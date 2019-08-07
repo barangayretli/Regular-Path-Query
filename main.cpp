@@ -23,7 +23,7 @@ int main(){
     ifstream graphRead, automataFile;
     ///////////////////////
     graphRead.open("/home/bgayretl/datasets/yago2s/yago2s_full_shuffle_virtuoso_tem53.tsv");
-    automataFile.open("pvldb4.txt");
+    automataFile.open("pvldb5.txt");
     ///////////////////////
     vector<pair<string,int>> vertices_ProductGraph0;
     vector<string> vertices_CSR0;
