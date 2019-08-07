@@ -3,32 +3,10 @@
 using namespace std;
 using namespace std::chrono;
 
-typedef std::chrono::high_resolution_clock Clock;
+typedef high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 typedef pair<string,int> strInt; // vertex name and state
 
-/*
-int index(const vector<pair<string,vector<string>>> & listOfElements, const string str)
-{// returns to the index of the specific element
-    int i =0;
-    for(; i<listOfElements.size();i++)
-    {
-        if(listOfElements[i].first==str)
-            return i;
-    }
-    return i;
-}
-
-bool contains(const vector<pair<string,vector<string>>> & listOfElements, const string str)
-{//checks if the element is already in the data structure
-    for(int i =0; i<listOfElements.size();i++)
-    {
-       if(listOfElements[i].first==str)
-           return true;
-    }
-    return false;
-}
-*/
 
 void printArr(vector<string> arr)// prints the result array
 {
@@ -85,32 +63,34 @@ void productGraph::BFS(pair<string,int> startVertex, int maxState, int & vertexN
 {
     ClockTime startVisited = Clock::now();
     
-	unordered_map<pair<string,int>,bool,boost::hash<pair<string, int>>> visited; // hash table to check if a vertex is visited
 
+    unordered_map<pair<string,int>,bool,boost::hash<pair<string, int>>> visited; // hash table to check if a vertex is visited
+    
     ClockTime endVisited = Clock::now();
     
     visitedTime+=(endVisited-startVisited);
-	//vector<pair<string,int>> resultSet; // resulting set
-	
-	list<pair<string,int>> queue; // queue to store neighbors
-	
-	visited.insert(make_pair(startVertex,true)); // make the starting vertex visited
+    //vector<pair<string,int>> resultSet; // resulting set
     
-	queue.push_back(startVertex); // push the starting vertex
-	
+    list<pair<string,int>> queue; // queue to store neighbors
+    
+    visited.insert(make_pair(startVertex,true)); // make the starting vertex visited
+    
+    queue.push_back(startVertex); // push the starting vertex
+    
     while(!queue.empty()) // as long as queue is not empty, continue
     {
         bool check = false;
-		strInt currVertex = queue.front();// current vertex is the front of the queue
+
+        strInt currVertex = queue.front();// current vertex is the front of the queue
         ClockTime endIfcheck = Clock::now();
-		ClockTime startIfcheck = Clock::now();
+        ClockTime startIfcheck = Clock::now();
         if(currVertex.second==maxState) // if the state is maximum, add the vertex to the result array
-		{
+        {
             endIfcheck = Clock::now();
-			//resultSet.push_back(currVertex);
+            //resultSet.push_back(currVertex);
             vertexNumCheck++;
             check = true;
-		}
+        }
         if(check==false)
         {
             endIfcheck = Clock::now();
@@ -123,10 +103,10 @@ void productGraph::BFS(pair<string,int> startVertex, int maxState, int & vertexN
         
         
         queue.pop_front();
-		
-		for(auto i = ProductMap[currVertex].adjacentVertices.begin(); i != ProductMap[currVertex].adjacentVertices.end(); ++i)
+        
+        for(auto i = ProductMap[currVertex].adjacentVertices.begin(); i != ProductMap[currVertex].adjacentVertices.end(); ++i)
         {// take the neighbors and check if they are visited
-			strInt adjVertex = *i;
+            strInt adjVertex = *i;
             if(!visited[adjVertex])// if the vertes is not visited
             {
                 visited[adjVertex] = true;
@@ -134,13 +114,13 @@ void productGraph::BFS(pair<string,int> startVertex, int maxState, int & vertexN
             }
         }
     }
-	//printArr(resultSet);// print the result array
+    //printArr(resultSet);// print the result array
 }
 
 void productGraph::printArr(vector<pair<string,int>> resultArr)
 {// prints the result array
-	for (auto it = resultArr.cbegin(); it != resultArr.cend(); it++) {
-		std::cout << it->first << '\n';
+    for (auto it = resultArr.cbegin(); it != resultArr.cend(); it++) {
+        std::cout << it->first << '\n';
     }
     cout << "---" << endl;
 }
@@ -261,11 +241,13 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, duration<long 
     //visited = (bool *)malloc(n * sizeof(bool));
     
     // memset(visited, false, n);
+
     ClockTime startVisited = Clock::now();
-    visited = (bool *)calloc(this->n, sizeof(bool));
+    unordered_map<int,bool> visited; // hash table to check if a vertex is visited
     ClockTime endVisited = Clock::now();
     
     visitedTime+=(endVisited-startVisited);
+
     
     visited[startVertex] = true; // make the first edge visited
     
@@ -319,5 +301,5 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, duration<long 
     }
     
     //printArr(resultArr);
-    free(visited);
+    //free(visited);
 }

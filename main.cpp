@@ -23,12 +23,13 @@ int main(){
     ifstream graphRead, automataFile;
     ///////////////////////
     graphRead.open("/home/bgayretl/datasets/yago2s/yago2s_full_shuffle_virtuoso_tem53.tsv");
-    automataFile.open("pvldb1.txt");
+
+    automataFile.open("pvldb5.txt");
     ///////////////////////
     vector<pair<string,int>> vertices_ProductGraph0;
     vector<string> vertices_CSR0;
     ///////////////////////
-	string start,edge,target,f,s,label;
+    string start,edge,target,f,s,label;
     int maxState = 0,first,second, vertexNumCheck=0;
     ///////////////////////
     automata au;
@@ -47,7 +48,7 @@ int main(){
     cout << "Finished reading automata" << endl;
     /////////////////
     productGraph p;
-   // adjListVect v;
+
     /////////////////
     cout << "Started Reading Graph" << endl;
     string line;
@@ -59,18 +60,20 @@ int main(){
         vector<string> strs;
         while ((iss >> temp))
         {
-           if(con == 0)
-           {
-               start = temp;
-           }
-           else if (con == 1)
-           {
-               edge = temp;
-           }
-           else if (con == 2)
-           {
-               target = temp;
-           }
+
+            if(con == 0)
+            {
+                start = temp;
+            }
+            else if (con == 1)
+            {
+                edge = temp;
+            }
+            else if (con == 2)
+            {
+                target = temp;
+            }
+
             con++;
         }
         if(con<=3)
@@ -82,16 +85,7 @@ int main(){
                 cout <<counter<<endl;
         }
         con = 0;
-        /*
-        if ((iss >> start >> edge >> target))
-        {
-        p.addEdge(au, start, edge, target);
-        // v.buildProductGraph(au, start, edge, target);
-        counter++;
-        if(counter%1000000 == 0)
-            cout <<counter<<endl;
-        }
-         */
+        
     }
     cout << "Finished reading Graph" << endl;
     ////////////////
@@ -112,10 +106,13 @@ int main(){
     vertexNumCheck = 0;
     duration<long long, ratio<1, 1000000000>> visitedTime=Clock::now()-Clock::now();
     duration<long long, ratio<1, 1000000000>> ifCheckTime=Clock::now()-Clock::now();
-   
+
+    
     for(int i = 0; i < vertices_ProductGraph0.size(); i++)
     {
+
         p.BFS(vertices_ProductGraph0[i], maxState, vertexNumCheck, visitedTime, ifCheckTime);
+
     }
     cout << vertexNumCheck << " vertices found with max State"<< endl;
     // cout << vertexNumCheck << endl;
@@ -130,7 +127,6 @@ int main(){
     printExecutionTime(start_time, end_time);
     
     //////////////// CSR Matrix Representation
-   
     
     
     vertexNumCheck = 0;
@@ -146,30 +142,36 @@ int main(){
     cout << vertexNumCheck << " vertices found with max State"<< endl;
     cout << "BFS Visited array total build time is ";
     addExecutionTime(visitedTime);
-  
+
+
     cout << "BFS if check total time is ";
     addExecutionTime(ifCheckTime);
-  
+    
+
     // cout << vertexNumCheck << endl;
     
     cout << "CSRmatrix representation ";
     printExecutionTime(start_time, end_time);
+
     
     //////////////// Adj List Representation
     /*
-    start_time = Clock::now();
+     start_time = Clock::now();
+     
+     vertexNumCheck = 0;
+     for(int j = 0; j < vertices_CSR0.size(); j++)
+     {
+     v.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
+     }
+     // cout << vertexNumCheck << endl;
+     end_time = Clock::now();
+     cout << "Adj. list with vector ";
+     printExecutionTime(start_time, end_time);
+     */
     
-    vertexNumCheck = 0;
-    for(int j = 0; j < vertices_CSR0.size(); j++)
-    {
-        v.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
-    }
-    // cout << vertexNumCheck << endl;
-    end_time = Clock::now();
-    cout << "Adj. list with vector ";
-    printExecutionTime(start_time, end_time);
-    */
+
 	return 0;
+
 }
 
 void printExecutionTime(ClockTime start_time, ClockTime end_time)

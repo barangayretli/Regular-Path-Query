@@ -5,6 +5,7 @@
 #include <string>
 #include <boost/functional/hash.hpp>
 #include <list>
+#include <chrono>
 #include "automata.h"
 
 typedef std::chrono::high_resolution_clock Clock;
@@ -12,37 +13,24 @@ typedef Clock::time_point ClockTime;
 
 
 class productGraph{
-
+    
 private:
-	struct adjVert{
+    struct adjVert{
         std::vector<std::pair<std::string,int>> adjacentVertices; // vector of adjacent vertices of a vertex
-	};	
+    };
     std::unordered_map<std::pair<std::string,int>,adjVert,boost::hash<std::pair<std::string,int>>> ProductMap; // starting vertex map
     friend class CSR;
     
 public:
     void printArr(std::vector<std::pair<std::string,int>>); // prints the result array
     void addEdge(automata q, std::string start, std::string label, std::string end); // adds an edge to the graph
-	void BFS(std::pair<std::string,int>, int maxState, int & vertexNumCheck, std::chrono::duration<long long, std::ratio<1, 1000000000> > & visitedTime, std::chrono::duration<long long, std::ratio<1, 1000000000> > & ifCheckTime);// BFS on product graph
+
+    void BFS(std::pair<std::string,int>, int maxState, int & vertexNumCheck, std::chrono::duration<long long, std::ratio<1, 1000000000> > & visitedTime, std::chrono::duration<long long, std::ratio<1, 1000000000> > & ifCheckTime);// BFS on product graph
     std::vector<std::pair<std::string,int>> getVertex0 ();
     int vertexNum=0;
     int neighborNum=0;
+
 };
-/*
-class adjListVect{
-    
-private:
-    std::vector<std::pair<std::string,std::vector<std::string>>>adjVect; // adjacent vertices of a vertex
-    friend class CSR;
-    
-public:
-    void addEdge(std::string edge1, std::string edge2); // adds an edge to the graph
-    void buildProductGraph(automata q, std::string start, std::string label, std::string end); // builds product graph
-    void BFS(std::string edge1, int maxState, int & vertexNumCheck); // BFS on product graph
-    std::vector<std::string> getVertex0(int maxState);
-    friend class CSR;
-};
-*/
 class CSR{
     
 private:
@@ -60,6 +48,7 @@ public:
     void buildIndexArr(productGraph p); // Construct the index array
     void buildCSR(productGraph p); // Construct CSR matrix
     void buildMap(productGraph p); // Handles mapping of strings
+
     void BFS(std::string startVertex, int maxState, int & vertexNumCheck, std::chrono::duration<long long, std::ratio<1, 1000000000> > & visitedTime, std::chrono::duration<long long, std::ratio<1, 1000000000> > & ifCheckTime); // BFS on product graph
     void getInterval(int currvertex,int & start, int & end); // interval of neighbors of a vertex in CSR matrix
     void setFalse();
