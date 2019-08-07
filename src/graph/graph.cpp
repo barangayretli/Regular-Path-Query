@@ -237,23 +237,12 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, duration<long 
     int startVertex = mapValues[vertex1]; // int value of starting edge
     
     list<int> queue; // queue to store the neighbors
-    
-    //visited = (bool *)malloc(n * sizeof(bool));
-    
-    // memset(visited, false, n);
-
-    ClockTime startVisited = Clock::now();
+   
     unordered_map<int,bool> visited; // hash table to check if a vertex is visited
-    ClockTime endVisited = Clock::now();
-    
-    visitedTime+=(endVisited-startVisited);
-
-    
+  
     visited[startVertex] = true; // make the first edge visited
     
     queue.push_back(startVertex);
-    
-    //vector<string> resultArr; // result array
     
     int start = 0; // starting index
     
@@ -261,29 +250,14 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, duration<long 
     
     char c = '0';
     
-    
-    
     while(!queue.empty())
     {
-        bool check = false;
+        
         int currVertex = queue.front();
-        ClockTime startIfcheck = Clock::now();
-        ClockTime endIfcheck;
+
         if(inverted[currVertex].at(inverted[currVertex].length()-1)==(c + maxState) )
-        {
-            endIfcheck = Clock::now();
-            //resultArr.push_back(inverted[currVertex].substr(0,inverted[currVertex].length()-1));
-            vertexNumCheck++;
-            check=true;
-        }
-        if(check==false)
-        {
-            endIfcheck = Clock::now();
-            ifCheckTime+=(endIfcheck-startIfcheck);
-        }
-        else
-        {
-            ifCheckTime+=(endIfcheck-startIfcheck);
+        {     
+            vertexNumCheck++;   
         }
         queue.pop_front();
         
