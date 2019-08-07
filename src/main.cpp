@@ -141,23 +141,3 @@ void printExecutionTime(ClockTime start_time, ClockTime end_time)
     if(execution_time_ns > 0)
         cout << "" << execution_time_ns % long(1E+6) << " NanoSeconds, \n";
 }
-
-void addExecutionTime(duration<long long, ratio<1, 1000000000>> x)
-{
-    auto execution_time_ns = duration_cast<nanoseconds>(x).count();
-    auto execution_time_ms = duration_cast<microseconds>(x).count();
-    auto execution_time_sec = duration_cast<seconds>(x).count();
-    auto execution_time_min = duration_cast<minutes>(x).count();
-    auto execution_time_hour = duration_cast<hours>(x).count();
-    
-    if(execution_time_hour > 0)
-        cout << "" << execution_time_hour << " Hours, ";
-    if(execution_time_min > 0)
-        cout << "" << execution_time_min % 60 << " Minutes, ";
-    if(execution_time_sec > 0)
-        cout << "" << execution_time_sec % 60 << " Seconds, ";
-    if(execution_time_ms > 0)
-        cout << "" << execution_time_ms % long(1E+3) << " MicroSeconds, ";
-    if(execution_time_ns > 0)
-        cout << "" << execution_time_ns % long(1E+6) << " NanoSeconds, \n";
-}
