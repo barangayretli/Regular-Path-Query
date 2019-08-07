@@ -232,7 +232,7 @@ void CSR::buildCSR(productGraph p)
     }
 }
 
-void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck, duration<long long, ratio<1, 1000000000> > & visitedTime, duration<long long, ratio<1, 1000000000> > & ifCheckTime)
+void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
 {
     int startVertex = mapValues[vertex1]; // int value of starting edge
     
