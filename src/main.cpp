@@ -19,6 +19,7 @@ int main(int argc, char *argv[]){
 
 	if(argc < 3) {
 		cout << "Supply graph file and automata file as arguments" << endl;
+		exit(0);
 	}
     
     ifstream graphRead, automataFile;
