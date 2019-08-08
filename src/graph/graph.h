@@ -36,10 +36,10 @@ private:
     
 public:
     CSR(int n, int m); // CSRMatrix constructor
+    unsigned long maxMapSize=0,MapValuesSize=0,vertex0size=0;
     void buildIndexArr(productGraph *p); // Construct the index array
     void buildCSR(productGraph *p); // Construct CSR matrix
     void buildMap(productGraph *p); // Handles mapping of strings
-
     void BFS(std::string startVertex, int maxState, int & vertexNumCheck); // BFS on product graph
     void getInterval(int currvertex,int & start, int & end); // interval of neighbors of a vertex in CSR matrix
     std::vector<std::string> getVertex0();
