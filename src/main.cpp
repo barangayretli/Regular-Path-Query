@@ -73,9 +73,9 @@ int main(int argc, char *argv[]){
             }
             stringNum++;
         }
-        if(con<=3)
+        if(stringNum<=3)
         {
-            p.addEdge(au, start, edge, target);
+            p->addEdge(au, start, edge, target);
             counter++;
             if(counter%1000000 == 0)
                 cout <<counter<<endl;
