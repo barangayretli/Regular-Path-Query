@@ -86,6 +86,7 @@ void CSR::buildMap(productGraph *p)
         {
             // this vertex has an outgoing edge
             mapValues.insert(make_pair(str, count));
+            MapValuesSize += sizeof(str);
             inverted[count] = (str);
             count++;
         }
@@ -103,6 +104,7 @@ void CSR::buildMap(productGraph *p)
             {
                 // this vertex has no outgoing edge, has already been assigned an id previously
                 mapValues.insert(make_pair(str, count));
+                MapValuesSize += sizeof(str);
                 inverted[count]=(str);
                 count++;
             }
@@ -186,4 +188,6 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
             }
         }
     }
+    if(((visited.size()*(MapValuesSize/n)+(visited.size()*sizeof(int))>maxMapSize)))
+        maxMapSize = (visited.size()*(MapValuesSize/n)+(visited.size()*sizeof(int)));
 }
