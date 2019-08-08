@@ -5,7 +5,6 @@
 #include <chrono>
 #include "graph/graph.h"
 
-
 using namespace std;
 using namespace std::chrono;
 
@@ -22,7 +21,7 @@ int main(int argc, char *argv[]){
 	}
     
     ifstream graphRead, automataFile;
-    ///////////////////////
+    
     graphRead.open(argv[1]);
     automataFile.open(argv[2]);
     
@@ -30,7 +29,7 @@ int main(int argc, char *argv[]){
 	
     string start,edge,target,f,s,label;
     int maxState = 0,first,second, vertexNumCheck=0;
-    ///////////////////////
+    ////////////////
     automata au;
     int counter = 0;
     unsigned long PGedgeNumber = 0;
@@ -49,7 +48,7 @@ int main(int argc, char *argv[]){
     automataFile.close();
     /////////////////
     productGraph *p = new productGraph;
-    /////////////////
+    
     cout << "Started Reading Graph" << endl;
     string line;
     string temp;
@@ -73,7 +72,7 @@ int main(int argc, char *argv[]){
             }
             stringNum++;
         }
-        if(stringNum<=3)
+        if(stringNum <= 3)
         {
             p->addEdge(au, start, edge, target);
             counter++;
@@ -85,8 +84,8 @@ int main(int argc, char *argv[]){
     }
     cout << "Finished reading Graph" << endl;
     graphRead.close();
-    ////////////////
     PGedgeNumber = p->edgeNumber;
+    ////////////////
     cout << "Started building CSR" << endl;
     CSR c(p->vertexNum+p->neighborNum,p->neighborNum);
     c.buildMap(p);
@@ -96,9 +95,7 @@ int main(int argc, char *argv[]){
     cout << "Finished building CSR" << endl;
     delete p;
     //////////////// CSR Matrix Representation
-    ClockTime start_time;
-    ClockTime end_time;
-    vertexNumCheck = 0;
+    ClockTime start_time, end_time;
     start_time = Clock::now();
     for(unsigned int j = 0; j < vertices_CSR0.size(); j++)
     {
@@ -110,8 +107,7 @@ int main(int argc, char *argv[]){
     cout << "CSRmatrix representation ";
     printExecutionTime(start_time, end_time);
 
-	return 0;
-
+    return 0;
 }
 
 void printExecutionTime(ClockTime start_time, ClockTime end_time)
