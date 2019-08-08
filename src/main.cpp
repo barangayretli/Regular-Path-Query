@@ -100,7 +100,7 @@ int main(int argc, char *argv[]){
     ClockTime end_time;
     vertexNumCheck = 0;
     start_time = Clock::now();
-    for(int j = 0; j < vertices_CSR0.size(); j++)
+    for(unsigned int j = 0; j < vertices_CSR0.size(); j++)
     {
         c.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
     }
