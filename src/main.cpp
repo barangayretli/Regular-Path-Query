@@ -12,7 +12,6 @@ using namespace std::chrono;
 typedef high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 
-void addExecutionTime(duration<long long, ratio<1, 1000000000>> x);
 void printExecutionTime(ClockTime start_time, ClockTime end_time);
 
 int main(int argc, char *argv[]){
@@ -26,16 +25,15 @@ int main(int argc, char *argv[]){
     ///////////////////////
     graphRead.open(argv[1]);
     automataFile.open(argv[2]);
-
-    ///////////////////////
-    vector<pair<string,int>> vertices_ProductGraph0;
+    
     vector<string> vertices_CSR0;
-    ///////////////////////
+	
     string start,edge,target,f,s,label;
     int maxState = 0,first,second, vertexNumCheck=0;
     ///////////////////////
     automata au;
-    int counter=0;
+    int counter = 0;
+    unsigned long PGedgeNumber = 0;
     cout << "Started reading automata" << endl;
     while(automataFile >> f >> label >> s)// reading automata from a txt file
     {
@@ -48,59 +46,55 @@ int main(int argc, char *argv[]){
             maxState = second;
     }
     cout << "Finished reading automata" << endl;
+    automataFile.close();
     /////////////////
-    productGraph p;
-
+    productGraph *p = new productGraph;
     /////////////////
     cout << "Started Reading Graph" << endl;
     string line;
     string temp;
-    int con = 0;
+    int stringNum = 0;
     while(getline(graphRead, line)) // reading the vertices and edges line by line from the txt file
     {
         istringstream iss(line);
-        vector<string> strs;
         while ((iss >> temp))
         {
-
-            if(con == 0)
+            if(stringNum == 0)
             {
                 start = temp;
             }
-            else if (con == 1)
+            else if (stringNum == 1)
             {
                 edge = temp;
             }
-            else if (con == 2)
+            else if (stringNum == 2)
             {
                 target = temp;
             }
-
-            con++;
+            stringNum++;
         }
         if(con<=3)
         {
             p.addEdge(au, start, edge, target);
-            // v.buildProductGraph(au, start, edge, target);
             counter++;
             if(counter%1000000 == 0)
                 cout <<counter<<endl;
         }
-        con = 0;
+        stringNum = 0;
         
     }
     cout << "Finished reading Graph" << endl;
+    graphRead.close();
     ////////////////
-    vertices_ProductGraph0 = p.getVertex0();
-    
+    PGedgeNumber = p->edgeNumber;
     cout << "Started building CSR" << endl;
-    CSR c(p.vertexNum+p.neighborNum,p.neighborNum);
+    CSR c(p->vertexNum+p->neighborNum,p->neighborNum);
     c.buildMap(p);
     vertices_CSR0 = c.getVertex0();
     c.buildIndexArr(p);
     c.buildCSR(p);
     cout << "Finished building CSR" << endl;
-    
+    delete p;
     //////////////// CSR Matrix Representation
     ClockTime start_time;
     ClockTime end_time;
@@ -109,11 +103,10 @@ int main(int argc, char *argv[]){
     for(int j = 0; j < vertices_CSR0.size(); j++)
     {
         c.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
-        
     }
     end_time = Clock::now();
     cout << vertexNumCheck << " vertices found with max State"<< endl;
-  
+    cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
     cout << "CSRmatrix representation ";
     printExecutionTime(start_time, end_time);
 
