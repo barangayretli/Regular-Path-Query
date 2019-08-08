@@ -112,7 +112,6 @@ int main(int argc, char *argv[]){
 
 void printExecutionTime(ClockTime start_time, ClockTime end_time)
 {
-    auto execution_time_ns = duration_cast<nanoseconds>(end_time - start_time).count();
     auto execution_time_ms = duration_cast<microseconds>(end_time - start_time).count();
     auto execution_time_sec = duration_cast<seconds>(end_time - start_time).count();
     auto execution_time_min = duration_cast<minutes>(end_time - start_time).count();
@@ -127,6 +126,4 @@ void printExecutionTime(ClockTime start_time, ClockTime end_time)
         cout << "" << execution_time_sec % 60 << " Seconds, ";
     if(execution_time_ms > 0)
         cout << "" << execution_time_ms % long(1E+3) << " MicroSeconds, ";
-    if(execution_time_ns > 0)
-        cout << "" << execution_time_ns % long(1E+6) << " NanoSeconds, \n";
 }
