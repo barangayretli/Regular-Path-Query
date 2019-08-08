@@ -31,6 +31,7 @@ int main(int argc, char *argv[]){
     int maxState = 0,first,second, vertexNumCheck=0;
     ////////////////
     automata au;
+    unsigned long memory = 0;
     int counter = 0;
     unsigned long PGedgeNumber = 0;
     cout << "Started reading automata" << endl;
@@ -92,18 +93,27 @@ int main(int argc, char *argv[]){
     vertices_CSR0 = c.getVertex0();
     c.buildIndexArr(p);
     c.buildCSR(p);
+    memory +=  p->vertexNum + p->neighborNum * sizeof(int) + p->neighborNum * sizeof(int);
     cout << "Finished building CSR" << endl;
-    delete p;
-    //////////////// CSR Matrix Representation
     ClockTime start_time, end_time;
+    cout << "Started deleting PG" << endl;
+    start_time = Clock::now();
+    delete p;
+    end_time = Clock::now();
+    cout << "Deleted PG, ";
+    printExecutionTime(start_time, end_time);
+    //////////////// CSR Matrix Representation
+    memory += vertices_CSR0.size()*(c.MapValuesSize/(p->vertexNum + p->neighborNum));
     start_time = Clock::now();
     for(unsigned int j = 0; j < vertices_CSR0.size(); j++)
     {
         c.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
     }
     end_time = Clock::now();
+    memory += c.MapValuesSize + c.maxMapSize;
     cout << vertexNumCheck << " vertices found with max State"<< endl;
     cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
+    cout << "Memory used by CSR representation is " << memory/(1024*1024) << " MB" << endl;
     cout << "CSRmatrix representation ";
     printExecutionTime(start_time, end_time);
 
