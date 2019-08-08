@@ -1,10 +1,7 @@
 #include "graph/graph.h"
 
 using namespace std;
-using namespace std::chrono;
 
-typedef high_resolution_clock Clock;
-typedef Clock::time_point ClockTime;
 typedef pair<string,int> strInt; // vertex name and state
 
 
@@ -26,6 +23,7 @@ void productGraph::addEdge(automata q, string start, string label, string end)
     string sstr; // second string
     for (auto itr = q.automataGraph[label].VertexNeighbors.begin(); itr != q.automataGraph[label].VertexNeighbors.end(); ++itr)
     { // automata graph states traversal
+        edgeNumber++;
         f = itr->first;
         s = itr->second;
         fstr = start;
@@ -48,83 +46,6 @@ void productGraph::addEdge(automata q, string start, string label, string end)
         
     }
 }
-vector<pair<string,int>> productGraph::getVertex0()
-{
-    vector<pair<string,int>> arr;
-    for (auto it = ProductMap.begin(); it != ProductMap.end(); ++it)
-    {
-        if(it->first.second == 0)
-            arr.push_back(it->first);
-    }
-    return arr;
-}
-
-void productGraph::BFS(pair<string,int> startVertex, int maxState, int & vertexNumCheck, duration<long long, ratio<1, 1000000000> > & visitedTime, duration<long long, ratio<1, 1000000000> > & ifCheckTime)
-{
-    ClockTime startVisited = Clock::now();
-    
-
-    unordered_map<pair<string,int>,bool,boost::hash<pair<string, int>>> visited; // hash table to check if a vertex is visited
-    
-    ClockTime endVisited = Clock::now();
-    
-    visitedTime+=(endVisited-startVisited);
-    //vector<pair<string,int>> resultSet; // resulting set
-    
-    list<pair<string,int>> queue; // queue to store neighbors
-    
-    visited.insert(make_pair(startVertex,true)); // make the starting vertex visited
-    
-    queue.push_back(startVertex); // push the starting vertex
-    
-    while(!queue.empty()) // as long as queue is not empty, continue
-    {
-        bool check = false;
-
-        strInt currVertex = queue.front();// current vertex is the front of the queue
-        ClockTime endIfcheck = Clock::now();
-        ClockTime startIfcheck = Clock::now();
-        if(currVertex.second==maxState) // if the state is maximum, add the vertex to the result array
-        {
-            endIfcheck = Clock::now();
-            //resultSet.push_back(currVertex);
-            vertexNumCheck++;
-            check = true;
-        }
-        if(check==false)
-        {
-            endIfcheck = Clock::now();
-            ifCheckTime+=(endIfcheck-startIfcheck);
-        }
-        else
-        {
-            ifCheckTime+=(endIfcheck-startIfcheck);
-        }
-        
-        
-        queue.pop_front();
-        
-        for(auto i = ProductMap[currVertex].adjacentVertices.begin(); i != ProductMap[currVertex].adjacentVertices.end(); ++i)
-        {// take the neighbors and check if they are visited
-            strInt adjVertex = *i;
-            if(!visited[adjVertex])// if the vertes is not visited
-            {
-                visited[adjVertex] = true;
-                queue.push_back(adjVertex); // push the neighbor to the queue
-            }
-        }
-    }
-    //printArr(resultSet);// print the result array
-}
-
-void productGraph::printArr(vector<pair<string,int>> resultArr)
-{// prints the result array
-    for (auto it = resultArr.cbegin(); it != resultArr.cend(); it++) {
-        std::cout << it->first << '\n';
-    }
-    cout << "---" << endl;
-}
-
 
 CSR::CSR(int n, int m) {
     this -> n = n;// vertex number
@@ -132,14 +53,6 @@ CSR::CSR(int n, int m) {
     indices = new int[n+1]; // dynamically create indices array
     CSRmatrix = new int[m]; // dynamically create CSR matrix array
     inverted = new string[n]; // dtnamically create inverted array
-}
-
-void CSR::setFalse()
-{
-    for(int i=0; i<n; i++)
-    {
-        visited[i]=false; // set all the elements of the visited array false
-    }
 }
 
 vector<string> CSR::getVertex0()
@@ -154,10 +67,10 @@ void CSR::getInterval(int currvertex, int & start, int & end)
     end = indices[currvertex+1];
 }
 
-void CSR::buildMap(productGraph p)
+void CSR::buildMap(productGraph *p)
 {
     string str;
-    for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
+    for(auto it = p->ProductMap.begin(); it != p->ProductMap.end();it++)
     {
         
         str = it->first.first + to_string(it->first.second);
@@ -178,7 +91,7 @@ void CSR::buildMap(productGraph p)
         }
         
     }
-    for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
+    for(auto it = p->ProductMap.begin(); it != p->ProductMap.end();it++)
     {
         for(auto itr = it->second.adjacentVertices.begin(); itr !=it->second.adjacentVertices.end();itr++)
         {
@@ -197,13 +110,13 @@ void CSR::buildMap(productGraph p)
     }
 }
 
-void CSR::buildIndexArr(productGraph p)
+void CSR::buildIndexArr(productGraph *p)
 {
     int currIndex = 0;
     
     int i=0;
     
-    for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
+    for(auto it = p->ProductMap.begin(); it != p->ProductMap.end();it++)
     {
         indices[i] = currIndex;
         currIndex += it->second.adjacentVertices.size();
@@ -218,11 +131,11 @@ void CSR::buildIndexArr(productGraph p)
     }
 }
 
-void CSR::buildCSR(productGraph p)
+void CSR::buildCSR(productGraph *p)
 {
     int index = 0;
     string str;
-    for(auto it = p.ProductMap.begin(); it != p.ProductMap.end();it++)
+    for(auto it = p->ProductMap.begin(); it != p->ProductMap.end();it++)
     {
         for(auto itr = it->second.adjacentVertices.begin(); itr != it->second.adjacentVertices.end();itr++)
         {
@@ -273,7 +186,4 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
             }
         }
     }
-    
-    //printArr(resultArr);
-    //free(visited);
 }
