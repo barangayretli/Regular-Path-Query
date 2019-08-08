@@ -7,7 +7,7 @@ typedef pair<string,int> strInt; // vertex name and state
 
 void printArr(vector<string> arr)// prints the result array
 {
-    for(int i=0; i<arr.size();i++)
+    for(unsigned int i=0; i<arr.size();i++)
     {
         cout << arr[i] << endl;
     }
