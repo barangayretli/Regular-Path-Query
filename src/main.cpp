@@ -94,16 +94,13 @@ int main(int argc, char *argv[]){
     c.buildIndexArr(p);
     c.buildCSR(p);
     memory +=  p->vertexNum + p->neighborNum * sizeof(int) + p->neighborNum * sizeof(int);
-    cout << "Finished building CSR" << endl;
-    ClockTime start_time, end_time;
-    cout << "Started deleting PG" << endl;
-    start_time = Clock::now();
-    delete p;
-    end_time = Clock::now();
-    cout << "Deleted PG, ";
-    printExecutionTime(start_time, end_time);
-    //////////////// CSR Matrix Representation
     memory += vertices_CSR0.size()*(c.MapValuesSize/(p->vertexNum + p->neighborNum));
+    int VertexNum = p->vertexNum + p->neighborNum;
+    cout << "Finished building CSR" << endl;
+    delete p;
+    //////////////// CSR Matrix Representation
+    
+    ClockTime start_time, end_time;
     start_time = Clock::now();
     for(unsigned int j = 0; j < vertices_CSR0.size(); j++)
     {
@@ -112,6 +109,7 @@ int main(int argc, char *argv[]){
     end_time = Clock::now();
     memory += c.MapValuesSize + c.maxMapSize;
     cout << vertexNumCheck << " vertices found with max State"<< endl;
+    cout << "There are " << vertexNum << " vertices in the Product Graph" << endl;
     cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
     cout << "Memory used by CSR representation is " << memory/(1024*1024) << " MB" << endl;
     cout << "CSRmatrix representation ";
