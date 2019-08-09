@@ -109,7 +109,7 @@ int main(int argc, char *argv[]){
     end_time = Clock::now();
     memory += c.MapValuesSize + c.maxMapSize;
     cout << vertexNumCheck << " vertices found with max State"<< endl;
-    cout << "There are " << vertexNum << " vertices in the Product Graph" << endl;
+    cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
     cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
     cout << "Memory used by CSR representation is " << memory/(1024*1024) << " MB" << endl;
     cout << "CSRmatrix representation ";
