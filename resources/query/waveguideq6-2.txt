@@ -1,0 +1,4 @@
+0 http://yago-knowledge.org/resource/happenedIn 1
+1 http://yago-knowledge.org/resource/hasCapital 2
+2 http://yago-knowledge.org/resource/created 3
+3 http://yago-knowledge.org/resource/happenedIn 1

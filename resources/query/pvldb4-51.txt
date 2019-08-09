@@ -1,0 +1,3 @@
+0 http://yago-knowledge.org/resource/isKnownFor 1 
+1 http://yago-knowledge.org/resource/isKnownFor 1
+1 http://yago-knowledge.org/resource/influences 2 

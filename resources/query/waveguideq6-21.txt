@@ -1,0 +1,4 @@
+0 http://yago-knowledge.org/resource/isLocatedIn 1
+1 http://yago-knowledge.org/resource/dealsWith 2
+2 http://yago-knowledge.org/resource/hasCapital 3
+3 http://yago-knowledge.org/resource/isLocatedIn 1

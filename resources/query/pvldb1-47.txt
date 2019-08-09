@@ -1,0 +1,6 @@
+0 http://yago-knowledge.org/resource/influences 1
+0 http://yago-knowledge.org/resource/influences 1
+0 http://yago-knowledge.org/resource/hasChild 1
+1 http://yago-knowledge.org/resource/influences 0
+1 http://yago-knowledge.org/resource/influences 0
+1 http://yago-knowledge.org/resource/hasChild 0
