@@ -73,7 +73,7 @@ int main(int argc, char *argv[]){
             }
             stringNum++;
         }
-        if(stringNum <= 3)
+        if(stringNum == 3)
         {
             p->addEdge(au, start, edge, target);
             counter++;
