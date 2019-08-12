@@ -66,7 +66,7 @@ void productGraph::addEdge(automata q, string start, string label, string end)
 CSR::CSR(int n, int m) {
     this -> n = n;// vertex number
     this -> m = m;// neighbor number
-    indices = new int[n+1]; // dynamically create indices array
+    indices = new int[n+m+1]; // dynamically create indices array
     CSRmatrix = new int[m]; // dynamically create CSR matrix array
     inverted = new string[n]; // dtnamically create inverted array
 }
@@ -144,7 +144,7 @@ void CSR::buildIndexArr(productGraph *p)
     i++;
     
     // for vertex that do not have outgoing edges
-    for(; i < n + 1 ; i++) {
+    for(; i < m + 1 ; i++) {
         indices[i] = currIndex;
     }
 }
