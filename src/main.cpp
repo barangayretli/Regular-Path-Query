@@ -93,7 +93,7 @@ int main(int argc, char *argv[]){
     vertices_CSR0 = c.getVertex0();
     c.buildIndexArr(p);
     c.buildCSR(p);
-    memory +=  p->vertexNum * sizeof(int) + p->neighborNum * sizeof(int);
+    memory +=  p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
     memory += vertices_CSR0.size()*(c.MapValuesSize/(p->vertexNum + p->neighborNumCSR));
     int VertexNum = p->vertexNum + p->uniqueNeighbor;
     cout << "Finished building CSR" << endl;
