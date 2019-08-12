@@ -5,6 +5,7 @@
 #include <string>
 #include <boost/functional/hash.hpp>
 #include <list>
+#include <unordered_set>
 #include "automata/automata.h"
 
 class productGraph{
@@ -14,12 +15,14 @@ private:
         std::vector<std::pair<std::string,int>> adjacentVertices; // vector of adjacent vertices of a vertex
     };
     std::unordered_map<std::pair<std::string,int>,adjVert,boost::hash<std::pair<std::string,int>>> ProductMap; // starting vertex map
+    std::unordered_set<std::pair<std::string,int>,boost::hash<std::pair<std::string,int>>> neighborset;
     friend class CSR;
     
 public:
     void addEdge(automata q, std::string start, std::string label, std::string end); // adds an edge to the graph
     int vertexNum=0;
-    int neighborNum=0;
+    int neighborNumCSR=0;
+    int uniqueNeighbor=0;
     unsigned long edgeNumber=0;
 };
 class CSR{
