@@ -88,14 +88,14 @@ int main(int argc, char *argv[]){
     PGedgeNumber = p->edgeNumber;
     ////////////////
     cout << "Started building CSR" << endl;
-    CSR c(p->vertexNum+p->neighborNum,p->neighborNum);
+    CSR c(p->vertexNum,p->neighborNumCSR);
     c.buildMap(p);
     vertices_CSR0 = c.getVertex0();
     c.buildIndexArr(p);
     c.buildCSR(p);
-    memory +=  p->vertexNum + p->neighborNum * sizeof(int) + p->neighborNum * sizeof(int);
-    memory += vertices_CSR0.size()*(c.MapValuesSize/(p->vertexNum + p->neighborNum));
-    int VertexNum = p->vertexNum + p->neighborNum;
+    memory +=  p->vertexNum * sizeof(int) + p->neighborNum * sizeof(int);
+    memory += vertices_CSR0.size()*(c.MapValuesSize/(p->vertexNum + p->neighborNumCSR));
+    int VertexNum = p->vertexNum + p->uniqueNeighbor;
     cout << "Finished building CSR" << endl;
     delete p;
     //////////////// CSR Matrix Representation
@@ -108,12 +108,16 @@ int main(int argc, char *argv[]){
     }
     end_time = Clock::now();
     memory += c.MapValuesSize + c.maxMapSize;
-    cout << vertexNumCheck << " results found with max State"<< endl;
-    cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
-    cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
-    cout << "Memory used by CSR representation is " << memory/(1024*1024) << " MB" << endl;
     cout << "CSRmatrix representation ";
     printExecutionTime(start_time, end_time);
+    cout << "Memory used by CSR representation is " << memory/(1024*1024) << " MB" << endl;
+    cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
+    cout << vertexNumCheck << " results found with max State"<< endl;
+    cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;	    
+    cout << "There are " << vertices_CSR0.size() << " vertuces with 0 state"<<endl;
+
+    
+    
 
     return 0;
 }
