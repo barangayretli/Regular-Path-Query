@@ -186,7 +186,7 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
         
         int currVertex = queue.front();
 
-        if(inverted[currVertex].at(inverted[currVertex].length()-1)==(c + maxState )
+        if(inverted[currVertex].at(inverted[currVertex].length()-1)==(c + maxState))
         {     
             vertexNumCheck++;   
         }
