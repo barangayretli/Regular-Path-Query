@@ -34,14 +34,30 @@ void productGraph::addEdge(automata q, string start, string label, string end)
         temp.adjacentVertices.push_back(p2);
         if(ProductMap.count(p1))// if it is already in the product graph
         {
+            
+            if(neighborset.count(p2))
+            {
+                
+            }
+            else
+                uniqueNeighbor++;
+            neighborset.insert(p2);
+            neighborNumCSR++;
             ProductMap[p1].adjacentVertices.push_back(p2);
-            neighborNum++;
         }
         else// if it is not in the product graph
         {
-            ProductMap.insert(make_pair(p1,temp));
+            
             vertexNum++;
-            neighborNum++;
+            if(neighborset.count(p2))
+            {
+                
+            }
+            else
+                uniqueNeighbor++;
+            neighborset.insert(p2);
+            neighborNumCSR++;
+            ProductMap.insert(make_pair(p1,temp));
         }
         
     }
