@@ -68,7 +68,7 @@ CSR::CSR(int n, int m) {
     this -> m = m;// neighbor number
     indices = new int[n+m+1]; // dynamically create indices array
     CSRmatrix = new int[m]; // dynamically create CSR matrix array
-    inverted = new string[n]; // dtnamically create inverted array
+    inverted = new string[n+m+1]; // dtnamically create inverted array
 }
 
 vector<string> CSR::getVertex0()
