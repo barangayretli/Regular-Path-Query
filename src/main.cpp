@@ -78,11 +78,46 @@ int main(int argc, char *argv[]){
             p->addEdge(au, start, edge, target);
             counter++;
             if(counter%1000000 == 0)
+	    {
+		    PGedgeNumber = p->edgeNumber;
+                ////////////////
+                cout << "Started building CSR" << endl;
+                CSR c(p->vertexNum,p->neighborNumCSR);
+                cout << "CSR init done" << endl;
+                c.buildMap(p);
+                cout << "CSR buildMap done"    << endl;
+                vertices_CSR0 = c.getVertex0();
+                c.buildIndexArr(p);
+                cout << "CSR BuildindexArr done" << endl;
+                c.buildCSR(p);
+                cout << "BuildCSR done" << endl;
+                memory +=  p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
+                memory += vertices_CSR0.size()*(c.MapValuesSize/(p->vertexNum + p->neighborNumCSR));
+                int VertexNum = p->vertexNum + p->uniqueNeighbor;
+                cout << "Finished building CSR" << endl;
+                ClockTime start_time, end_time;
+                start_time = Clock::now();
+                for(unsigned int j = 0; j < vertices_CSR0.size(); j++)
+                {
+                    c.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
+                }
+                end_time = Clock::now();
+                memory += c.MapValuesSize + c.maxMapSize;
+                cout << "CSRmatrix representation ";
+                printExecutionTime(start_time, end_time);
+                cout << "Memory used by CSR representation is " << memory/(1024*1024) << " MB" << endl;
+                cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
+                cout << vertexNumCheck << " results found with max State"<< endl;
+                cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
+                cout << "There are " << vertices_CSR0.size() << " vertuces with 0 state"<<endl;
                 cout <<counter<<endl;
+	    }
+                
         }
         stringNum = 0;
         
     }
+    /*
     cout << "Finished reading Graph" << endl;
     graphRead.close();
     PGedgeNumber = p->edgeNumber;
@@ -122,7 +157,7 @@ int main(int argc, char *argv[]){
 
     
     
-
+     */
     return 0;
 }
 
