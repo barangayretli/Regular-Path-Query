@@ -89,10 +89,14 @@ int main(int argc, char *argv[]){
     ////////////////
     cout << "Started building CSR" << endl;
     CSR c(p->vertexNum,p->neighborNumCSR);
+    cout << "CSR init done" << endl;
     c.buildMap(p);
+    cout << "CSR buildMap done"	<< endl;
     vertices_CSR0 = c.getVertex0();
     c.buildIndexArr(p);
+    cout << "CSR BuildindexArr done" << endl;
     c.buildCSR(p);
+    cout << "BuildCSR done" << endl;
     memory +=  p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
     memory += vertices_CSR0.size()*(c.MapValuesSize/(p->vertexNum + p->neighborNumCSR));
     int VertexNum = p->vertexNum + p->uniqueNeighbor;
