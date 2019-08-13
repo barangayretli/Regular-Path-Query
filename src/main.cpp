@@ -77,7 +77,7 @@ int main(int argc, char *argv[]){
         {
             p->addEdge(au, start, edge, target);
             counter++;
-            if(counter%5000000 == 0)
+            if(counter%10000000 == 0)
 	    {
 		    PGedgeNumber = p->edgeNumber;
                 ////////////////
