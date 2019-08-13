@@ -109,7 +109,7 @@ int main(int argc, char *argv[]){
                 cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
                 cout << vertexNumCheck << " results found with max State"<< endl;
                 cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
-                cout << "There are " << vertices_CSR0.size() << " vertuces with 0 state"<<endl;
+                cout << "There are " << vertices_CSR0.size() << " vertices with 0 state"<<endl;
                 cout <<counter<<endl;
 	    }
                 
