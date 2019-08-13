@@ -178,7 +178,7 @@ void printExecutionTime(ClockTime start_time, ClockTime end_time)
     if(execution_time_sec > 0)
         cout << "" << execution_time_sec % 60 << " Seconds, ";
     if(execution_time_sec > 0)
-        cout << "" << execution_time_mls << " MiliSeconds, ";
+        cout << "" << execution_time_mls % long(1000) << " MiliSeconds, ";
     if(execution_time_ms > 0)
         cout << "" << execution_time_ms % long(1E+3) << " MicroSeconds, ";
     if(execution_time_ns > 0)
