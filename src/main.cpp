@@ -59,7 +59,6 @@ int main(int argc, char *argv[]){
     string line;
     string temp;
     int stringNum = 0;
-    int linecounter = 0;
     while(getline(graphRead, line) && counter < lineLimit) // reading the vertices and edges line by line from the txt file
     {
         istringstream iss(line);
