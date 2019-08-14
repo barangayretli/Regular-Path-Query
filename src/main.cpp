@@ -24,9 +24,7 @@ int main(int argc, char *argv[]){
     
     graphRead.open(argv[1]);
     automataFile.open(argv[2]);
-    //argv[3];
-    //argv[4];
-	
+    
     int lineLimit;
     sscanf(argv[3], "%d", &lineLimit);
     int intervalSize;
@@ -86,7 +84,7 @@ int main(int argc, char *argv[]){
             counter++;
             if(counter%intervalSize == 0)
 	    {
-		
+		memory = 0;
                 PGedgeNumber = p->edgeNumber;
                 ////////////////
                 cout << "Started building CSR" << endl;
@@ -113,6 +111,7 @@ int main(int argc, char *argv[]){
                 memory += c->MapValuesSize + c->maxMapSize;
                 cout << "CSRmatrix representation ";
                 printExecutionTime(start_time, end_time);
+		cout << endl;
                 cout << "Memory used by CSR representation is " << memory/(1024*1024) << " MB" << endl;
                 cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
                 cout << vertexNumCheck << " results found with max State"<< endl;
