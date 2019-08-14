@@ -120,7 +120,8 @@ int main(int argc, char *argv[]){
                 cout << "There are " << vertices_CSR0.size() << " vertuces with 0 state"<<endl;
                 cout <<counter<<endl;
 		cout << "Started deleting CSR" << endl;
-		c->~CSR();
+		//c->~CSR();
+		    delete c;
 		cout << "Deleted CSR" << endl;
 	    }
                 
