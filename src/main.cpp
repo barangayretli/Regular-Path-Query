@@ -24,7 +24,12 @@ int main(int argc, char *argv[]){
     
     graphRead.open(argv[1]);
     automataFile.open(argv[2]);
-    
+    argv[3];
+    argv[4];
+	
+    int lineLimit = stoi(argv[3]);
+    int intervalSize = stoi(argv[4]);
+   
     vector<string> vertices_CSR0;
 	
     string start,edge,target,f,s,label;
