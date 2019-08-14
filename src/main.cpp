@@ -121,7 +121,7 @@ int main(int argc, char *argv[]){
                 cout <<counter<<endl;
 		cout << "Started deleting CSR" << endl;
 		//c->~CSR();
-		    delete c;
+		    //delete c;
 		cout << "Deleted CSR" << endl;
 	    }
                 
