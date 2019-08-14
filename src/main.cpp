@@ -27,8 +27,10 @@ int main(int argc, char *argv[]){
     argv[3];
     argv[4];
 	
-    int lineLimit = stoi(argv[3]);
-    int intervalSize = stoi(argv[4]);
+    int lineLimit;
+    sscanf(argv[3], "%d", &lineLimit);
+    int intervalSize;
+    sscanf(argv[4], "%d", &intervalSize);
    
     vector<string> vertices_CSR0;
 	
