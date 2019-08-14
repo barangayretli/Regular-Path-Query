@@ -39,6 +39,7 @@ private:
     
 public:
     CSR(int n, int m); // CSRMatrix constructor
+    ~CSR();
     unsigned long maxMapSize=0,MapValuesSize=0,vertex0size=0;
     void buildIndexArr(productGraph *p); // Construct the index array
     void buildCSR(productGraph *p); // Construct CSR matrix
