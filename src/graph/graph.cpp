@@ -210,6 +210,9 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
 
 CSR::~CSR()
 {
+    delete indices;
+    delete CSRmatrix;
+    delete inverted;
     delete []indices;
     delete []CSRmatrix;
     delete []inverted;
