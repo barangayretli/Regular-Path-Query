@@ -207,3 +207,10 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
     if(((visited.size()*(MapValuesSize/n)+(visited.size()*sizeof(int))>maxMapSize)))
         maxMapSize = (visited.size()*(MapValuesSize/n)+(visited.size()*sizeof(int)));
 }
+
+CSR::~CSR()
+{
+    delete indices;
+    delete CSRmatrix;
+    delete inverted;
+}
