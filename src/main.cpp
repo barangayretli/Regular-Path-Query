@@ -118,7 +118,7 @@ int main(int argc, char *argv[]){
                 cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
                 cout << "There are " << vertices_CSR0.size() << " vertuces with 0 state"<<endl;
                 cout <<counter<<endl;
-		delete c;
+		c->~CSR();
 	    }
                 
         }
