@@ -59,7 +59,8 @@ int main(int argc, char *argv[]){
     string line;
     string temp;
     int stringNum = 0;
-    while(getline(graphRead, line)) // reading the vertices and edges line by line from the txt file
+    int linecounter = 0;
+    while(getline(graphRead, line) && counter < lineLimit) // reading the vertices and edges line by line from the txt file
     {
         istringstream iss(line);
         while ((iss >> temp))
@@ -82,7 +83,7 @@ int main(int argc, char *argv[]){
         {
             p->addEdge(au, start, edge, target);
             counter++;
-            if(counter%10000000 == 0)
+            if(counter%intervalSize == 0)
 	    {
 		
                 PGedgeNumber = p->edgeNumber;
