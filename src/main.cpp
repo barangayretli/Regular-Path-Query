@@ -24,8 +24,8 @@ int main(int argc, char *argv[]){
     
     graphRead.open(argv[1]);
     automataFile.open(argv[2]);
-    argv[3];
-    argv[4];
+    //argv[3];
+    //argv[4];
 	
     int lineLimit;
     sscanf(argv[3], "%d", &lineLimit);
@@ -174,7 +174,6 @@ int main(int argc, char *argv[]){
 
 void printExecutionTime(ClockTime start_time, ClockTime end_time)
 {
-    auto execution_time_ns = duration_cast<nanoseconds>(end_time - start_time).count();
     auto execution_time_ms = duration_cast<microseconds>(end_time - start_time).count();
     auto execution_time_mls = duration_cast<milliseconds>(end_time-start_time).count();
     auto execution_time_sec = duration_cast<seconds>(end_time - start_time).count();
