@@ -94,15 +94,15 @@ int main(int argc, char *argv[]){
                 cout << "Started building CSR" << endl;
 		    
                 CSR *c = new CSR(p->vertexNum,p->neighborNumCSR);// CSR Constructor
-                
+                cout << 1;
                 c->buildMap(p);// Maps strings to integers
-                
+                cout << 2;
                 vertices_CSR0 = c->getVertex0(); // get vertices with 0 state in a vector
 		    
                 c->buildIndexArr(p);// build index array of CSR
-                
+                cout<<3;
                 c->buildCSR(p);// build CSR matrix where we store the neighbors
-		    
+		    cout <<4;
                 cout << "Finished building CSR" << endl;
 		    
                 memory +=  p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
