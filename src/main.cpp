@@ -12,6 +12,8 @@ typedef high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 
 void printExecutionTime(ClockTime start_time, ClockTime end_time);
+void traverseCSR(vector<string> vertices0, CSR *c, int maxState, int & vertexNumCheck, int & memory);
+
 
 int main(int argc, char *argv[]){
 
@@ -94,30 +96,32 @@ int main(int argc, char *argv[]){
                 cout << "Started building CSR" << endl;
 		    
                 CSR *c = new CSR(p->vertexNum+p->neighborNumCSR,p->neighborNumCSR+p->vertexNum);// CSR Constructor
-                cout << 1;
+                
                 c->buildMap(p);// Maps strings to integers
-                cout << 2;
+                
                 vertices_CSR0 = c->getVertex0(); // get vertices with 0 state in a vector
 		    
                 c->buildIndexArr(p);// build index array of CSR
-                cout<<3;
+                
                 c->buildCSR(p);// build CSR matrix where we store the neighbors
-		    cout <<4;
+		  
                 cout << "Finished building CSR" << endl;
-		    cout << 1;
+		    
                 memory +=  p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
                 memory += vertices_CSR0.size()*(c->MapValuesSize/(p->vertexNum + p->neighborNumCSR));
-		    cout <<2;
+		   
                 int VertexNum = p->vertexNum + p->uniqueNeighbor;
-                cout << 3;
+                
+		traverseCSR(vertices_CSR0,c,maxState,vertexNumCheck, memory);
+		    /*
                 ClockTime start_time, end_time;
                 start_time = Clock::now();
-		    cout << "started bfs";
+		    
                 for(unsigned int j = 0; j < vertices_CSR0.size(); j++)
                 {
                     c->BFS(vertices_CSR0[j],maxState,vertexNumCheck);
                 }
-		    cout << "enden bfs";
+		    
                 end_time = Clock::now();
 		    
                 memory += c->MapValuesSize + c->maxMapSize;
@@ -130,6 +134,7 @@ int main(int argc, char *argv[]){
                 cout << vertexNumCheck << " results found with max State"<< endl;
                 cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
                 cout << "There are " << vertices_CSR0.size() << " vertices with 0 state"<<endl;
+		*/
                 cout <<edgeCounter<<endl;
 		cout << "Started deleting CSR" << endl;
 		delete c;
@@ -138,47 +143,7 @@ int main(int argc, char *argv[]){
         }
         stringNum = 0;
     }
-    /*
-    cout << "Finished reading Graph" << endl;
-    graphRead.close();
-    PGedgeNumber = p->edgeNumber;
-    ////////////////
-    cout << "Started building CSR" << endl;
-    CSR c(p->vertexNum,p->neighborNumCSR);
-    cout << "CSR init done" << endl;
-    c.buildMap(p);
-    cout << "CSR buildMap done"	<< endl;
-    vertices_CSR0 = c.getVertex0();
-    c.buildIndexArr(p);
-    cout << "CSR BuildindexArr done" << endl;
-    c.buildCSR(p);
-    cout << "BuildCSR done" << endl;
-    memory +=  p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
-    memory += vertices_CSR0.size()*(c.MapValuesSize/(p->vertexNum + p->neighborNumCSR));
-    int VertexNum = p->vertexNum + p->uniqueNeighbor;
-    cout << "Finished building CSR" << endl;
-    delete p;
-    //////////////// CSR Matrix Representation
     
-    ClockTime start_time, end_time;
-    start_time = Clock::now();
-    for(unsigned int j = 0; j < vertices_CSR0.size(); j++)
-    {
-        c.BFS(vertices_CSR0[j],maxState,vertexNumCheck);
-    }
-    end_time = Clock::now();
-    memory += c.MapValuesSize + c.maxMapSize;
-    cout << "CSRmatrix representation ";
-    printExecutionTime(start_time, end_time);
-    cout << "Memory used by CSR representation is " << memory/(1024*1024) << " MB" << endl;
-    cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
-    cout << vertexNumCheck << " results found with max State"<< endl;
-    cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;	    
-    cout << "There are " << vertices_CSR0.size() << " vertuces with 0 state"<<endl;
-
-    
-    
-     */
     return 0;
 }
 
@@ -202,4 +167,28 @@ void printExecutionTime(ClockTime start_time, ClockTime end_time)
     if(execution_time_ms > 0)
         cout << "" << execution_time_ms << " MicroSeconds, ";
     
+}
+
+void traverseCSR(vector<string> vertices0, CSR *c, int maxState, int & vertexNumCheck)
+{
+    ClockTime start_time, end_time;
+    start_time = Clock::now();
+		    
+    for(unsigned int j = 0; j < vertices_CSR0.size(); j++)
+    {
+    	c->BFS(vertices_CSR0[j],maxState,vertexNumCheck);
+    }
+		    
+    end_time = Clock::now();
+		    
+    memory += c->MapValuesSize + c->maxMapSize;
+		    
+    cout << "CSRmatrix representation ";
+    printExecutionTime(start_time, end_time);
+    cout << endl;
+    cout << "Memory used by CSR representation is " << memory/(1024*1024) << " MB" << endl;
+    cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
+    cout << vertexNumCheck << " results found with max State"<< endl;
+    cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
+    cout << "There are " << vertices_CSR0.size() << " vertices with 0 state"<<endl;
 }
