@@ -17,8 +17,8 @@ void printArr(vector<string> arr)// prints the result array
 
 void productGraph::addEdge(automata q, string start, string label, string end)
 {
-    int f; // first int
-    int s; // second int
+    int f; // state of first edge
+    int s; // state of second edge
     string fstr; // first string
     string sstr; // second string
     for (auto itr = q.automataGraph[label].VertexNeighbors.begin(); itr != q.automataGraph[label].VertexNeighbors.end(); ++itr)
@@ -71,7 +71,7 @@ CSR::CSR(int n, int m) {
     inverted = new string[n+m+1]; // dtnamically create inverted array
 }
 
-vector<string> CSR::getVertex0()
+vector<string> CSR::getVertex0()// get vector of vertices with 0 state
 {
     return Vertex0;
 }
@@ -150,13 +150,13 @@ void CSR::buildIndexArr(productGraph *p)
 }
 
 void CSR::buildCSR(productGraph *p)
-{
+{// this function creates a CSR representation from an adjacency list representation
     int index = 0;
     string str;
     for(auto it = p->ProductMap.begin(); it != p->ProductMap.end();it++)
-    {
+    {// iterates through the vertices of the product graph in the adjacency list
         for(auto itr = it->second.adjacentVertices.begin(); itr != it->second.adjacentVertices.end();itr++)
-        {
+        {// iterates through the outgoing edges of each vertex
             str = itr->first + to_string(itr->second);
             CSRmatrix[index++] = (mapValues[str]); // add the neighbor to the CSR matrix
         }
@@ -209,7 +209,7 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
 }
 
 CSR::~CSR()
-{
+{// destructs dynamically created CSR object
     delete []indices;
     delete []CSRmatrix;
     delete []inverted;
