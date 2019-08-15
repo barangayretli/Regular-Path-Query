@@ -37,7 +37,7 @@ int main(int argc, char *argv[]){
     ////////////////
     automata au;
     unsigned long memory = 0;
-    int counter = 0;
+    int edgeCounter = 0;
     unsigned long PGedgeNumber = 0;
     cout << "Started reading automata" << endl;
     while(automataFile >> f >> label >> s)// reading automata from a txt file
@@ -59,7 +59,7 @@ int main(int argc, char *argv[]){
     string line;
     string temp;
     int stringNum = 0;
-    while(getline(graphRead, line) && counter < lineLimit) // reading the vertices and edges line by line from the txt file
+    while(getline(graphRead, line) && edgeCounter < lineLimit) // reading the vertices and edges line by line from the txt file
     {
         istringstream iss(line);
         while ((iss >> temp))
@@ -81,8 +81,8 @@ int main(int argc, char *argv[]){
         if(stringNum == 3)
         {
             p->addEdge(au, start, edge, target);
-            counter++;
-            if(counter%intervalSize == 0)
+            edgeCounter++;
+            if(edgeCounter%intervalSize == 0)
 	    {
 		memory = 0;
                 PGedgeNumber = p->edgeNumber;
