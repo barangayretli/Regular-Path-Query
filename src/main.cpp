@@ -36,7 +36,7 @@ int main(int argc, char *argv[]){
    
     vector<string> vertices_CSR0;
 	
-    string start,edge,target,f,s,label;
+    string start,edge,target,f,s,label; // variables to store automata and graph vertices and labels
     int maxState = 0,first,second, vertexNumCheck=0;
     ////////////////
     automata au;
