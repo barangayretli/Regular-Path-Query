@@ -113,6 +113,8 @@ int main(int argc, char *argv[]){
                 int VertexNum = p->vertexNum + p->uniqueNeighbor;
                 
 		traverseCSR(vertices_CSR0,c,maxState,vertexNumCheck, memory);
+		    cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
+    cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
 		    /*
                 ClockTime start_time, end_time;
                 start_time = Clock::now();
@@ -187,8 +189,8 @@ void traverseCSR(vector<string> vertices0, CSR *c, int maxState, int & vertexNum
     printExecutionTime(start_time, end_time);
     cout << endl;
     cout << "Memory used by CSR representation is " << memory/(1024*1024) << " MB" << endl;
-    cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
+   
     cout << vertexNumCheck << " results found with max State"<< endl;
-    cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
+	 
     cout << "There are " << vertices0.size() << " vertices with 0 state"<<endl;
 }
