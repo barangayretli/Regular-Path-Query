@@ -13,7 +13,7 @@ typedef Clock::time_point ClockTime;
 
 void printExecutionTime(ClockTime start_time, ClockTime end_time);
 void traverseCSR(vector<string> vertices0, CSR *c, int maxState, int & vertexNumCheck, unsigned long & memory);
-
+void constructCSR(productGraph *p, CSR *c, vector<string> & vertices_CSR0);
 
 int main(int argc, char *argv[]){
 
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
 	
     string start,edge,target,f,s,label; // variables to store automata and graph vertices and labels
     int maxState = 0,first,second, vertexNumCheck=0;
-    ////////////////
+    
     automata au;
     unsigned long memory = 0;
     int edgeCounter = 0;
@@ -91,12 +91,12 @@ int main(int argc, char *argv[]){
             if(edgeCounter%intervalSize == 0)
 	    {
 		memory = 0;
-                PGedgeNumber = p->edgeNumber;
+                
                 
                 cout << "Started building CSR" << endl;
 		    
                 CSR *c = new CSR(p->vertexNum+p->neighborNumCSR,p->neighborNumCSR+p->vertexNum);// CSR Constructor
-                
+                /*
                 c->buildMap(p);// Maps strings to integers
                 
                 vertices_CSR0 = c->getVertex0(); // get vertices with 0 state in a vector
@@ -106,41 +106,20 @@ int main(int argc, char *argv[]){
                 c->buildCSR(p);// build CSR matrix where we store the neighbors
 		  
                 cout << "Finished building CSR" << endl;
-		    
+		*/
+		constructCSR(p, c, vertices_CSR0);
                 memory +=  p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
                 memory += vertices_CSR0.size()*(c->MapValuesSize/(p->vertexNum + p->neighborNumCSR));
 		   
-                int VertexNum = p->vertexNum + p->uniqueNeighbor;
-                
 		traverseCSR(vertices_CSR0,c,maxState,vertexNumCheck, memory);
-		    cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
-    cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
-		    /*
-                ClockTime start_time, end_time;
-                start_time = Clock::now();
-		    
-                for(unsigned int j = 0; j < vertices_CSR0.size(); j++)
-                {
-                    c->BFS(vertices_CSR0[j],maxState,vertexNumCheck);
-                }
-		    
-                end_time = Clock::now();
-		    
-                memory += c->MapValuesSize + c->maxMapSize;
-		    
-                cout << "CSRmatrix representation ";
-                printExecutionTime(start_time, end_time);
-		cout << endl;
-                cout << "Memory used by CSR representation is " << memory/(1024*1024) << " MB" << endl;
-                cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
-                cout << vertexNumCheck << " results found with max State"<< endl;
-                cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
-                cout << "There are " << vertices_CSR0.size() << " vertices with 0 state"<<endl;
-		*/
+		
+		PGedgeNumber = p->edgeNumber;
+		cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
+		int VertexNum = p->vertexNum + p->uniqueNeighbor;
+    		cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
                 cout <<edgeCounter<<endl;
-		cout << "Started deleting CSR" << endl;
 		delete c;
-		cout << "Deleted CSR" << endl;
+		
 	    }     
         }
         stringNum = 0;
@@ -193,4 +172,15 @@ void traverseCSR(vector<string> vertices0, CSR *c, int maxState, int & vertexNum
     cout << vertexNumCheck << " results found with max State"<< endl;
 	 
     cout << "There are " << vertices0.size() << " vertices with 0 state"<<endl;
+}
+
+void constructCSR(productGraph *p, CSR *c, vector<string> & vertices_CSR0)
+{
+	c->buildMap(p);// Maps strings to integers
+                
+        vertices_CSR0 = c->getVertex0(); // get vertices with 0 state in a vector
+		    
+        c->buildIndexArr(p);// build index array of CSR
+                
+        c->buildCSR(p);// build CSR matrix where we store the neighbors
 }
