@@ -42,8 +42,8 @@ void productGraph::addEdge(automata q, string start, string label, string end)
             }
             else
                 uniqueNeighbor++;
-            neighborset.insert(p2);
-            neighborset.insert(p1);
+            uniqueVertexSet.insert(p2);
+            uniqueVertexSet.insert(p1);
             ProductMap[p1].adjacentVertices.push_back(p2);
         }
         else// if it is not in the product graph
@@ -56,8 +56,8 @@ void productGraph::addEdge(automata q, string start, string label, string end)
             }
             else
                 uniqueNeighbor++;
-            neighborset.insert(p2);
-            neighborset.insert(p1);
+            uniqueVertexSet.insert(p2);
+            uniqueVertexSet.insert(p1);
             ProductMap.insert(make_pair(p1,temp));
         }
         
