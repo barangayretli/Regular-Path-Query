@@ -12,7 +12,7 @@ typedef high_resolution_clock Clock;
 typedef Clock::time_point ClockTime;
 
 void printExecutionTime(ClockTime start_time, ClockTime end_time);
-void traverseCSR(vector<string> vertices0, CSR *c, int maxState, int & vertexNumCheck, int & memory);
+void traverseCSR(vector<string> vertices0, CSR *c, int maxState, int & vertexNumCheck, unsigned long & memory);
 
 
 int main(int argc, char *argv[]){
@@ -174,9 +174,9 @@ void traverseCSR(vector<string> vertices0, CSR *c, int maxState, int & vertexNum
     ClockTime start_time, end_time;
     start_time = Clock::now();
 		    
-    for(unsigned int j = 0; j < vertices_CSR0.size(); j++)
+    for(unsigned int j = 0; j < vertices0.size(); j++)
     {
-    	c->BFS(vertices_CSR0[j],maxState,vertexNumCheck);
+    	c->BFS(vertices0[j],maxState,vertexNumCheck);
     }
 		    
     end_time = Clock::now();
@@ -190,5 +190,5 @@ void traverseCSR(vector<string> vertices0, CSR *c, int maxState, int & vertexNum
     cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
     cout << vertexNumCheck << " results found with max State"<< endl;
     cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
-    cout << "There are " << vertices_CSR0.size() << " vertices with 0 state"<<endl;
+    cout << "There are " << vertices0.size() << " vertices with 0 state"<<endl;
 }
