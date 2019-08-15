@@ -169,7 +169,7 @@ void printExecutionTime(ClockTime start_time, ClockTime end_time)
     
 }
 
-void traverseCSR(vector<string> vertices0, CSR *c, int maxState, int & vertexNumCheck)
+void traverseCSR(vector<string> vertices0, CSR *c, int maxState, int & vertexNumCheck,  unsigned long & memory)
 {
     ClockTime start_time, end_time;
     start_time = Clock::now();
