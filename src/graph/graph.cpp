@@ -24,7 +24,6 @@ void productGraph::addEdge(automata q, string start, string label, string end)
     for (auto itr = q.automataGraph[label].VertexNeighbors.begin(); itr != q.automataGraph[label].VertexNeighbors.end(); ++itr)
     { // automata graph states traversal
         edgeNumber++;
-        neighborNumCSR++;
         f = itr->first;
         s = itr->second;
         fstr = start;
@@ -43,7 +42,7 @@ void productGraph::addEdge(automata q, string start, string label, string end)
             else
                 uniqueNeighbor++;
             neighborset.insert(p2);
-            //neighborNumCSR++;
+            neighborNumCSR++;
             ProductMap[p1].adjacentVertices.push_back(p2);
         }
         else// if it is not in the product graph
@@ -57,7 +56,7 @@ void productGraph::addEdge(automata q, string start, string label, string end)
             else
                 uniqueNeighbor++;
             neighborset.insert(p2);
-           // neighborNumCSR++;
+            neighborNumCSR++;
             ProductMap.insert(make_pair(p1,temp));
         }
         
