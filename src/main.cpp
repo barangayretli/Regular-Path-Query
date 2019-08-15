@@ -52,8 +52,8 @@ int main(int argc, char *argv[]){
     }
     cout << "Finished reading automata" << endl;
     automataFile.close();
-    /////////////////
-    productGraph *p = new productGraph;
+    
+    productGraph *p = new productGraph; // dynamically create product graph
     
     cout << "Started Reading Graph" << endl;
     string line;
@@ -61,7 +61,7 @@ int main(int argc, char *argv[]){
     int stringNum = 0;
     while(getline(graphRead, line) && edgeCounter < lineLimit) // reading the vertices and edges line by line from the txt file
     {
-        istringstream iss(line);
+        istringstream iss(line); // take the edge as a string
         while ((iss >> temp))
         {
             if(stringNum == 0)
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]){
             }
             stringNum++;
         }
-        if(stringNum == 3)
+        if(stringNum == 3)// only use lines with three string, as they define a valid edge 
         {
             p->addEdge(au, start, edge, target);
             edgeCounter++;
@@ -86,19 +86,24 @@ int main(int argc, char *argv[]){
 	    {
 		memory = 0;
                 PGedgeNumber = p->edgeNumber;
-                ////////////////
+                
                 cout << "Started building CSR" << endl;
-                CSR *c = new CSR(p->vertexNum,p->neighborNumCSR);
+		    
+                CSR *c = new CSR(p->vertexNum,p->neighborNumCSR);// CSR Constructor
                 
-                c->buildMap(p);
+                c->buildMap(p);// Maps strings to integers
                 
-                vertices_CSR0 = c->getVertex0();
-                c->buildIndexArr(p);
+                vertices_CSR0 = c->getVertex0(); // get vertices with 0 state in a vector
+		    
+                c->buildIndexArr(p);// build index array of CSR
                 
-                c->buildCSR(p);
+                c->buildCSR(p);// build CSR matrix where we store the neighbors
+		    
                 cout << "Finished building CSR" << endl;
+		    
                 memory +=  p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
                 memory += vertices_CSR0.size()*(c->MapValuesSize/(p->vertexNum + p->neighborNumCSR));
+		    
                 int VertexNum = p->vertexNum + p->uniqueNeighbor;
                 
                 ClockTime start_time, end_time;
@@ -108,7 +113,9 @@ int main(int argc, char *argv[]){
                     c->BFS(vertices_CSR0[j],maxState,vertexNumCheck);
                 }
                 end_time = Clock::now();
+		    
                 memory += c->MapValuesSize + c->maxMapSize;
+		    
                 cout << "CSRmatrix representation ";
                 printExecutionTime(start_time, end_time);
 		cout << endl;
@@ -117,15 +124,13 @@ int main(int argc, char *argv[]){
                 cout << vertexNumCheck << " results found with max State"<< endl;
                 cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
                 cout << "There are " << vertices_CSR0.size() << " vertices with 0 state"<<endl;
-                cout <<counter<<endl;
+                cout <<edgeCounter<<endl;
 		cout << "Started deleting CSR" << endl;
 		delete c;
 		cout << "Deleted CSR" << endl;
-	    }
-                
+	    }     
         }
         stringNum = 0;
-        
     }
     /*
     cout << "Finished reading Graph" << endl;
