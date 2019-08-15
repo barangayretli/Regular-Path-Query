@@ -42,7 +42,7 @@ int main(int argc, char *argv[]){
     int maxState = 0,first,second, vertexNumCheck=0;
     
     automata au;
-    cout << "Started reading automata" << endl;
+    
     while(automataFile >> f >> label >> s)// reading automata from a txt file
     {
         first = stoi(f);
@@ -53,7 +53,6 @@ int main(int argc, char *argv[]){
         if(second > maxState)
             maxState = second;
     }
-    cout << "Finished reading automata" << endl;
     automataFile.close();
     
     productGraph *p = new productGraph; // dynamically create product graph
@@ -61,7 +60,6 @@ int main(int argc, char *argv[]){
     int edgeCounter = 0;
     unsigned long PGedgeNumber = 0;
 	
-    cout << "Started Reading Graph" << endl;
     string line;// line that stores the edge
     string temp;// temporary variable to store string
     int stringNum = 0;
