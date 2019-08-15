@@ -93,7 +93,7 @@ int main(int argc, char *argv[]){
 		    
                 cout << "Started building CSR" << endl;
 		    
-                CSR *c = new CSR(p->vertexNum,p->neighborNumCSR+p->vertexNum);// CSR Constructor
+                CSR *c = new CSR(p->vertexNum+p->neighborset.size(),p->neighborNumCSR+p->vertexNum);// CSR Constructor
                 constructCSR(p, c, vertices_CSR0);// build indexarray, map and CSR matrix
 		    
                 cout << "Finished building CSR" << endl;
