@@ -91,11 +91,11 @@ int main(int argc, char *argv[]){
             if(edgeCounter%intervalSize == 0)
 	    {
 		memory = 0;
-                memory +=  p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
+                memory += p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
 		    
                 cout << "Started building CSR" << endl;
 		    
-                CSR *c = new CSR(p->vertexNum+p->neighborNumCSR,p->neighborNumCSR+p->vertexNum);// CSR Constructor
+                CSR *c = new CSR(p->vertexNum,p->neighborNumCSR+p->vertexNum);// CSR Constructor
                 constructCSR(p, c, vertices_CSR0);// build indexarray, map and CSR matrix
 		    
                 cout << "Finished building CSR" << endl;
@@ -109,7 +109,6 @@ int main(int argc, char *argv[]){
     		cout << "There are " << VertexNum << " vertices in the Product Graph" << endl;
                 cout <<edgeCounter<<endl;
 		delete c;
-		
 	    }     
         }
         stringNum = 0;
