@@ -36,7 +36,7 @@ void productGraph::addEdge(automata q, string start, string label, string end)
         if(ProductMap.count(p1))// if it is already in the product graph
         {
             
-            if(neighborset.count(p2))
+            if(uniqueVertexSet.count(p2))
             {
                 
             }
@@ -50,7 +50,7 @@ void productGraph::addEdge(automata q, string start, string label, string end)
         {
             
             vertexNum++;
-            if(neighborset.count(p2))
+            if(uniqueVertexSet.count(p2))
             {
                 
             }
