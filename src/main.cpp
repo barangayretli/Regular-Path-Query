@@ -42,9 +42,6 @@ int main(int argc, char *argv[]){
     int maxState = 0,first,second, vertexNumCheck=0;
     
     automata au;
-    unsigned long memory = 0;
-    int edgeCounter = 0;
-    unsigned long PGedgeNumber = 0;
     cout << "Started reading automata" << endl;
     while(automataFile >> f >> label >> s)// reading automata from a txt file
     {
@@ -60,10 +57,13 @@ int main(int argc, char *argv[]){
     automataFile.close();
     
     productGraph *p = new productGraph; // dynamically create product graph
-    
+    unsigned long memory = 0;
+    int edgeCounter = 0;
+    unsigned long PGedgeNumber = 0;
+	
     cout << "Started Reading Graph" << endl;
-    string line;
-    string temp;
+    string line;// line that stores the edge
+    string temp;// temporary variable to store string
     int stringNum = 0;
     while(getline(graphRead, line) && edgeCounter < lineLimit) // reading the vertices and edges line by line from the txt file
     {
