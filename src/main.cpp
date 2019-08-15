@@ -93,7 +93,7 @@ int main(int argc, char *argv[]){
                 
                 cout << "Started building CSR" << endl;
 		    
-                CSR *c = new CSR(p->vertexNum,p->neighborNumCSR);// CSR Constructor
+                CSR *c = new CSR(p->vertexNum+p->neighborNumCSR,p->neighborNumCSR+p->vertexNum);// CSR Constructor
                 cout << 1;
                 c->buildMap(p);// Maps strings to integers
                 cout << 2;
