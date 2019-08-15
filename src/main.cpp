@@ -104,12 +104,12 @@ int main(int argc, char *argv[]){
                 c->buildCSR(p);// build CSR matrix where we store the neighbors
 		    cout <<4;
                 cout << "Finished building CSR" << endl;
-		    
+		    cout << 1;
                 memory +=  p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
                 memory += vertices_CSR0.size()*(c->MapValuesSize/(p->vertexNum + p->neighborNumCSR));
-		    
+		    cout <<2;
                 int VertexNum = p->vertexNum + p->uniqueNeighbor;
-                
+                cout << 3;
                 ClockTime start_time, end_time;
                 start_time = Clock::now();
 		    cout << "started bfs";
