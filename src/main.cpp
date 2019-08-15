@@ -91,28 +91,18 @@ int main(int argc, char *argv[]){
             if(edgeCounter%intervalSize == 0)
 	    {
 		memory = 0;
-                
-                
+                memory +=  p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
+		    
                 cout << "Started building CSR" << endl;
 		    
                 CSR *c = new CSR(p->vertexNum+p->neighborNumCSR,p->neighborNumCSR+p->vertexNum);// CSR Constructor
-                /*
-                c->buildMap(p);// Maps strings to integers
-                
-                vertices_CSR0 = c->getVertex0(); // get vertices with 0 state in a vector
+                constructCSR(p, c, vertices_CSR0);// build indexarray, map and CSR matrix
 		    
-                c->buildIndexArr(p);// build index array of CSR
-                
-                c->buildCSR(p);// build CSR matrix where we store the neighbors
-		  
                 cout << "Finished building CSR" << endl;
-		*/
-		constructCSR(p, c, vertices_CSR0);
-                memory +=  p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
-                memory += vertices_CSR0.size()*(c->MapValuesSize/(p->vertexNum + p->neighborNumCSR));
-		   
+		 
 		traverseCSR(vertices_CSR0,c,maxState,vertexNumCheck, memory);
-		
+		memory += vertices_CSR0.size()*(c->MapValuesSize/(p->vertexNum + p->neighborNumCSR));
+		    
 		PGedgeNumber = p->edgeNumber;
 		cout << "There are " << PGedgeNumber << " edges in the Product Graph" <<endl;
 		int VertexNum = p->vertexNum + p->uniqueNeighbor;
