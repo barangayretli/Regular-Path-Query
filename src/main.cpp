@@ -112,10 +112,12 @@ int main(int argc, char *argv[]){
                 
                 ClockTime start_time, end_time;
                 start_time = Clock::now();
+		    cout << "started bfs";
                 for(unsigned int j = 0; j < vertices_CSR0.size(); j++)
                 {
                     c->BFS(vertices_CSR0[j],maxState,vertexNumCheck);
                 }
+		    cout << "enden bfs";
                 end_time = Clock::now();
 		    
                 memory += c->MapValuesSize + c->maxMapSize;
