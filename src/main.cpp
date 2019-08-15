@@ -19,6 +19,10 @@ int main(int argc, char *argv[]){
 		cout << "Supply graph file and automata file as arguments" << endl;
 		exit(0);
 	}
+	if(argc < 5) {
+		cout << "Supply both line limit and interval size as arguments" << endl;
+		exit(0);
+	}
     
     ifstream graphRead, automataFile;
     
