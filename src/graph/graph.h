@@ -23,7 +23,7 @@ public:
     int neighborNumCSR=0;
     int uniqueNeighbor=0;
     unsigned long edgeNumber=0;
-    std::unordered_set<std::pair<std::string,int>,boost::hash<std::pair<std::string,int>>> neighborset;
+    std::unordered_set<std::pair<std::string,int>,boost::hash<std::pair<std::string,int>>> uniqueVertexSet;
 };
 class CSR{
     
