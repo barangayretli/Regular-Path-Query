@@ -89,6 +89,7 @@ int main(int argc, char *argv[]){
             if(edgeCounter%intervalSize == 0)
 	    {
 		memory = 0;
+		vertexNumCheck = 0;
                 memory += p->vertexNum * sizeof(int) + p->neighborNumCSR * sizeof(int);
 		    
                 cout << "Started building CSR" << endl;
