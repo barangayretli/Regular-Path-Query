@@ -15,13 +15,15 @@ void printArr(vector<string> arr)// prints the result array
 }
 
 
-void productGraph::addEdge(automata q, string start, string label, string end)
+void productGraph::addEdge(const automata& q, const string& start, const string& label, const string& end)
 {
     int f; // state of first edge
     int s; // state of second edge
     string fstr; // first string
     string sstr; // second string
-    for (auto itr = q.automataGraph[label].VertexNeighbors.begin(); itr != q.automataGraph[label].VertexNeighbors.end(); ++itr)
+    auto found = q.automataGraph.find(label);
+    if (found == q.automataGraph.end()) return;
+    for (auto itr = found->second.VertexNeighbors.begin(); itr != found->second.VertexNeighbors.end(); ++itr)
     { // automata graph states traversal
         edgeNumber++;
         neighborNumCSR++;
@@ -70,6 +72,7 @@ CSR::CSR(int n, int m) {
     indices = new int[n+1]; // dynamically create indices array
     CSRmatrix = new int[m]; // dynamically create CSR matrix array
     inverted = new string[n+1]; // dtnamically create inverted array
+    stateOf = new int[n+1];
 }
 
 vector<string> CSR::getVertex0()// get vector of vertices with 0 state
@@ -105,9 +108,10 @@ void CSR::buildMap(productGraph *p)
             mapValues.insert(make_pair(str, count));
             MapValuesSize += sizeof(str);
             inverted[count] = (str);
+            stateOf[count] = it->first.second;
             count++;
         }
-        
+
     }
     for(auto it = p->ProductMap.begin(); it != p->ProductMap.end();it++)
     {
@@ -123,6 +127,7 @@ void CSR::buildMap(productGraph *p)
                 mapValues.insert(make_pair(str, count));
                 MapValuesSize += sizeof(str);
                 inverted[count]=(str);
+                stateOf[count] = itr->second;
                 count++;
             }
         }
@@ -170,9 +175,9 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
     
     list<int> queue; // queue to store the neighbors
    
-    unordered_map<int,bool> visited; // hash table to check if a vertex is visited
-  
-    visited[startVertex] = true; // make the first edge visited
+    unordered_set<int> visited;
+
+    visited.insert(startVertex);
     
     queue.push_back(startVertex);
     
@@ -180,14 +185,12 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
     
     int end = 0; // ending index
     
-    char c = '0';
-    
     while(!queue.empty())
     {
-        
+
         int currVertex = queue.front();
 
-        if(inverted[currVertex].at(inverted[currVertex].length()-1)==(c + maxState))
+        if(stateOf[currVertex] == maxState)
         {     
             vertexNumCheck++;   
         }
@@ -198,9 +201,9 @@ void CSR::BFS(string vertex1, int maxState, int & vertexNumCheck)
         for( ; start < end ; start++)
         {
             int adjVertex = CSRmatrix[start];
-            if(!visited[adjVertex])
+            if(visited.count(adjVertex) == 0)
             {
-                visited[adjVertex] = true;
+                visited.insert(adjVertex);
                 queue.push_back(adjVertex);
             }
         }
@@ -214,4 +217,5 @@ CSR::~CSR()
     delete []indices;
     delete []CSRmatrix;
     delete []inverted;
+    delete []stateOf;
 }

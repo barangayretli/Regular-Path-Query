@@ -113,6 +113,8 @@ int main(int argc, char *argv[]){
         stringNum = 0;
     }
     
+    graphRead.close();
+    delete p;
     return 0;
 }
 

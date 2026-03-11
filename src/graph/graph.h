@@ -18,7 +18,7 @@ private:
     friend class CSR;
     
 public:
-    void addEdge(automata q, std::string start, std::string label, std::string end); // adds an edge to the graph
+    void addEdge(const automata& q, const std::string& start, const std::string& label, const std::string& end); // adds an edge to the graph
     int vertexNum=0;
     int neighborNumCSR=0;
     int uniqueNeighbor=0;
@@ -32,9 +32,9 @@ private:
     int count=0;
     int* CSRmatrix; // CSRMatrix that contains only the neighbors
     int* indices; // index of the starting vertices
-    bool* visited; // boolean array to check if a vertex is visited during BFS
     std::unordered_map<std::string, int> mapValues; // map of string vertices
     std::string* inverted; // inverse of mapValues
+    int* stateOf; // automata state for each mapped vertex
     std::vector<std::string> Vertex0;
     
 public:
